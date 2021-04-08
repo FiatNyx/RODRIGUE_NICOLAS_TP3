@@ -7,7 +7,7 @@ using UnityEngine.SceneManagement;
 public class player : MonoBehaviour
 {
 	Camera mainCam;
-	NavMeshAgent navMeshAgent;
+	
 	int moveSelected = 0;
 	public ParticleSystem particles;
 	Animator animationJoueur;
@@ -63,7 +63,7 @@ public class player : MonoBehaviour
 	/// </summary>
 	private void Awake()
 	{
-		navMeshAgent = GetComponent<NavMeshAgent>();
+		
 		animationJoueur = GetComponent<Animator>();
 		rb = GetComponent<Rigidbody>();
 		vie = vieMax;
@@ -186,8 +186,7 @@ public class player : MonoBehaviour
 
 				float inputHorizontal = Input.GetAxis("Horizontal");
 
-				animationJoueur.SetFloat("horizontal", inputHorizontal);
-				animationJoueur.SetFloat("vertical", inputVertical);
+				
 
 				if (isPoisoned && (Mathf.Abs(inputHorizontal) > 0 || Mathf.Abs(inputVertical) > 0))
 				{
@@ -201,10 +200,13 @@ public class player : MonoBehaviour
 				}
 
 			
-				moveDirection = transform.forward * inputVertical + transform.right * inputHorizontal;
+				moveDirection = cameraPosition.forward * inputVertical + cameraPosition.right * inputHorizontal;
 				
+
 				
-            }//Si une attaque a été sélectionnée
+
+
+			}//Si une attaque a été sélectionnée
             else
             {
 				//S'assure que le personnage ne se déplace pas
@@ -346,8 +348,17 @@ public class player : MonoBehaviour
 		{
 			speed /= 2f;
 		}
-		
+		Vector3 oldPosition = rb.position;
 		rb.MovePosition(rb.position + moveDirection.normalized * speed * Time.fixedDeltaTime);
+
+		Vector3 deplacement = rb.position - oldPosition;
+		
+		float angle = Quaternion.Angle(cameraPosition.rotation, transform.rotation);
+		deplacement = Quaternion.AngleAxis(-angle, Vector3.up) * deplacement;
+		deplacement = deplacement.normalized;
+		animationJoueur.SetFloat("horizontal", deplacement.x);
+		animationJoueur.SetFloat("vertical", deplacement.z);
+		print(deplacement);
 	}
 
 	/// <summary>
