@@ -19,7 +19,7 @@ public class ennemyBasic : MonoBehaviour
 	private Animator animationEnnemy;
 
 
-	public bool isPoisoned;
+	public int isPoisoned;
 	public float timerPoison = 0f;
 	float speed = 0f;
 	public bool isThisEnnemyTurn;
@@ -119,13 +119,13 @@ public class ennemyBasic : MonoBehaviour
 		if (other.tag == "LentPoison")
 		{
 			navMeshAgent.speed = speed / 2;
-			isPoisoned = true;
+			isPoisoned += 1;
 		}
 
 		//Inflige les dégats
 		if(other.tag == "attaqueJoueur")
 		{
-			dealDamage(other.GetComponent<PlayerAttaque>().damage);
+			dealDamage(other.GetComponent<Attaque>().damage);
 		}
 	}
 
@@ -139,7 +139,7 @@ public class ennemyBasic : MonoBehaviour
 		if (other.tag == "LentPoison")
 		{
 			navMeshAgent.speed = speed;
-			isPoisoned = false;
+			isPoisoned -= 1;
 		}
 	}
 

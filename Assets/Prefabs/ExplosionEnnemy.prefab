@@ -4831,12 +4831,12 @@ GameObject:
   m_Component:
   - component: {fileID: 4778383301872413415}
   - component: {fileID: 8295824820809149662}
-  - component: {fileID: 5756791693759410083}
+  - component: {fileID: 477720644827167795}
   - component: {fileID: 6217922443573740067}
-  - component: {fileID: 2710476383062313145}
+  - component: {fileID: 256978200001643749}
   m_Layer: 0
-  m_Name: Explosion
-  m_TagString: attaqueJoueur
+  m_Name: ExplosionEnnemy
+  m_TagString: attaqueEnnemy
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -4869,7 +4869,7 @@ SphereCollider:
   serializedVersion: 2
   m_Radius: 10
   m_Center: {x: 0, y: 0, z: 0}
---- !u!114 &5756791693759410083
+--- !u!114 &477720644827167795
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -4878,10 +4878,10 @@ MonoBehaviour:
   m_GameObject: {fileID: 4778383301872413408}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 21cf9a95eeba47546b5339a92f158cec, type: 3}
+  m_Script: {fileID: 11500000, guid: 334f244e1e70ea7429be2fedea497c64, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  joueur: {fileID: 0}
+  damage: 10
 --- !u!82 &6217922443573740067
 AudioSource:
   m_ObjectHideFlags: 0
@@ -4978,7 +4978,7 @@ AudioSource:
     m_PreInfinity: 2
     m_PostInfinity: 2
     m_RotationOrder: 4
---- !u!114 &2710476383062313145
+--- !u!114 &256978200001643749
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -4987,7 +4987,6 @@ MonoBehaviour:
   m_GameObject: {fileID: 4778383301872413408}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 334f244e1e70ea7429be2fedea497c64, type: 3}
+  m_Script: {fileID: 11500000, guid: 13a536b9d44cd45f380a9bb241b687d5, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  damage: 10

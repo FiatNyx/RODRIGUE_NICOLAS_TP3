@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public class PlayerAttaque : MonoBehaviour
+public class Attaque : MonoBehaviour
 {
 
 	//Permet de noter les dégats de certaines attaques

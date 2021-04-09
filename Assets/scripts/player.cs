@@ -46,7 +46,10 @@ public class player : MonoBehaviour
 	public AudioClip audioEclair;
 	public AudioClip audioZoom;
 	public AudioClip audioBoom;
-	
+	private Quaternion rotationCamOriginale;
+	Vector3 animationDirection;
+	float inputX;
+	float inputY;
 	public ParticleSystem teleportParticles;
 	
 	/// <summary>
@@ -56,6 +59,7 @@ public class player : MonoBehaviour
 	{
 		mainCam = Camera.main;
 		UI_Manager.singleton.changeVieText(vieMax, vie);
+		rotationCamOriginale = cameraPosition.rotation;
 	}
 
 	/// <summary>
@@ -92,8 +96,8 @@ public class player : MonoBehaviour
             {
 				RotateCamera();
             }
-            else
-            {
+            //else
+            //{
 				//Tourner le personnage pour qu'il face face à la souris
 				Ray camRay = mainCam.ScreenPointToRay(Input.mousePosition);
 
@@ -111,7 +115,7 @@ public class player : MonoBehaviour
 					Quaternion rotation = Quaternion.LookRotation(relativePos, Vector3.up);
 					transform.rotation = rotation;
 				}
-			}
+			//}
 			
 			//Clic droit pour annuler une attaque
             if (Input.GetMouseButtonDown(1))
@@ -136,9 +140,9 @@ public class player : MonoBehaviour
 			else if (Input.GetKeyDown(KeyCode.Alpha2))
 			{
 				effacerMarqueurs();
-				Ray camRay = mainCam.ScreenPointToRay(Input.mousePosition);
+				camRay = mainCam.ScreenPointToRay(Input.mousePosition);
 
-				RaycastHit hit;
+				
 
 				if (Physics.Raycast(camRay, out hit))
 				{
@@ -161,9 +165,9 @@ public class player : MonoBehaviour
 			else if (Input.GetKeyDown(KeyCode.Alpha4))
 			{
 				effacerMarqueurs();
-				Ray camRay = mainCam.ScreenPointToRay(Input.mousePosition);
+				camRay = mainCam.ScreenPointToRay(Input.mousePosition);
 
-				RaycastHit hit;
+				
 
 				if (Physics.Raycast(camRay, out hit))
 				{
@@ -202,8 +206,10 @@ public class player : MonoBehaviour
 			
 				moveDirection = cameraPosition.forward * inputVertical + cameraPosition.right * inputHorizontal;
 				
-
-				
+				//inputX = inputHorizontal;
+				//inputY = inputVertical;
+				//Vector3 animationDirection = moveDirection.z * transform.forward + moveDirection.x * transform.right;
+				//print(animationDirection);
 
 
 			}//Si une attaque a été sélectionnée
@@ -214,9 +220,9 @@ public class player : MonoBehaviour
 				animationJoueur.SetBool("Idle", true);
 
 
-				Ray camRay = mainCam.ScreenPointToRay(Input.mousePosition);
+				 camRay = mainCam.ScreenPointToRay(Input.mousePosition);
 
-				RaycastHit hit;
+				
 
 				if (Physics.Raycast(camRay, out hit))
 				{
@@ -348,17 +354,17 @@ public class player : MonoBehaviour
 		{
 			speed /= 2f;
 		}
-		Vector3 oldPosition = rb.position;
-		rb.MovePosition(rb.position + moveDirection.normalized * speed * Time.fixedDeltaTime);
-
-		Vector3 deplacement = rb.position - oldPosition;
 		
-		float angle = Quaternion.Angle(cameraPosition.rotation, transform.rotation);
-		deplacement = Quaternion.AngleAxis(-angle, Vector3.up) * deplacement;
-		deplacement = deplacement.normalized;
-		animationJoueur.SetFloat("horizontal", deplacement.x);
-		animationJoueur.SetFloat("vertical", deplacement.z);
-		print(deplacement);
+		rb.MovePosition(rb.position + moveDirection.normalized * speed * Time.fixedDeltaTime);
+		
+
+		moveDirection = moveDirection.normalized;
+		Vector3 animDir = transform.InverseTransformDirection(moveDirection);
+		
+		animationJoueur.SetFloat("horizontal", animDir.x);
+		animationJoueur.SetFloat("vertical", animDir.z);
+		
+
 	}
 
 	/// <summary>

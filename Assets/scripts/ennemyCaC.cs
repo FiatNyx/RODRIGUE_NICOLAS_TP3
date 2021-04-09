@@ -45,7 +45,7 @@ public class ennemyCaC : MonoBehaviour
 			
 
 
-			if (scriptBase.isPoisoned)
+			if (scriptBase.isPoisoned > 0)
 			{
 				scriptBase.timerPoison += Time.deltaTime;
 

@@ -194,6 +194,11 @@ PrefabInstance:
       propertyPath: conteneurEnnemi
       value: 
       objectReference: {fileID: 88790519}
+    - target: {fileID: 5370954757782319315, guid: 8f61f8e1948a04688991ad6de3a2c74d,
+        type: 3}
+      propertyPath: tempsTourJoueur
+      value: 10
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 8f61f8e1948a04688991ad6de3a2c74d, type: 3}
 --- !u!1001 &42985669
@@ -517,6 +522,11 @@ PrefabInstance:
         type: 3}
       propertyPath: m_Name
       value: Ptf-Pillar01 (3)
+      objectReference: {fileID: 0}
+    - target: {fileID: 4151374193761802038, guid: 6c36bc62061d0453ea54db9da2f11868,
+        type: 3}
+      propertyPath: m_Layer
+      value: 2
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 6c36bc62061d0453ea54db9da2f11868, type: 3}
@@ -988,6 +998,11 @@ PrefabInstance:
         type: 3}
       propertyPath: m_Name
       value: Ptf-Pillar01 (4)
+      objectReference: {fileID: 0}
+    - target: {fileID: 4151374193761802038, guid: 6c36bc62061d0453ea54db9da2f11868,
+        type: 3}
+      propertyPath: m_Layer
+      value: 2
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 6c36bc62061d0453ea54db9da2f11868, type: 3}
@@ -1501,6 +1516,11 @@ PrefabInstance:
       propertyPath: m_Name
       value: Ptf-Pillar01 (7)
       objectReference: {fileID: 0}
+    - target: {fileID: 4151374193761802038, guid: 6c36bc62061d0453ea54db9da2f11868,
+        type: 3}
+      propertyPath: m_Layer
+      value: 2
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 6c36bc62061d0453ea54db9da2f11868, type: 3}
 --- !u!1 &759971310
@@ -1946,6 +1966,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     m_RemovedComponents:
     - {fileID: 7230312774056797518, guid: 9db19baed371a834ab260b8bf657a3cf, type: 3}
+    - {fileID: 8228164923559579932, guid: 9db19baed371a834ab260b8bf657a3cf, type: 3}
   m_SourcePrefab: {fileID: 100100000, guid: 9db19baed371a834ab260b8bf657a3cf, type: 3}
 --- !u!4 &993064997 stripped
 Transform:
@@ -2162,6 +2183,11 @@ PrefabInstance:
         type: 3}
       propertyPath: m_Name
       value: Ptf-Pillar01 (2)
+      objectReference: {fileID: 0}
+    - target: {fileID: 4151374193761802038, guid: 6c36bc62061d0453ea54db9da2f11868,
+        type: 3}
+      propertyPath: m_Layer
+      value: 2
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 6c36bc62061d0453ea54db9da2f11868, type: 3}
@@ -2444,6 +2470,11 @@ PrefabInstance:
       propertyPath: m_Name
       value: Ptf-Pillar01 (1)
       objectReference: {fileID: 0}
+    - target: {fileID: 4151374193761802038, guid: 6c36bc62061d0453ea54db9da2f11868,
+        type: 3}
+      propertyPath: m_Layer
+      value: 2
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 6c36bc62061d0453ea54db9da2f11868, type: 3}
 --- !u!1001 &1272879434
@@ -2676,6 +2707,11 @@ PrefabInstance:
       propertyPath: m_Name
       value: Ptf-Pillar01 (5)
       objectReference: {fileID: 0}
+    - target: {fileID: 4151374193761802038, guid: 6c36bc62061d0453ea54db9da2f11868,
+        type: 3}
+      propertyPath: m_Layer
+      value: 2
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 6c36bc62061d0453ea54db9da2f11868, type: 3}
 --- !u!1 &1415094770
@@ -2851,6 +2887,11 @@ PrefabInstance:
       propertyPath: m_Name
       value: Ptf-Pillar01
       objectReference: {fileID: 0}
+    - target: {fileID: 4151374193761802038, guid: 6c36bc62061d0453ea54db9da2f11868,
+        type: 3}
+      propertyPath: m_Layer
+      value: 2
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 6c36bc62061d0453ea54db9da2f11868, type: 3}
 --- !u!1001 &1595443937
@@ -2919,6 +2960,11 @@ PrefabInstance:
         type: 3}
       propertyPath: m_Name
       value: Ptf-Pillar01 (6)
+      objectReference: {fileID: 0}
+    - target: {fileID: 4151374193761802038, guid: 6c36bc62061d0453ea54db9da2f11868,
+        type: 3}
+      propertyPath: m_Layer
+      value: 2
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 6c36bc62061d0453ea54db9da2f11868, type: 3}
@@ -3264,6 +3310,27 @@ Transform:
   m_Father: {fileID: 0}
   m_RootOrder: 1
   m_LocalEulerAnglesHint: {x: 50, y: -30, z: 0}
+--- !u!1 &1875803024 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 7536302254415379784, guid: 9db19baed371a834ab260b8bf657a3cf,
+    type: 3}
+  m_PrefabInstance: {fileID: 981694716}
+  m_PrefabAsset: {fileID: 0}
+--- !u!114 &1875803025
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1875803024}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 4b04509723fd04197af248d5bde194fd, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  audioAttack: {fileID: 8300000, guid: 6413d4d689a561942aa4b0739174c85a, type: 3}
+  fireball: {fileID: 3262965787235697412, guid: 8aeed2109d84349a78e0d6d7cc9e53dc,
+    type: 3}
 --- !u!1001 &2006797679
 PrefabInstance:
   m_ObjectHideFlags: 0
