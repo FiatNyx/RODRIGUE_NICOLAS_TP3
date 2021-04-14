@@ -36,21 +36,22 @@ public class ennemyArcher : MonoBehaviour
 		navMeshAgent.isStopped = false;
 
 
-		
+
 
 
 
 		//Déplace le personnage et lui inflige des dégats s'il est empoisonés. Ne s'arrête pas tant qu'il n'est pas à destination 
 		//ou que le timer arrive à 0.
+		Vector3 toPlayer = scriptBase.player.transform.position - transform.position;
+		Vector3 targetPosition = toPlayer.normalized * -100f;
+		Vector3 vecteurRandom = new Vector3(Random.Range(-50, 50), 0, Random.Range(-50, 50));
+		navMeshAgent.SetDestination(targetPosition + vecteurRandom);
+		Debug.Log(targetPosition + vecteurRandom);
+
 		while ((navMeshAgent.pathPending || Vector3.Distance(scriptBase.player.transform.position, transform.position) < 20) && GameManager.singleton.getTimerEnnemy() > 0.2f)
 		{
-			Vector3 toPlayer = scriptBase.player.transform.position - transform.position;
-			if (Vector3.Distance(scriptBase.player.transform.position, transform.position) < 20) //MARCHE PAS MARCHE PAS
-			{
-				Vector3 targetPosition = toPlayer.normalized * -10f;
-				navMeshAgent.SetDestination(targetPosition);
 
-			}
+			Debug.Log("running");
 
 
 			if (scriptBase.isPoisoned > 0)
