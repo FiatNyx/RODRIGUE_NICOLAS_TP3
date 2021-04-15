@@ -378,6 +378,10 @@ public class player : MonoBehaviour
 			isSlowed = true;
 			isPoisoned = true;
 		}
+		if (other.tag == "attaqueEnnemy")
+		{
+			damage(other.GetComponent<Attaque>().damage);
+		}
 	}
 
 	/// <summary>
@@ -391,6 +395,7 @@ public class player : MonoBehaviour
 			isSlowed = false;
 			isPoisoned = false;
 		}
+		
 	}
 
 	/// <summary>
