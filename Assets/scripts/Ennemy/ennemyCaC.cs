@@ -35,8 +35,9 @@ public class ennemyCaC : MonoBehaviour
 		scriptBase.isMoving = true;
 		navMeshAgent.isStopped = false;
 
-		navMeshAgent.SetDestination(scriptBase.player.transform.position);
-
+		Transform ennemyChoisi = scriptBase.getJoueurProche();
+		navMeshAgent.SetDestination(ennemyChoisi.position);
+		Debug.Log(ennemyChoisi);
 
 		//Déplace le personnage et lui inflige des dégats s'il est empoisonés. Ne s'arrête pas tant qu'il n'est pas à destination 
 		//ou que le timer arrive à 0.
@@ -61,12 +62,14 @@ public class ennemyCaC : MonoBehaviour
 
 
 		//S'il est assez proche, il va attaquer le joueur
+		
+
 		float timerAttack = 0f;
-		if (Vector3.Distance(scriptBase.player.transform.position, transform.position) <= 3)
+		if (Vector3.Distance(ennemyChoisi.position, transform.position) <= 3)
 		{
 			navMeshAgent.isStopped = true;
 			navMeshAgent.ResetPath();
-			transform.LookAt(scriptBase.player.transform.position);
+			transform.LookAt(ennemyChoisi.position);
 			animationEnnemy.SetBool("Running", false);
 			GameManager.singleton.StartAttack(0); //Il s'agit d'un ennemi, il ne consomme pas de temps. Ne fait que s'assurer que le timer ne cause pas
 												  //de bug
@@ -78,14 +81,14 @@ public class ennemyCaC : MonoBehaviour
 
 			audioSource.PlayOneShot(audioAttack);
 			animationEnnemy.SetTrigger("Attack");
-			scriptBase.player.GetComponent<Animator>().SetTrigger("Hurt");
+			ennemyChoisi.GetComponent<Animator>().SetTrigger("Hurt");
 			while (timerAttack < 3f)
 			{
 
 				timerAttack += Time.deltaTime;
 				yield return null;
 			}
-			scriptBase.player.GetComponent<JoueurMain>().damage(10);
+			ennemyChoisi.GetComponent<JoueurMain>().damage(10);
 
 			GameManager.singleton.FinishAttack();
 

@@ -7,6 +7,8 @@ public class JoueurMain : MonoBehaviour
 {
 
     Camera mainCam;
+
+    [HideInInspector]
     public Ray camRay;
 
     [HideInInspector]
@@ -18,12 +20,18 @@ public class JoueurMain : MonoBehaviour
     [HideInInspector]
     public float timerPoison = 0;
 
-    int vie = 30;
+    [HideInInspector]
+    public int vie = 30;
+
+    [HideInInspector]
+    public bool isThisPlayersTurn = false;
+
+    
     public int vieMax = 30;
 
     public AudioSource audioSource;
 
-    [HideInInspector]
+    
     public AudioClip audioDamage;
 
     [HideInInspector]
@@ -44,7 +52,7 @@ public class JoueurMain : MonoBehaviour
     void Start()
     {
         mainCam = Camera.main;
-        UI_Manager.singleton.changeVieText(vieMax, vie);
+        UI_Manager.singleton.changeVieText();
 
     }
 
@@ -63,6 +71,7 @@ public class JoueurMain : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
+        Debug.Log(isThisPlayersTurn);
         camRay = mainCam.ScreenPointToRay(Input.mousePosition);
 
 
@@ -77,13 +86,41 @@ public class JoueurMain : MonoBehaviour
     {
         vie -= damage;
 
-        UI_Manager.singleton.changeVieText(vieMax, vie);
+        UI_Manager.singleton.changeVieText();
         audioSource.PlayOneShot(audioDamage);
 
         if (vie <= 0)
         {
-            Scene scene = SceneManager.GetActiveScene();
-            SceneManager.LoadScene(scene.name);
+            GameManager.singleton.killJoueur(transform);
+            //Afin d'éviter des bugs
+            StopAllCoroutines();
+
+            //Audio de la mort
+            audioSource.Stop();
+            audioSource.PlayOneShot(audioMortEnnemy);
+
+            //Désactive tout
+            animationEnnemy.enabled = false;
+            navMeshAgent.enabled = false;
+            ennemyCollider.enabled = false;
+            GameManager.singleton.killEnnemy(transform);
+
+            //Active le ragdoll
+            foreach (Collider rbcollider in ragdollColliders)
+            {
+                rbcollider.enabled = true;
+            }
+
+            foreach (Rigidbody rb in ragdollRBs)
+            {
+                rb.isKinematic = false;
+            }
+
+            //Continue à désactiver
+            sliderVie.SetActive(false);
+            this.enabled = false;
+            // Scene scene = SceneManager.GetActiveScene();
+            // SceneManager.LoadScene(scene.name);
         }
     }
 

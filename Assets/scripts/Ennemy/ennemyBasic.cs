@@ -30,7 +30,7 @@ public class ennemyBasic : MonoBehaviour
 	
 	public AudioClip audioMortEnnemy;
 
-
+	
 	public Collider ennemyCollider;
 	
 	Rigidbody[] ragdollRBs;
@@ -58,16 +58,23 @@ public class ennemyBasic : MonoBehaviour
 		health = maxHealth;
 	}
 
-	
-	
 
-	
+    private void Update()
+    {
+        if (isThisEnnemyTurn)
+        {
+			//S'assure que la caméra suit le personnage
+			GameManager.singleton.cameraPosition.position = transform.position;
+		}
+    }
 
-	/// <summary>
-	/// Inflige des dégats à l'ennemi et le tue s'il se retrouve à 0
-	/// </summary>
-	/// <param name="damage">Les dégats à infliger</param>
-	public void dealDamage(int damage)
+
+
+    /// <summary>
+    /// Inflige des dégats à l'ennemi et le tue s'il se retrouve à 0
+    /// </summary>
+    /// <param name="damage">Les dégats à infliger</param>
+    public void dealDamage(int damage)
 	{
 		health -= damage;
 		sliderVie.GetComponent<Slider>().value = (float)health / (float)maxHealth * 100f;
@@ -151,8 +158,31 @@ public class ennemyBasic : MonoBehaviour
 	public void heal(int healAmount)
     {
 		health += healAmount;
+		if(health > maxHealth)
+        {
+			health = maxHealth;
+        }
+
 		sliderVie.GetComponent<Slider>().value = (float)health / (float)maxHealth * 100f;
 	}
+
+	public Transform getJoueurProche()
+    {
+
+		Transform joueurChoisi = GameManager.singleton.listeJoueurs[0];
+		float distance = Mathf.Abs(Vector3.Distance(transform.position, joueurChoisi.position));
+
+        for (int i = 0; i < GameManager.singleton.listeJoueurs.Count; i++)
+        {
+			if (Mathf.Abs(Vector3.Distance(transform.position, GameManager.singleton.listeJoueurs[i].position)) < distance)
+            {
+				joueurChoisi = GameManager.singleton.listeJoueurs[i];
+				distance = Mathf.Abs(Vector3.Distance(transform.position, joueurChoisi.position));
+
+			}
+        }
+		return joueurChoisi;
+    }
 
 }
 

@@ -43,13 +43,16 @@ public class ennemyArcher : MonoBehaviour
 
 		//Déplace le personnage et lui inflige des dégats s'il est empoisonés. Ne s'arrête pas tant qu'il n'est pas à destination 
 		//ou que le timer arrive à 0.
-		Vector3 toPlayer = scriptBase.player.transform.position - transform.position;
+
+		Transform ennemyChoisi = scriptBase.getJoueurProche();
+		Debug.Log(ennemyChoisi);
+		Vector3 toPlayer = ennemyChoisi.position - transform.position;
 		Vector3 targetPosition = toPlayer.normalized * -10f;
 		//Vector3 vecteurRandom = new Vector3(Random.Range(-50, 50), 0, Random.Range(-50, 50));
 		navMeshAgent.SetDestination(transform.position + targetPosition);
 		
 
-		while ((navMeshAgent.pathPending || Vector3.Distance(scriptBase.player.transform.position, transform.position) < 15f) && GameManager.singleton.getTimerEnnemy() > 0.2f)
+		while ((navMeshAgent.pathPending || Vector3.Distance(ennemyChoisi.position, transform.position) < 15f) && GameManager.singleton.getTimerEnnemy() > 0.2f)
 		{
 			
 
@@ -68,18 +71,17 @@ public class ennemyArcher : MonoBehaviour
 		}
 
 
-
 		//S'il est assez proche, il va attaquer le joueur
 		float timerAttack = 0f;
-		if (Vector3.Distance(scriptBase.player.transform.position, transform.position) < 20f)
+		if (Vector3.Distance(ennemyChoisi.position, transform.position) < 20f)
 		{
 			navMeshAgent.SetDestination(transform.position);
 			navMeshAgent.isStopped = true;
 			
-			transform.LookAt(scriptBase.player.transform.position);
-			fireballPosition.LookAt(scriptBase.player.transform.position);
+			transform.LookAt(ennemyChoisi.position);
+			fireballPosition.LookAt(ennemyChoisi.position);
 			//Marche pas, il le fait pas en y
-			Debug.Log(scriptBase.player.transform.position);
+			
 			animationEnnemy.SetBool("Running", false);
 			GameManager.singleton.StartAttack(0); //Il s'agit d'un ennemi, il ne consomme pas de temps. Ne fait que s'assurer que le timer ne cause pas
 												  //de bug

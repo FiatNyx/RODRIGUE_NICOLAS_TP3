@@ -18,8 +18,14 @@ public class GameManager : MonoBehaviour
 	float tempsTourEnnemy = 3f;
 
 	public List<Transform> listeEnnemis = new List<Transform>();
+	public List<Transform> listeJoueurs = new List<Transform>();
+
 	public GameObject conteneurEnnemi;
+	public GameObject conteneurJoueurs;
 	int indexEnnemy = 0;
+	int indexJoueur = 1;
+
+	public Transform cameraPosition;
 
 	/// <summary>
 	/// Initialise le singleton s'il n'y en a pas déjà un.
@@ -44,6 +50,11 @@ public class GameManager : MonoBehaviour
 		timerJoueur = tempsTourJoueur;
 		foreach (Transform child in conteneurEnnemi.transform)
 			listeEnnemis.Add(child);
+
+		foreach (Transform child in conteneurJoueurs.transform)
+			listeJoueurs.Add(child);
+
+		listeJoueurs[0].GetComponent<JoueurMain>().isThisPlayersTurn = true;
 	}
 
 	/// <summary>
@@ -55,10 +66,35 @@ public class GameManager : MonoBehaviour
 		//Tour joueur vers tour ennemi
 		if(isPlayerTurn == true)
 		{
-			isPlayerTurn = false;
-			UI_Manager.singleton.changeTurnText(false);
-			timerEnnemy = tempsTourEnnemy;
-			isTimerStopped = false;
+			if (indexJoueur > 0)
+            {
+				if (listeEnnemis[indexJoueur - 1] != null)
+                {
+					listeJoueurs[indexJoueur - 1].GetComponent<JoueurMain>().isThisPlayersTurn = false;
+				}
+
+			}
+
+			//S'il s'agissait du tour du dernier ennemi, change pour le tour du joueur
+			if (indexJoueur >= listeJoueurs.Count)
+			{
+				
+				isPlayerTurn = false;
+				UI_Manager.singleton.changeTurnText(false);
+				timerEnnemy = tempsTourEnnemy;
+				isTimerStopped = false;
+				indexJoueur = 0;
+			}
+			else
+			{
+				//Change l'ennemi actif.
+				timerJoueur = tempsTourJoueur;
+
+
+				listeJoueurs[indexJoueur].GetComponent<JoueurMain>().isThisPlayersTurn = true;
+				indexJoueur += 1;
+			}
+
 		}
 		
 		//Tour ennemi vers autre ennemi ou joueur
@@ -187,6 +223,23 @@ public class GameManager : MonoBehaviour
 	}
 
 	/// <summary>
+	/// Enlève un ennemi de la liste s'il est tué. Attend le tour du joueur s'il est tué durant le tour des ennemis.
+	/// </summary>
+	/// <param name="ennemy"></param>
+	public void killJoueur(Transform joueur)
+	{
+		if (isPlayerTurn == false)
+		{
+			listeJoueurs.Remove(joueur);
+		}
+		else
+		{
+			StartCoroutine(WaitForPlayerTurn(joueur));
+		}
+
+	}
+
+	/// <summary>
 	/// Attend que ce soit au tour du joueur avant de supprimer l'ennemi de la liste
 	/// </summary>
 	/// <param name="ennemy">L'ennemi à supprimer</param>
@@ -199,6 +252,22 @@ public class GameManager : MonoBehaviour
 		}
 
 		listeEnnemis.Remove(ennemy);
+
+	}
+
+	/// <summary>
+	/// Attend que ce soit au tour du joueur avant de supprimer l'ennemi de la liste
+	/// </summary>
+	/// <param name="ennemy">L'ennemi à supprimer</param>
+	/// <returns></returns>
+	IEnumerator WaitForEnnemyTurn(Transform joueur)
+	{
+		while (isPlayerTurn == true)
+		{
+			yield return null;
+		}
+
+		listeJoueurs.Remove(joueur);
 
 	}
 }

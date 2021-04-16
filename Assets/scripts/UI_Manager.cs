@@ -58,9 +58,17 @@ public class UI_Manager : MonoBehaviour
 	/// </summary>
 	/// <param name="vieMax">La vie maximale du personnage</param>
 	/// <param name="vie">La vie actuelle du personnage</param>
-	public void changeVieText(int vieMax, int vie)
+	public void changeVieText()
 	{
-		textVie.text = "Vie : " + vie.ToString() + "/" + vieMax.ToString();
+		string stringVie = "";
+
+		
+        foreach (var joueur in GameManager.singleton.listeJoueurs)
+        {
+			JoueurMain joueurScript = joueur.GetComponent<JoueurMain>();
+			stringVie += joueur.name + " vie :  " + joueurScript.vie.ToString() + "/" + joueurScript.vieMax.ToString() + "\n";
+		}
+		textVie.text = stringVie;
 	}
 
 	/// <summary>

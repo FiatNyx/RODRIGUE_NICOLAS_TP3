@@ -27,7 +27,7 @@ public class Joueur1 : MonoBehaviour
     void Update()
     {
 
-		if (GameManager.singleton.getPlayerTurn() && joueurMain.isAttacking == false)
+		if (joueurMain.isThisPlayersTurn && joueurMain.isAttacking == false)
         {
 
 			joueurAttaques.AttaqueUpdate();

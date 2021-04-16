@@ -6,7 +6,6 @@ public class JoueurMovement : MonoBehaviour
 {
 
 
-    public Transform cameraPosition;
 
     JoueurMain joueurMain;
 	Vector3 moveDirection;
@@ -29,10 +28,11 @@ public class JoueurMovement : MonoBehaviour
     void Update()
 	{
 
-		//S'assure que la caméra suit le personnage
-		cameraPosition.position = transform.position;
+		
 
-		if (GameManager.singleton.getPlayerTurn() && joueurMain.isAttacking == false) {
+		if (joueurMain.isThisPlayersTurn && joueurMain.isAttacking == false) {
+			//S'assure que la caméra suit le personnage
+			GameManager.singleton.cameraPosition.position = transform.position;
 
 			RaycastHit hit;
 			if (Physics.Raycast(joueurMain.camRay, out hit))
@@ -75,20 +75,20 @@ public class JoueurMovement : MonoBehaviour
 				}
 
 
-				moveDirection = cameraPosition.forward * inputVertical + cameraPosition.right * inputHorizontal;
+				moveDirection = GameManager.singleton.cameraPosition.forward * inputVertical + GameManager.singleton.cameraPosition.right * inputHorizontal;
 
 
             }
             else
             {
 				moveDirection = Vector3.zero;
-				joueurMain.animationJoueur.SetBool("Idle", true);
+				//joueurMain.animationJoueur.SetBool("Idle", true);
 			}
 		}
         else
         {
 			moveDirection = Vector3.zero;
-			joueurMain.animationJoueur.SetBool("Idle", true);
+			//joueurMain.animationJoueur.SetBool("Idle", true);
 
 			if (Input.GetMouseButton(2))
 			{
@@ -124,13 +124,13 @@ public class JoueurMovement : MonoBehaviour
 	/// </summary>
 	void RotateCamera()
 	{
-		Vector3 rotCamera = cameraPosition.rotation.eulerAngles;
+		Vector3 rotCamera = GameManager.singleton.cameraPosition.rotation.eulerAngles;
 
 
 		rotCamera.y += Input.GetAxis("Mouse X") * 10;
 
 
-		cameraPosition.rotation = Quaternion.Euler(rotCamera);
+        GameManager.singleton.cameraPosition.rotation = Quaternion.Euler(rotCamera);
 	}
 
 }
