@@ -17,7 +17,7 @@ public class GameManager : MonoBehaviour
 	float timerEnnemy = 0f;
 	float tempsTourEnnemy = 3f;
 
-	List<Transform> listeEnnemis = new List<Transform>();
+	public List<Transform> listeEnnemis = new List<Transform>();
 	public GameObject conteneurEnnemi;
 	int indexEnnemy = 0;
 
