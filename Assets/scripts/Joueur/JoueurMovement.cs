@@ -67,6 +67,7 @@ public class JoueurMovement : MonoBehaviour
 				{
 					joueurMain.timerPoison += Time.deltaTime;
 
+					print(joueurMain.timerPoison);
 					if (joueurMain.timerPoison > 0.5)
 					{
 						joueurMain.damage(3);

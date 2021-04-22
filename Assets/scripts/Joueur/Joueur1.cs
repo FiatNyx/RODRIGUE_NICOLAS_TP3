@@ -55,7 +55,7 @@ public class Joueur1 : MonoBehaviour
 						{
 							GameManager.singleton.StartAttack(4);
 							GameObject cercleLent = Instantiate(cercleLentPrefab, hit.point, transform.rotation);
-
+							joueurAttaques.resetAttackSelected();
 							GameManager.singleton.FinishAttack();
 						}
 					}

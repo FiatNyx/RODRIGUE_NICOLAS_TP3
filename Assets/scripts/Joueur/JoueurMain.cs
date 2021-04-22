@@ -45,7 +45,10 @@ public class JoueurMain : MonoBehaviour
 
     [HideInInspector]
     public Animator animationJoueur;
+    Rigidbody[] ragdollRBs;
+    Collider[] ragdollColliders;
 
+    public Collider joueurCollider;
     /// <summary>
 	/// Initialisation de la variable de caméra et changement du texte de vie dans l'UI pour la vie du personnage
 	/// </summary>
@@ -53,6 +56,8 @@ public class JoueurMain : MonoBehaviour
     {
         mainCam = Camera.main;
         UI_Manager.singleton.changeVieText();
+        ragdollRBs = GetComponentsInChildren<Rigidbody>();
+        ragdollColliders = GetComponentsInChildren<Collider>();
 
     }
 
@@ -91,19 +96,25 @@ public class JoueurMain : MonoBehaviour
 
         if (vie <= 0)
         {
-            GameManager.singleton.killJoueur(transform);
+            
             //Afin d'éviter des bugs
             StopAllCoroutines();
 
+           
+        
+            // Scene scene = SceneManager.GetActiveScene();
+            // SceneManager.LoadScene(scene.name);
+
+
             //Audio de la mort
             audioSource.Stop();
-            audioSource.PlayOneShot(audioMortEnnemy);
+            // audioSource.PlayOneShot(audioMortEnnemy);
 
             //Désactive tout
-            animationEnnemy.enabled = false;
-            navMeshAgent.enabled = false;
-            ennemyCollider.enabled = false;
-            GameManager.singleton.killEnnemy(transform);
+            animationJoueur.enabled = false;
+            
+            joueurCollider.enabled = false;
+            GameManager.singleton.killJoueur(transform);
 
             //Active le ragdoll
             foreach (Collider rbcollider in ragdollColliders)
@@ -117,10 +128,7 @@ public class JoueurMain : MonoBehaviour
             }
 
             //Continue à désactiver
-            sliderVie.SetActive(false);
             this.enabled = false;
-            // Scene scene = SceneManager.GetActiveScene();
-            // SceneManager.LoadScene(scene.name);
         }
     }
 

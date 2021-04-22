@@ -2644,6 +2644,7 @@ GameObject:
   - component: {fileID: 7230312775092484159}
   - component: {fileID: 7230312775092484158}
   - component: {fileID: 7230312775092484157}
+  - component: {fileID: 5582078992047996263}
   m_Layer: 2
   m_Name: VieCanvas
   m_TagString: Untagged
@@ -2731,6 +2732,18 @@ MonoBehaviour:
   m_BlockingMask:
     serializedVersion: 2
     m_Bits: 4294967295
+--- !u!114 &5582078992047996263
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7230312775092484155}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: ecee44546d55449c595afa90bebcbf80, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &7331866490302465255
 GameObject:
   m_ObjectHideFlags: 0
