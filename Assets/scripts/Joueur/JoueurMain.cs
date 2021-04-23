@@ -49,6 +49,10 @@ public class JoueurMain : MonoBehaviour
     Collider[] ragdollColliders;
 
     public Collider joueurCollider;
+
+    public bool isDead = false;
+
+    JoueurAttaques joueurAttaques;
     /// <summary>
 	/// Initialisation de la variable de caméra et changement du texte de vie dans l'UI pour la vie du personnage
 	/// </summary>
@@ -58,7 +62,7 @@ public class JoueurMain : MonoBehaviour
         UI_Manager.singleton.changeVieText();
         ragdollRBs = GetComponentsInChildren<Rigidbody>();
         ragdollColliders = GetComponentsInChildren<Collider>();
-
+        joueurAttaques = GetComponent<JoueurAttaques>();
     }
 
     /// <summary>
@@ -76,8 +80,11 @@ public class JoueurMain : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        Debug.Log(isThisPlayersTurn);
-        camRay = mainCam.ScreenPointToRay(Input.mousePosition);
+        if(isDead == false)
+        {
+            camRay = mainCam.ScreenPointToRay(Input.mousePosition);
+        }
+        
 
 
 
@@ -100,11 +107,12 @@ public class JoueurMain : MonoBehaviour
             //Afin d'éviter des bugs
             StopAllCoroutines();
 
-           
-        
+
+
             // Scene scene = SceneManager.GetActiveScene();
             // SceneManager.LoadScene(scene.name);
 
+            joueurAttaques.resetAttackSelected();
 
             //Audio de la mort
             audioSource.Stop();
@@ -128,7 +136,7 @@ public class JoueurMain : MonoBehaviour
             }
 
             //Continue à désactiver
-            this.enabled = false;
+            isDead = true;
         }
     }
 
@@ -138,16 +146,20 @@ public class JoueurMain : MonoBehaviour
 	/// <param name="other"></param>
 	private void OnTriggerEnter(Collider other)
     {
-        if (other.tag == "LentPoison")
+        if(isDead == false)
         {
-            isSlowed = true;
-            isPoisoned = true;
+            if (other.tag == "LentPoison")
+            {
+                isSlowed = true;
+                isPoisoned = true;
+            }
+            if (other.tag == "attaqueEnnemy")
+            {
+                damage(other.GetComponent<Attaque>().damage);
+                animationJoueur.SetTrigger("Hurt");
+            }
         }
-        if (other.tag == "attaqueEnnemy")
-        {
-            damage(other.GetComponent<Attaque>().damage);
-            animationJoueur.SetTrigger("Hurt");
-        }
+        
     }
 
     /// <summary>
@@ -156,12 +168,13 @@ public class JoueurMain : MonoBehaviour
     /// <param name="other"></param>
     private void OnTriggerExit(Collider other)
     {
-        if (other.tag == "LentPoison")
+        if(isDead == false)
         {
-            isSlowed = false;
-            isPoisoned = false;
+            if (other.tag == "LentPoison")
+            {
+                isSlowed = false;
+                isPoisoned = false;
+            }
         }
-
     }
-
 }

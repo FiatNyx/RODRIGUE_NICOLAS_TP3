@@ -27,75 +27,77 @@ public class JoueurMovement : MonoBehaviour
     // Update is called once per frame
     void Update()
 	{
+		if(joueurMain.isDead == false)
+        {
+			if (joueurMain.isThisPlayersTurn && joueurMain.isAttacking == false) {
+				//S'assure que la caméra suit le personnage
+				GameManager.singleton.cameraPosition.position = transform.position;
 
-		
-
-		if (joueurMain.isThisPlayersTurn && joueurMain.isAttacking == false) {
-			//S'assure que la caméra suit le personnage
-			GameManager.singleton.cameraPosition.position = transform.position;
-
-			RaycastHit hit;
-			if (Physics.Raycast(joueurMain.camRay, out hit))
-			{
-
-				Vector3 lookDirection = hit.point;
-				lookDirection.y = transform.position.y;
-
-				Vector3 relativePos = lookDirection - transform.position;
-
-
-				Quaternion rotation = Quaternion.LookRotation(relativePos, Vector3.up);
-				transform.rotation = rotation;
-			}
-
-			//Tourne la caméra. Ne peut pas rien tourner le personnage en même temps de tourner la caméra.
-			if (Input.GetMouseButton(2))
-			{
-				RotateCamera();
-			}
-
-			//Déplacement du personnage
-			if (joueurMain.moveSelected == 0)
-			{
-				float inputVertical = Input.GetAxis("Vertical");
-
-				float inputHorizontal = Input.GetAxis("Horizontal");
-
-
-
-				if (joueurMain.isPoisoned && (Mathf.Abs(inputHorizontal) > 0 || Mathf.Abs(inputVertical) > 0))
+				RaycastHit hit;
+				if (Physics.Raycast(joueurMain.camRay, out hit))
 				{
-					joueurMain.timerPoison += Time.deltaTime;
 
-					print(joueurMain.timerPoison);
-					if (joueurMain.timerPoison > 0.5)
-					{
-						joueurMain.damage(3);
-						joueurMain.timerPoison = 0;
-					}
+					Vector3 lookDirection = hit.point;
+					lookDirection.y = transform.position.y;
+
+					Vector3 relativePos = lookDirection - transform.position;
+
+
+					Quaternion rotation = Quaternion.LookRotation(relativePos, Vector3.up);
+					transform.rotation = rotation;
 				}
 
+				//Tourne la caméra. Ne peut pas rien tourner le personnage en même temps de tourner la caméra.
+				if (Input.GetMouseButton(2))
+				{
+					RotateCamera();
+				}
 
-				moveDirection = GameManager.singleton.cameraPosition.forward * inputVertical + GameManager.singleton.cameraPosition.right * inputHorizontal;
+				//Déplacement du personnage
+				if (joueurMain.moveSelected == 0)
+				{
+					float inputVertical = Input.GetAxis("Vertical");
+
+					float inputHorizontal = Input.GetAxis("Horizontal");
 
 
-            }
-            else
-            {
+
+					if (joueurMain.isPoisoned && (Mathf.Abs(inputHorizontal) > 0 || Mathf.Abs(inputVertical) > 0))
+					{
+						joueurMain.timerPoison += Time.deltaTime;
+
+						print(joueurMain.timerPoison);
+						if (joueurMain.timerPoison > 0.5)
+						{
+							joueurMain.damage(3);
+							joueurMain.timerPoison = 0;
+						}
+					}
+
+
+					moveDirection = GameManager.singleton.cameraPosition.forward * inputVertical + GameManager.singleton.cameraPosition.right * inputHorizontal;
+
+
+				}
+				else
+				{
+					moveDirection = Vector3.zero;
+					//joueurMain.animationJoueur.SetBool("Idle", true);
+				}
+			}
+			else
+			{
 				moveDirection = Vector3.zero;
 				//joueurMain.animationJoueur.SetBool("Idle", true);
-			}
-		}
-        else
-        {
-			moveDirection = Vector3.zero;
-			//joueurMain.animationJoueur.SetBool("Idle", true);
 
-			if (Input.GetMouseButton(2))
-			{
-				RotateCamera();
+				if (Input.GetMouseButton(2))
+				{
+					RotateCamera();
+				}
 			}
+
 		}
+
 	}
 
 	/// <summary>
@@ -103,20 +105,24 @@ public class JoueurMovement : MonoBehaviour
 	/// </summary>
 	private void FixedUpdate()
 	{
-		float speed = 5f;
-		if (joueurMain.isSlowed)
-		{
-			speed /= 2f;
+		if(joueurMain.isDead == false)
+        {
+			float speed = 5f;
+			if (joueurMain.isSlowed)
+			{
+				speed /= 2f;
+			}
+
+			rb.MovePosition(rb.position + moveDirection.normalized * speed * Time.fixedDeltaTime);
+
+
+			moveDirection = moveDirection.normalized;
+			Vector3 animDir = transform.InverseTransformDirection(moveDirection);
+
+			joueurMain.animationJoueur.SetFloat("horizontal", animDir.x);
+			joueurMain.animationJoueur.SetFloat("vertical", animDir.z);
 		}
-
-		rb.MovePosition(rb.position + moveDirection.normalized * speed * Time.fixedDeltaTime);
-
-
-		moveDirection = moveDirection.normalized;
-		Vector3 animDir = transform.InverseTransformDirection(moveDirection);
-
-		joueurMain.animationJoueur.SetFloat("horizontal", animDir.x);
-		joueurMain.animationJoueur.SetFloat("vertical", animDir.z);
+		
 
 	}
 

@@ -10,7 +10,7 @@ public class UI_Manager : MonoBehaviour
 	public Text textVie;
 	public List<RawImage> uiAttaques;
 	public List<RawImage> listeSelectedUI;
-	
+	public List<Transform> listeJoueurs;
 
 	/// <summary>
 	/// Assignation du singleton s'il n'en a pas déjà un.
@@ -23,15 +23,17 @@ public class UI_Manager : MonoBehaviour
             return;
         }
 		singleton = this;
+
+		listeJoueurs = new List<Transform>();
     }
 
+  
 
-
-	/// <summary>
-	/// Reçoit le temps restant et l'affiche dans l'UI
-	/// </summary>
-	/// <param name="timeRemaining">Le temps restant au tour actuel.</param>
-	public void UpdateTimer(float timeRemaining)
+    /// <summary>
+    /// Reçoit le temps restant et l'affiche dans l'UI
+    /// </summary>
+    /// <param name="timeRemaining">Le temps restant au tour actuel.</param>
+    public void UpdateTimer(float timeRemaining)
     {
         timeRemaining = Mathf.Round(timeRemaining * 10f) / 10f;
         textTimer.text = timeRemaining.ToString();
@@ -63,7 +65,7 @@ public class UI_Manager : MonoBehaviour
 		string stringVie = "";
 
 		
-        foreach (var joueur in GameManager.singleton.listeJoueurs)
+        foreach (var joueur in listeJoueurs)
         {
 			JoueurMain joueurScript = joueur.GetComponent<JoueurMain>();
 			stringVie += joueur.name + " vie :  " + joueurScript.vie.ToString() + "/" + joueurScript.vieMax.ToString() + "\n";

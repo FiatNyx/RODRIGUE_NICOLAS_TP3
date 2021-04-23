@@ -35,7 +35,7 @@ public class ennemyBasic : MonoBehaviour
 	
 	Rigidbody[] ragdollRBs;
 	Collider[] ragdollColliders;
-
+	public bool isDead = false;
 	/// <summary>
 	/// On stock les components dans des variables
 	/// </summary>
@@ -111,7 +111,7 @@ public class ennemyBasic : MonoBehaviour
 
 			//Continue à désactiver
 			sliderVie.SetActive(false);
-			this.enabled = false;
+			isDead = true;
 
 		}
 	}
@@ -122,18 +122,22 @@ public class ennemyBasic : MonoBehaviour
 	/// <param name="other"></param>
 	private void OnTriggerEnter(Collider other)
 	{
-		//Ajoute le poison
-		if (other.tag == "LentPoison")
-		{
-			navMeshAgent.speed = speed / 2;
-			isPoisoned += 1;
-		}
+		if(isDead == false)
+        {
+			//Ajoute le poison
+			if (other.tag == "LentPoison")
+			{
+				navMeshAgent.speed = speed / 2;
+				isPoisoned += 1;
+			}
 
-		//Inflige les dégats
-		if(other.tag == "attaqueJoueur")
-		{
-			dealDamage(other.GetComponent<Attaque>().damage);
+			//Inflige les dégats
+			if (other.tag == "attaqueJoueur")
+			{
+				dealDamage(other.GetComponent<Attaque>().damage);
+			}
 		}
+		
 	}
 
 	/// <summary>
@@ -142,12 +146,16 @@ public class ennemyBasic : MonoBehaviour
 	/// <param name="other">Le trigger</param>
 	private void OnTriggerExit(Collider other)
 	{
-		//Enlève le poison s'il sort d'une zone de poison. Remet la vitesse à la vitesse normale
-		if (other.tag == "LentPoison")
-		{
-			navMeshAgent.speed = speed;
-			isPoisoned -= 1;
+		if(isDead == false)
+        {
+			//Enlève le poison s'il sort d'une zone de poison. Remet la vitesse à la vitesse normale
+			if (other.tag == "LentPoison")
+			{
+				navMeshAgent.speed = speed;
+				isPoisoned -= 1;
+			}
 		}
+		
 	}
 
 	public int getVie()
@@ -157,13 +165,17 @@ public class ennemyBasic : MonoBehaviour
 
 	public void heal(int healAmount)
     {
-		health += healAmount;
-		if(health > maxHealth)
+		if(isDead == false)
         {
-			health = maxHealth;
-        }
+			health += healAmount;
+			if (health > maxHealth)
+			{
+				health = maxHealth;
+			}
 
-		sliderVie.GetComponent<Slider>().value = (float)health / (float)maxHealth * 100f;
+			sliderVie.GetComponent<Slider>().value = (float)health / (float)maxHealth * 100f;
+		}
+		
 	}
 
 	public Transform getJoueurProche()

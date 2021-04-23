@@ -11,16 +11,24 @@ public class JoueurAttaques : MonoBehaviour
     public GameObject marqueur3;
     public GameObject marqueur4;
 
-
+	GameObject[] listeMarqueurs;
 
 	// Start is called before the first frame update
 	void Start()
     {
         joueurMain = GetComponent<JoueurMain>();
+		listeMarqueurs = new GameObject[4];
+		listeMarqueurs[0] = marqueur1;
+		listeMarqueurs[1] = marqueur2;
+		listeMarqueurs[2] = marqueur3;
+		listeMarqueurs[3] = marqueur4;
     }
 
-    // Update is called once per frame
-    public void AttaqueUpdate()
+	/// <summary>
+	/// Ce qui gère les marqueurs d'attaques et la sélection d'attaque
+	/// </summary>
+	/// <param name="attaques">Les types des attaques 1 (0 = ligne droite, 1 = zone ciblée avec la souris)</param>
+	public void AttaqueUpdate(int[] attaques)
     {
 
        
@@ -39,7 +47,6 @@ public class JoueurAttaques : MonoBehaviour
 		{
 			effacerMarqueurs();
 			marqueur1.SetActive(true);
-			marqueur1.transform.position = transform.position;
 			joueurMain.moveSelected = 1;
 			UI_Manager.singleton.changeSelectedMove(1);
 
@@ -47,16 +54,7 @@ public class JoueurAttaques : MonoBehaviour
 		else if (Input.GetKeyDown(KeyCode.Alpha2))
 		{
 			effacerMarqueurs();
-	
-
-
-			RaycastHit hit;
-			if (Physics.Raycast(joueurMain.camRay, out hit))
-			{
-				marqueur2.SetActive(true);
-				marqueur2.transform.position = hit.point;
-
-			}
+			marqueur2.SetActive(true);
 			joueurMain.moveSelected = 2;
 			UI_Manager.singleton.changeSelectedMove(2);
 		}
@@ -64,7 +62,6 @@ public class JoueurAttaques : MonoBehaviour
 		{
 			effacerMarqueurs();
 			marqueur3.SetActive(true);
-			marqueur3.transform.position = transform.position;
 			joueurMain.moveSelected = 3;
 			UI_Manager.singleton.changeSelectedMove(3);
 
@@ -72,17 +69,7 @@ public class JoueurAttaques : MonoBehaviour
 		else if (Input.GetKeyDown(KeyCode.Alpha4))
 		{
 			effacerMarqueurs();
-			
-
-
-			RaycastHit hit;
-			if (Physics.Raycast(joueurMain.camRay, out hit))
-			{
-				marqueur4.SetActive(true);
-				marqueur4.transform.position = hit.point;
-
-			}
-
+			marqueur4.SetActive(true);
 			joueurMain.moveSelected = 4;
 			UI_Manager.singleton.changeSelectedMove(4);
 
@@ -94,18 +81,17 @@ public class JoueurAttaques : MonoBehaviour
 			RaycastHit hit;
 			if (Physics.Raycast(joueurMain.camRay, out hit))
 			{
-				//S'occupe de la rotation de tous les marqueurs. Ainsi que leur position
-				joueurMain.projectileStartPoint.LookAt(hit.point);
-				marqueur1.transform.LookAt(hit.point);
-				marqueur3.transform.LookAt(hit.point);
-				if (joueurMain.moveSelected == 2)
+				if (attaques[joueurMain.moveSelected - 1] == 0)
 				{
-					marqueur2.transform.position = hit.point;
+					listeMarqueurs[joueurMain.moveSelected - 1].transform.position = transform.position;
+					joueurMain.projectileStartPoint.LookAt(hit.point);
+					listeMarqueurs[joueurMain.moveSelected - 1].transform.LookAt(hit.point);
 				}
-				else if (joueurMain.moveSelected == 4)
-				{
-					marqueur4.transform.position = hit.point;
-				}
+                else if(attaques[joueurMain.moveSelected - 1] == 1)
+                {
+					listeMarqueurs[joueurMain.moveSelected - 1].transform.position = hit.point;
+                }
+			
 			}
 		}
 
@@ -114,6 +100,7 @@ public class JoueurAttaques : MonoBehaviour
 
 
     }
+
 
 
 

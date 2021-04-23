@@ -52,26 +52,37 @@ public class GameManager : MonoBehaviour
     {
 		timerJoueur = tempsTourJoueur;
 		foreach (Transform child in conteneurEnnemi.transform)
+        {
 			listeEnnemis.Add(child);
-
+		}
+			
 		foreach (Transform child in conteneurJoueurs.transform)
+        {
 			listeJoueurs.Add(child);
+			UI_Manager.singleton.listeJoueurs.Add(child);
+		}
+			
 
+		
 		listeJoueurs[0].GetComponent<JoueurMain>().isThisPlayersTurn = true;
+		UI_Manager.singleton.changeVieText();
 	}
+
+	
 
 	/// <summary>
 	/// Change à qui appartient le tour. S'il s'agit du tour ennemi, 
 	/// prend le tour de tous les ennemis avant de changer vers le tour du joueur.
 	/// </summary>
-    public void changeTurn()
+	public void changeTurn()
 	{
 		//Tour joueur vers tour ennemi
 		if(isPlayerTurn == true && timerChangeTurn <= 0)
 		{
+			print(listeJoueurs);
 			if (indexJoueur > 0)
             {
-				if (listeEnnemis[indexJoueur - 1] != null)
+				if (listeJoueurs[indexJoueur - 1] != null)
                 {
 					listeJoueurs[indexJoueur - 1].GetComponent<JoueurMain>().isThisPlayersTurn = false;
 				}
@@ -207,6 +218,11 @@ public class GameManager : MonoBehaviour
 		if (isPlayerTurn)
 		{
 			listeEnnemis.Remove(ennemy);
+			if (listeEnnemis.Count <= 0)
+			{
+				Scene scene = SceneManager.GetActiveScene();
+				SceneManager.LoadScene(scene.name);
+			}
 		}
 		else
 		{
@@ -250,16 +266,20 @@ public class GameManager : MonoBehaviour
 		}
 
 		listeEnnemis.Remove(ennemy);
-		
+		if (listeEnnemis.Count <= 0)
+		{
+			Scene scene = SceneManager.GetActiveScene();
+			SceneManager.LoadScene(scene.name);
+		}
+
 	}
 
 	IEnumerator LerpChangeTurn(Transform pointDepart, Transform pointFin)
     {
-		print("f");
-		print(timerChangeTurn);
+		
 		while(timerChangeTurn > 0)
         {
-			print(timerChangeTurn);
+		
 			cameraPosition.position = Vector3.Lerp(pointDepart.position, pointFin.position, 1 - timerChangeTurn / vitesseLerpChangeTurn);
 			timerChangeTurn -= Time.deltaTime;
 			yield return null;
@@ -276,12 +296,14 @@ public class GameManager : MonoBehaviour
 			{
 				timerChangeTurn = vitesseLerpChangeTurn;
 				StartCoroutine(LerpChangeTurn(listeJoueurs[listeJoueurs.Count - 1], listeEnnemis[0]));
+				yield return new WaitForSeconds(vitesseLerpChangeTurn);
 				isPlayerTurn = false;
 				UI_Manager.singleton.changeTurnText(false);
 				timerEnnemy = tempsTourEnnemy;
 				isTimerStopped = false;
 				indexJoueur = 0;
-				
+				indexEnnemy = 0;
+				changeTurn();
 			}
 			else
 			{
@@ -294,6 +316,7 @@ public class GameManager : MonoBehaviour
 				UI_Manager.singleton.changeTurnText(true);
 				isTimerStopped = false;
 				indexEnnemy = 0;
+				changeTurn();
 				
 			}
         }
@@ -301,7 +324,6 @@ public class GameManager : MonoBehaviour
         {
             if (isPlayerTurn)
             {
-				
 
 				if(indexJoueur - 1 >= 0)
                 {
