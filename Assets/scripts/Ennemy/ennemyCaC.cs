@@ -37,7 +37,7 @@ public class ennemyCaC : MonoBehaviour
 
 		Transform ennemyChoisi = scriptBase.getJoueurProche();
 		navMeshAgent.SetDestination(ennemyChoisi.position);
-		Debug.Log(ennemyChoisi);
+
 
 		//Déplace le personnage et lui inflige des dégats s'il est empoisonés. Ne s'arrête pas tant qu'il n'est pas à destination 
 		//ou que le timer arrive à 0.
@@ -50,9 +50,13 @@ public class ennemyCaC : MonoBehaviour
 			{
 				scriptBase.timerPoison += Time.deltaTime;
 
-				if (scriptBase.timerPoison > 0.8)
+				if (scriptBase.timerPoison > 0.5)
 				{
-					scriptBase.dealDamage(8);
+					scriptBase.dealDamage(scriptBase.puissancePoison);
+                    if (scriptBase.isDead)
+                    {
+						yield break;
+                    }
 					scriptBase.timerPoison = 0;
 				}
 			}
@@ -108,7 +112,7 @@ public class ennemyCaC : MonoBehaviour
 	/// </summary>
 	private void Update()
     {
-		if (scriptBase.isMoving == false && GameManager.singleton.getPlayerTurn() == false && scriptBase.isThisEnnemyTurn)
+		if (scriptBase.isMoving == false && GameManager.singleton.getPlayerTurn() == false && scriptBase.isThisEnnemyTurn && scriptBase.isDead == false)
 		{
 
 			StartCoroutine(Mouvement());

@@ -10,13 +10,14 @@ public class JoueurMovement : MonoBehaviour
     JoueurMain joueurMain;
 	Vector3 moveDirection;
 
-	
+	float animationSpeed;
 	Rigidbody rb;
 
 	// Start is called before the first frame update
 	void Start()
     {
         joueurMain = GetComponent<JoueurMain>();
+		animationSpeed = joueurMain.animationJoueur.speed;
     }
 
     private void Awake()
@@ -69,7 +70,7 @@ public class JoueurMovement : MonoBehaviour
 						print(joueurMain.timerPoison);
 						if (joueurMain.timerPoison > 0.5)
 						{
-							joueurMain.damage(3);
+							joueurMain.damage(joueurMain.puissancePoison);
 							joueurMain.timerPoison = 0;
 						}
 					}
@@ -108,9 +109,11 @@ public class JoueurMovement : MonoBehaviour
 		if(joueurMain.isDead == false)
         {
 			float speed = 5f;
+			joueurMain.animationJoueur.speed = animationSpeed;
 			if (joueurMain.isSlowed)
 			{
 				speed /= 2f;
+				joueurMain.animationJoueur.speed = animationSpeed / 2f;
 			}
 
 			rb.MovePosition(rb.position + moveDirection.normalized * speed * Time.fixedDeltaTime);

@@ -56,16 +56,17 @@ public class ennemyHealer : MonoBehaviour
 		//ou que le timer arrive à 0.
 		while (navMeshAgent.pathPending || (navMeshAgent.remainingDistance > 3f && GameManager.singleton.getTimerEnnemy() > 0.2f))
 		{
-			
-
-
 			if (scriptBase.isPoisoned > 0)
 			{
 				scriptBase.timerPoison += Time.deltaTime;
 
-				if (scriptBase.timerPoison > 0.8)
+				if (scriptBase.timerPoison > 0.5)
 				{
-					scriptBase.dealDamage(8);
+					scriptBase.dealDamage(scriptBase.puissancePoison);
+					if (scriptBase.isDead)
+					{
+						yield break;
+					}
 					scriptBase.timerPoison = 0;
 				}
 			}
@@ -119,7 +120,7 @@ public class ennemyHealer : MonoBehaviour
 	/// </summary>
 	private void Update()
     {
-		if (scriptBase.isMoving == false && GameManager.singleton.getPlayerTurn() == false && scriptBase.isThisEnnemyTurn)
+		if (scriptBase.isMoving == false && GameManager.singleton.getPlayerTurn() == false && scriptBase.isThisEnnemyTurn && scriptBase.isDead == false)
 		{
 
 			StartCoroutine(Mouvement());

@@ -12,7 +12,7 @@ public class GameManager : MonoBehaviour
 	public float tempsTourJoueur = 10f;
 
 	bool isPlayerTurn = true;
-	
+
 	bool isTimerStopped = false;
 
 	float timerEnnemy = 0f;
@@ -26,10 +26,16 @@ public class GameManager : MonoBehaviour
 	int indexEnnemy = 0;
 	int indexJoueur = 1;
 
+	public int levelSlow = 0;
+	public int levelPoison = 0;
+	public int levelHeal = 0;
+
 	public Transform cameraPosition;
 	public Transform cameraViePosition;
 	float timerChangeTurn = 0f;
 	public float vitesseLerpChangeTurn = 2f;
+	public List<ObjectTemporaire> listeObjectsTemporaires;
+
 	/// <summary>
 	/// Initialise le singleton s'il n'y en a pas déjà un.
 	/// </summary>
@@ -48,27 +54,27 @@ public class GameManager : MonoBehaviour
 	/// <summary>
 	/// Initialise la liste des ennemis et le timer
 	/// </summary>
-    private void Start()
-    {
+	private void Start()
+	{
 		timerJoueur = tempsTourJoueur;
 		foreach (Transform child in conteneurEnnemi.transform)
-        {
+		{
 			listeEnnemis.Add(child);
 		}
-			
+
 		foreach (Transform child in conteneurJoueurs.transform)
-        {
+		{
 			listeJoueurs.Add(child);
 			UI_Manager.singleton.listeJoueurs.Add(child);
 		}
-			
 
-		
+
+
 		listeJoueurs[0].GetComponent<JoueurMain>().isThisPlayersTurn = true;
 		UI_Manager.singleton.changeVieText();
 	}
 
-	
+
 
 	/// <summary>
 	/// Change à qui appartient le tour. S'il s'agit du tour ennemi, 
@@ -77,13 +83,13 @@ public class GameManager : MonoBehaviour
 	public void changeTurn()
 	{
 		//Tour joueur vers tour ennemi
-		if(isPlayerTurn == true && timerChangeTurn <= 0)
+		if (isPlayerTurn == true && timerChangeTurn <= 0)
 		{
 			print(listeJoueurs);
 			if (indexJoueur > 0)
-            {
+			{
 				if (listeJoueurs[indexJoueur - 1] != null)
-                {
+				{
 					listeJoueurs[indexJoueur - 1].GetComponent<JoueurMain>().isThisPlayersTurn = false;
 				}
 
@@ -100,22 +106,22 @@ public class GameManager : MonoBehaviour
 			{
 				StartAttack(0);
 				StartCoroutine(WaitForChangeTurn(false));
-				
+
 			}
 
 		}
-		
+
 		//Tour ennemi vers autre ennemi ou joueur
-		if(isPlayerTurn == false && timerChangeTurn <= 0)
+		if (isPlayerTurn == false && timerChangeTurn <= 0)
 		{
 			//Fait en sorte que l'ennemi précédent ne peux plus bouger
 			if (indexEnnemy > 0)
 			{
-				if(listeEnnemis[indexEnnemy - 1] != null)
+				if (listeEnnemis[indexEnnemy - 1] != null)
 				{
 					listeEnnemis[indexEnnemy - 1].GetComponent<ennemyBasic>().isThisEnnemyTurn = false;
 				}
-				
+
 			}
 
 			//S'il s'agissait du tour du dernier ennemi, change pour le tour du joueur
@@ -128,11 +134,11 @@ public class GameManager : MonoBehaviour
 			{
 				StartAttack(0);
 				StartCoroutine(WaitForChangeTurn(false));
-				
 
-				
+
+
 			}
-			
+
 		}
 	}
 
@@ -163,23 +169,23 @@ public class GameManager : MonoBehaviour
 	{
 		isTimerStopped = false;
 	}
-	
+
 	/// <summary>
 	/// Met à jour le bon timer (Joueur ou ennemi) et change le tour si le timer arrive à 0
 	/// </summary>
-    public void Update()
-    {
-        if (isPlayerTurn && isTimerStopped == false)
-        {
+	public void Update()
+	{
+		if (isPlayerTurn && isTimerStopped == false)
+		{
 			timerJoueur -= Time.deltaTime;
 
 			UI_Manager.singleton.UpdateTimer(timerJoueur);
 			if (timerJoueur <= 0f)
-            {
+			{
 				changeTurn();
-            }
-        }else if(isPlayerTurn == false && isTimerStopped == false)
-        {
+			}
+		} else if (isPlayerTurn == false && isTimerStopped == false)
+		{
 			timerEnnemy -= Time.deltaTime;
 
 			UI_Manager.singleton.UpdateTimer(timerEnnemy);
@@ -189,16 +195,16 @@ public class GameManager : MonoBehaviour
 			}
 
 		}
-    }
+	}
 
 	/// <summary>
 	/// Retourne le temps restant du joueur
 	/// </summary>
 	/// <returns></returns>
 	public float getTimerJoueur()
-    {
+	{
 		return timerJoueur;
-    }
+	}
 
 	/// <summary>
 	/// Retourne le temps restant des ennemis.
@@ -228,7 +234,7 @@ public class GameManager : MonoBehaviour
 		{
 			StartCoroutine(WaitForPlayerTurn(ennemy));
 		}
-		
+
 	}
 
 	/// <summary>
@@ -260,7 +266,7 @@ public class GameManager : MonoBehaviour
 	/// <returns></returns>
 	IEnumerator WaitForPlayerTurn(Transform ennemy)
 	{
-		while(isPlayerTurn == false)
+		while (isPlayerTurn == false)
 		{
 			yield return null;
 		}
@@ -275,23 +281,23 @@ public class GameManager : MonoBehaviour
 	}
 
 	IEnumerator LerpChangeTurn(Transform pointDepart, Transform pointFin)
-    {
-		
-		while(timerChangeTurn > 0)
-        {
-		
+	{
+
+		while (timerChangeTurn > 0)
+		{
+
 			cameraPosition.position = Vector3.Lerp(pointDepart.position, pointFin.position, 1 - timerChangeTurn / vitesseLerpChangeTurn);
 			timerChangeTurn -= Time.deltaTime;
 			yield return null;
 		}
-		
-    }
+
+	}
 
 
 	IEnumerator WaitForChangeTurn(bool isFin)
-    {
-        if (isFin)
-        {
+	{
+		if (isFin)
+		{
 			if (isPlayerTurn)
 			{
 				timerChangeTurn = vitesseLerpChangeTurn;
@@ -316,43 +322,52 @@ public class GameManager : MonoBehaviour
 				UI_Manager.singleton.changeTurnText(true);
 				isTimerStopped = false;
 				indexEnnemy = 0;
-				changeTurn();
-				
-			}
-        }
-        else
-        {
-            if (isPlayerTurn)
-            {
 
-				if(indexJoueur - 1 >= 0)
-                {
+				foreach (ObjectTemporaire objectTemporaire in listeObjectsTemporaires)
+				{
+					objectTemporaire.UpdateObjet();
+				}
+
+				changeTurn(); 
+
+			}
+		}
+		else
+		{
+			if (isPlayerTurn)
+			{
+
+				if (indexJoueur - 1 >= 0)
+				{
 					timerChangeTurn = vitesseLerpChangeTurn;
 					StartCoroutine(LerpChangeTurn(listeJoueurs[indexJoueur - 1], listeJoueurs[indexJoueur]));
 					yield return new WaitForSeconds(vitesseLerpChangeTurn);
 				}
-				
+
 
 				//Change l'ennemi actif.
 				timerJoueur = tempsTourJoueur;
 
 
 				listeJoueurs[indexJoueur].GetComponent<JoueurMain>().isThisPlayersTurn = true;
+				listeJoueurs[indexJoueur].GetComponent<JoueurMain>().updateEffets();
+				listeJoueurs[indexJoueur].GetComponent<JoueurMain>().healedThisTurn = false;
+				
 				indexJoueur += 1;
-				
-				FinishAttack();
-            }
-            else
-            {
-				
 
-				if(indexEnnemy - 1 >= 0)
-                {
+				FinishAttack();
+			}
+			else
+			{
+
+
+				if (indexEnnemy - 1 >= 0)
+				{
 					timerChangeTurn = vitesseLerpChangeTurn;
 					StartCoroutine(LerpChangeTurn(listeEnnemis[indexEnnemy - 1], listeEnnemis[indexEnnemy]));
 					yield return new WaitForSeconds(vitesseLerpChangeTurn);
-                }
-               
+				}
+
 
 				//Change l'ennemi actif.
 				timerEnnemy = tempsTourEnnemy;
@@ -362,7 +377,7 @@ public class GameManager : MonoBehaviour
 				indexEnnemy += 1;
 				FinishAttack();
 			}
-        }
+		}
 
 	}
 
@@ -379,13 +394,56 @@ public class GameManager : MonoBehaviour
 		}
 
 		listeJoueurs.Remove(joueur);
-		if(listeJoueurs.Count <= 0)
-        {
+		if (listeJoueurs.Count <= 0)
+		{
 			Scene scene = SceneManager.GetActiveScene();
 			SceneManager.LoadScene(scene.name);
 		}
 
 	}
+
+
+	public void changeLevelPoison(int change)
+	{
+		levelPoison += change;
+
+		if (levelPoison > 3)
+		{
+			levelPoison = 3;
+		}
+		else if (levelPoison < 0)
+		{
+			levelPoison = 0;
+		}
+	}
+
+	public void changeLevelSlow(int change)
+	{
+		levelSlow += change;
+
+		if (levelSlow > 3)
+		{
+			levelSlow = 3;
+		}
+		else if (levelSlow < 0)
+		{
+			levelSlow = 0;
+		}
+	}
+
+	public void changeLevelHeal(int change)
+    {
+		levelHeal += change;
+
+		if(levelHeal > 3)
+        {
+			levelHeal = 3;
+        }
+		else if(levelHeal < 0)
+        {
+			levelHeal = 0;
+        }
+    }
 
 
 }

@@ -9,7 +9,13 @@ public class Joueur2 : MonoBehaviour
 	JoueurAttaques joueurAttaques;
 
 	public GameObject cercleLentPrefab;
+	public GameObject cerclePoisonPrefab;
+	public GameObject cercleHealPrefab;
+
 	int[] listeTypesAttaque;
+	GameObject cercleLent;
+	GameObject cerclePoison;
+	GameObject cercleHeal;
 
 	// Start is called before the first frame update
 	void Start()
@@ -21,6 +27,12 @@ public class Joueur2 : MonoBehaviour
 		listeTypesAttaque[1] = 1;
 		listeTypesAttaque[2] = 1;
 		listeTypesAttaque[3] = 0;
+		cercleLent = Instantiate(cercleLentPrefab, new Vector3(0, -100, 0), transform.rotation);
+		cerclePoison = Instantiate(cerclePoisonPrefab, new Vector3(0, -100, 0), transform.rotation);
+		cercleHeal = Instantiate(cercleHealPrefab, new Vector3(0, -100, 0), transform.rotation);
+		GameManager.singleton.listeObjectsTemporaires.Add(cercleLent.GetComponent<ObjectTemporaire>());
+		GameManager.singleton.listeObjectsTemporaires.Add(cerclePoison.GetComponent<ObjectTemporaire>());
+		GameManager.singleton.listeObjectsTemporaires.Add(cercleHeal.GetComponent<ObjectTemporaire>());
 	}
 
 	// Update is called once per frame
@@ -51,6 +63,30 @@ public class Joueur2 : MonoBehaviour
 								StartCoroutine(CurseSlow(hit));
 							}
 							
+
+						}
+						else if (joueurMain.moveSelected == 2 && GameManager.singleton.getTimerJoueur() > 2)
+						{
+							RaycastHit hit;
+							if (Physics.Raycast(joueurMain.camRay, out hit))
+							{
+								joueurMain.isAttacking = true;
+								joueurMain.animationJoueur.SetTrigger("areaAttack");
+								StartCoroutine(CursePoison(hit));
+							}
+
+
+						}
+						else if (joueurMain.moveSelected == 3 && GameManager.singleton.getTimerJoueur() > 2)
+						{
+							RaycastHit hit;
+							if (Physics.Raycast(joueurMain.camRay, out hit))
+							{
+								joueurMain.isAttacking = true;
+								joueurMain.animationJoueur.SetTrigger("areaAttack");
+								StartCoroutine(HealCircle(hit));
+							}
+
 
 						}
 						/*else if (joueurMain.moveSelected == 2 && GameManager.singleton.getTimerJoueur() > 4)
@@ -109,11 +145,16 @@ public class Joueur2 : MonoBehaviour
 
 		
 		GameManager.singleton.StartAttack(3);
+		cercleLent.GetComponent<SphereCollider>().enabled = false;
 
 		yield return new WaitForSeconds(1.5f);
 
-		GameObject cercleLent = Instantiate(cercleLentPrefab, hit.point, transform.rotation);
-
+		GameManager.singleton.changeLevelSlow(1);
+		cercleLent.SetActive(true);
+		
+		cercleLent.transform.position = hit.point;
+		cercleLent.transform.rotation = transform.rotation;
+		cercleLent.GetComponent<SphereCollider>().enabled = true;
 
 		yield return new WaitForSeconds(1);
 
@@ -122,4 +163,49 @@ public class Joueur2 : MonoBehaviour
 		joueurAttaques.resetAttackSelected();
 	}
 
+	IEnumerator CursePoison(RaycastHit hit)
+	{
+
+
+		GameManager.singleton.StartAttack(3);
+		cerclePoison.GetComponent<SphereCollider>().enabled = false;
+
+		yield return new WaitForSeconds(1.5f);
+
+		GameManager.singleton.changeLevelPoison(1);
+		cerclePoison.SetActive(true);
+
+		cerclePoison.transform.position = hit.point;
+		cerclePoison.transform.rotation = transform.rotation;
+		cerclePoison.GetComponent<SphereCollider>().enabled = true;
+
+		yield return new WaitForSeconds(1);
+
+		joueurMain.isAttacking = false;
+		GameManager.singleton.FinishAttack();
+		joueurAttaques.resetAttackSelected();
+	}
+
+	IEnumerator HealCircle(RaycastHit hit)
+	{
+
+
+		GameManager.singleton.StartAttack(3);
+		cercleHeal.GetComponent<SphereCollider>().enabled = false;
+
+		yield return new WaitForSeconds(1.5f);
+
+		GameManager.singleton.changeLevelHeal(1);
+		cercleHeal.SetActive(true);
+
+		cercleHeal.transform.position = hit.point;
+		cercleHeal.transform.rotation = transform.rotation;
+		cercleHeal.GetComponent<SphereCollider>().enabled = true;
+
+		yield return new WaitForSeconds(1);
+
+		joueurMain.isAttacking = false;
+		GameManager.singleton.FinishAttack();
+		joueurAttaques.resetAttackSelected();
+	}
 }

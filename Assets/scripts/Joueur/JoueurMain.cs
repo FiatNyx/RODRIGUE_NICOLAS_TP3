@@ -16,6 +16,7 @@ public class JoueurMain : MonoBehaviour
 
     [HideInInspector]
     public bool isPoisoned = false;
+    public int puissancePoison = 0;
 
     [HideInInspector]
     public float timerPoison = 0;
@@ -26,12 +27,13 @@ public class JoueurMain : MonoBehaviour
     [HideInInspector]
     public bool isThisPlayersTurn = false;
 
-    
+    public bool isHealing = false;
+
     public int vieMax = 30;
 
     public AudioSource audioSource;
 
-    
+    public int healStrength = 0;
     public AudioClip audioDamage;
 
     [HideInInspector]
@@ -39,7 +41,7 @@ public class JoueurMain : MonoBehaviour
 
     [HideInInspector]
     public bool isSlowed = false;
-
+    public float puissanceSlow = 0f;
 
     public Transform projectileStartPoint;
 
@@ -47,7 +49,7 @@ public class JoueurMain : MonoBehaviour
     public Animator animationJoueur;
     Rigidbody[] ragdollRBs;
     Collider[] ragdollColliders;
-
+    public bool healedThisTurn = false;
     public Collider joueurCollider;
 
     public bool isDead = false;
@@ -73,9 +75,17 @@ public class JoueurMain : MonoBehaviour
         vie = vieMax;
         audioSource = GetComponent<AudioSource>();
         animationJoueur = GetComponent<Animator>();
-        
+
     }
 
+    public void updateEffets()
+    {
+        if (isHealing)
+        {
+            heal(healStrength);
+            healedThisTurn = true;
+        }
+    }
 
     // Update is called once per frame
     void Update()
@@ -84,9 +94,22 @@ public class JoueurMain : MonoBehaviour
         {
             camRay = mainCam.ScreenPointToRay(Input.mousePosition);
         }
-        
+
+    }
+
+    public void heal(int healAmount)
+    {
+        if (isDead == false)
+        {
+            vie += healAmount;
+            if (vie > vieMax)
+            {
+                vie = vieMax;
+            }
 
 
+            UI_Manager.singleton.changeVieText();
+        }
 
     }
 
@@ -148,15 +171,34 @@ public class JoueurMain : MonoBehaviour
     {
         if(isDead == false)
         {
-            if (other.tag == "LentPoison")
+            if(other.GetComponent<zoneLente>() != null)
             {
                 isSlowed = true;
+                puissanceSlow = other.GetComponent<zoneLente>().getSlowStrength();
+            }
+
+            if(other.GetComponent<zonePoison>() != null)
+            {
                 isPoisoned = true;
+                puissancePoison = other.GetComponent<zonePoison>().getPoisonStrength();
             }
             if (other.tag == "attaqueEnnemy")
             {
                 damage(other.GetComponent<Attaque>().damage);
                 animationJoueur.SetTrigger("Hurt");
+            }
+            if(other.GetComponent<zoneHeal>() != null)
+            {
+                healStrength = other.GetComponent<zoneHeal>().getHealStrength();
+
+                if(healedThisTurn == false)
+                {
+                    heal(healStrength);
+                    healedThisTurn = true;
+                }
+               
+                isHealing = true;
+               
             }
         }
         
@@ -170,10 +212,22 @@ public class JoueurMain : MonoBehaviour
     {
         if(isDead == false)
         {
-            if (other.tag == "LentPoison")
+            if (other.GetComponent<zoneLente>() != null)
             {
                 isSlowed = false;
+                puissanceSlow = other.GetComponent<zoneLente>().getSlowStrength();
+            }
+
+            if (other.GetComponent<zonePoison>() != null)
+            {
                 isPoisoned = false;
+                puissancePoison = other.GetComponent<zonePoison>().getPoisonStrength();
+            }
+
+            if (other.GetComponent<zoneHeal>() != null)
+            {
+               
+                isHealing = false;
             }
         }
     }

@@ -36,6 +36,7 @@ public class ennemyBasic : MonoBehaviour
 	Rigidbody[] ragdollRBs;
 	Collider[] ragdollColliders;
 	public bool isDead = false;
+	public int puissancePoison = 0;
 	/// <summary>
 	/// On stock les components dans des variables
 	/// </summary>
@@ -85,6 +86,7 @@ public class ennemyBasic : MonoBehaviour
 		//Si l'ennemi est mort, le transforme en ragdoll.
 		if (health <= 0)
 		{
+			isDead = true;
 			//Afin d'éviter des bugs
 			StopAllCoroutines();
 
@@ -122,19 +124,29 @@ public class ennemyBasic : MonoBehaviour
 	/// <param name="other"></param>
 	private void OnTriggerEnter(Collider other)
 	{
-		if(isDead == false)
+		
+		if (isDead == false)
         {
-			//Ajoute le poison
-			if (other.tag == "LentPoison")
-			{
-				navMeshAgent.speed = speed / 2;
-				isPoisoned += 1;
-			}
-
+			
 			//Inflige les dégats
 			if (other.tag == "attaqueJoueur")
 			{
 				dealDamage(other.GetComponent<Attaque>().damage);
+			}
+
+			if (other.GetComponent<zoneLente>() != null)
+			{
+				print("enterß");
+				print(other.GetComponent<zoneLente>().getSlowStrength());
+				navMeshAgent.speed = speed / other.GetComponent<zoneLente>().getSlowStrength(); 
+
+			}
+
+			if (other.GetComponent<zonePoison>() != null)
+			{
+				print(other.GetComponent<zonePoison>().getPoisonStrength());
+				puissancePoison = other.GetComponent<zonePoison>().getPoisonStrength();
+				isPoisoned += 1;
 			}
 		}
 		
@@ -146,15 +158,24 @@ public class ennemyBasic : MonoBehaviour
 	/// <param name="other">Le trigger</param>
 	private void OnTriggerExit(Collider other)
 	{
+		print("exit");
 		if(isDead == false)
         {
-			//Enlève le poison s'il sort d'une zone de poison. Remet la vitesse à la vitesse normale
-			if (other.tag == "LentPoison")
+			
+
+			if (other.GetComponent<zoneLente>() != null)
 			{
 				navMeshAgent.speed = speed;
-				isPoisoned -= 1;
+
+			}
+
+			if (other.GetComponent<zonePoison>() != null)
+			{
+				isPoisoned = 0;
+				
 			}
 		}
+
 		
 	}
 

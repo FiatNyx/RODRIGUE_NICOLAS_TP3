@@ -2452,6 +2452,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   moveSelected: 0
   isPoisoned: 0
+  puissancePoison: 0
   timerPoison: 0
   vie: 30
   isThisPlayersTurn: 0
@@ -2460,10 +2461,12 @@ MonoBehaviour:
   audioDamage: {fileID: 8300000, guid: 5c61290054218504a83a6e57251ad0a1, type: 3}
   isAttacking: 0
   isSlowed: 0
+  puissanceSlow: 0
   projectileStartPoint: {fileID: 4870019056169867208}
   animationJoueur: {fileID: 0}
   joueurCollider: {fileID: 8050048576289421034}
   isDead: 0
+  updateEffets: 0
 --- !u!114 &7733355204251655385
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -2505,6 +2508,10 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   cercleLentPrefab: {fileID: 1866736237665445538, guid: c54bed2edc01dee498dc61810061b08d,
+    type: 3}
+  cerclePoisonPrefab: {fileID: 1866736237665445538, guid: fd7f29234b39046898c6bbaba9f23516,
+    type: 3}
+  cercleHealPrefab: {fileID: 1866736237665445538, guid: 98067596c155c4021943de6337d21958,
     type: 3}
 --- !u!1 &7044528073716557515
 GameObject:

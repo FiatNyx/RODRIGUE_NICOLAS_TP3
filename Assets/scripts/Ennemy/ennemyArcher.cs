@@ -61,9 +61,13 @@ public class ennemyArcher : MonoBehaviour
 			{
 				scriptBase.timerPoison += Time.deltaTime;
 
-				if (scriptBase.timerPoison > 0.8)
+				if (scriptBase.timerPoison > 0.5)
 				{
-					scriptBase.dealDamage(8);
+					scriptBase.dealDamage(scriptBase.puissancePoison);
+					if (scriptBase.isDead)
+					{
+						yield break;
+					}
 					scriptBase.timerPoison = 0;
 				}
 			}
@@ -121,7 +125,7 @@ public class ennemyArcher : MonoBehaviour
 	/// </summary>
 	private void Update()
 	{
-		if (scriptBase.isMoving == false && GameManager.singleton.getPlayerTurn() == false && scriptBase.isThisEnnemyTurn)
+		if (scriptBase.isMoving == false && GameManager.singleton.getPlayerTurn() == false && scriptBase.isThisEnnemyTurn && scriptBase.isDead == false)
 		{
 
 			StartCoroutine(Mouvement());
