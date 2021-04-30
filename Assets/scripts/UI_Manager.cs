@@ -11,7 +11,11 @@ public class UI_Manager : MonoBehaviour
 	public List<RawImage> uiAttaques;
 	public List<RawImage> listeSelectedUI;
 	public List<Transform> listeJoueurs;
+	public GameObject listeAttaqueP1;
+	public GameObject listeAttaqueP2;
 
+	int indexJoueur = 0;
+	List<GameObject> listeAttaques;
 	/// <summary>
 	/// Assignation du singleton s'il n'en a pas déjà un.
 	/// </summary>
@@ -25,6 +29,12 @@ public class UI_Manager : MonoBehaviour
 		singleton = this;
 
 		listeJoueurs = new List<Transform>();
+        listeAttaques = new List<GameObject>
+        {
+            listeAttaqueP1,
+            listeAttaqueP2
+        };
+
     }
 
   
@@ -79,6 +89,7 @@ public class UI_Manager : MonoBehaviour
 	/// <param name="index">L'index de la compétence, 0 = aucune compétence</param>
 	public void changeSelectedMove(int index)
 	{
+		print("Called");
 		//Déselectionner les autres compétences dans l'UI
 		foreach (RawImage image in listeSelectedUI)
 		{
@@ -92,4 +103,26 @@ public class UI_Manager : MonoBehaviour
 		}
 		
 	}
+
+
+	public void changeSelectedChar(int index)
+    {
+        foreach (GameObject listeAttaqe in listeAttaques)
+        {
+			listeAttaqe.SetActive(false);
+        }
+		changeSelectedMove(0);
+		listeAttaques[index].SetActive(true);
+		indexJoueur = index;
+    }
+
+	public void killJoueur(int index)
+    {
+		foreach (GameObject listeAttaqe in listeAttaques)
+		{
+			listeAttaqe.SetActive(false);
+		}
+		changeSelectedMove(0);
+		listeAttaques.RemoveAt(index);
+    }
 }

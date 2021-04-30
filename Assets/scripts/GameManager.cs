@@ -71,6 +71,7 @@ public class GameManager : MonoBehaviour
 
 
 		listeJoueurs[0].GetComponent<JoueurMain>().isThisPlayersTurn = true;
+		UI_Manager.singleton.changeSelectedChar(0);
 		UI_Manager.singleton.changeVieText();
 	}
 
@@ -91,6 +92,8 @@ public class GameManager : MonoBehaviour
 				if (listeJoueurs[indexJoueur - 1] != null)
 				{
 					listeJoueurs[indexJoueur - 1].GetComponent<JoueurMain>().isThisPlayersTurn = false;
+					listeJoueurs[indexJoueur - 1].GetComponent<JoueurAttaques>().resetAttackSelected();
+
 				}
 
 			}
@@ -120,6 +123,7 @@ public class GameManager : MonoBehaviour
 				if (listeEnnemis[indexEnnemy - 1] != null)
 				{
 					listeEnnemis[indexEnnemy - 1].GetComponent<ennemyBasic>().isThisEnnemyTurn = false;
+					
 				}
 
 			}
@@ -223,6 +227,7 @@ public class GameManager : MonoBehaviour
 	{
 		if (isPlayerTurn)
 		{
+			
 			listeEnnemis.Remove(ennemy);
 			if (listeEnnemis.Count <= 0)
 			{
@@ -245,6 +250,8 @@ public class GameManager : MonoBehaviour
 	{
 		if (isPlayerTurn == false)
 		{
+			int indexJoueur = listeJoueurs.IndexOf(joueur);
+			UI_Manager.singleton.killJoueur(indexJoueur);
 			listeJoueurs.Remove(joueur);
 			if (listeJoueurs.Count <= 0)
 			{
@@ -352,6 +359,7 @@ public class GameManager : MonoBehaviour
 				listeJoueurs[indexJoueur].GetComponent<JoueurMain>().isThisPlayersTurn = true;
 				listeJoueurs[indexJoueur].GetComponent<JoueurMain>().updateEffets();
 				listeJoueurs[indexJoueur].GetComponent<JoueurMain>().healedThisTurn = false;
+				UI_Manager.singleton.changeSelectedChar(indexJoueur);
 				
 				indexJoueur += 1;
 
@@ -392,7 +400,8 @@ public class GameManager : MonoBehaviour
 		{
 			yield return null;
 		}
-
+		int indexJoueur = listeJoueurs.IndexOf(joueur);
+		UI_Manager.singleton.killJoueur(indexJoueur);
 		listeJoueurs.Remove(joueur);
 		if (listeJoueurs.Count <= 0)
 		{

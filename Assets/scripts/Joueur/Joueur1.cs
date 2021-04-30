@@ -16,7 +16,7 @@ public class Joueur1 : MonoBehaviour
 	public AudioClip audioBoom;
 	public ParticleSystem teleportParticles;
 	public GameObject cercleLentPrefab;
-
+	
 	int[] listeTypesAttaque;
 	// Start is called before the first frame update
 	void Start()
@@ -25,9 +25,9 @@ public class Joueur1 : MonoBehaviour
 		joueurAttaques = GetComponent<JoueurAttaques>();
 		listeTypesAttaque = new int[4];
 		listeTypesAttaque[0] = 0;
-		listeTypesAttaque[1] = 1;
+		listeTypesAttaque[1] = 2;
 		listeTypesAttaque[2] = 0;
-		listeTypesAttaque[3] = 1;
+		listeTypesAttaque[3] = 2;
 	}
 
     // Update is called once per frame
@@ -48,42 +48,47 @@ public class Joueur1 : MonoBehaviour
 				{
 					if (Input.GetMouseButtonDown(0))
 					{
-						if (joueurMain.moveSelected == 1 && GameManager.singleton.getTimerJoueur() > 2)
+						if (joueurMain.moveSelected == 1 && GameManager.singleton.getTimerJoueur() > 2 * joueurMain.puissanceSlow)
 						{
+							joueurAttaques.resetAttackSelected();
 							joueurMain.isAttacking = true;
 							joueurMain.animationJoueur.SetTrigger("FireballAttack");
 							StartCoroutine(BouleDeFeu());
 
 						}
-						else if (joueurMain.moveSelected == 2 && GameManager.singleton.getTimerJoueur() > 4)
+						else if (joueurMain.moveSelected == 2 && GameManager.singleton.getTimerJoueur() > 4 * joueurMain.puissanceSlow)
 						{
 
 							RaycastHit hit;
-							if (Physics.Raycast(joueurMain.camRay, out hit))
+							if (Physics.Raycast(joueurMain.camRay, out hit, 500, joueurMain.teleportLayer))
 							{
-								GameManager.singleton.StartAttack(4);
-								GameObject cercleLent = Instantiate(cercleLentPrefab, hit.point, transform.rotation);
 								joueurAttaques.resetAttackSelected();
+								GameManager.singleton.StartAttack(4 * joueurMain.puissanceSlow);
+								GameObject cercleLent = Instantiate(cercleLentPrefab, hit.point, transform.rotation);
+								
 								GameManager.singleton.FinishAttack();
 							}
 						}
-						else if (joueurMain.moveSelected == 3 && GameManager.singleton.getTimerJoueur() > 3)
+						else if (joueurMain.moveSelected == 3 && GameManager.singleton.getTimerJoueur() > 3 * joueurMain.puissanceSlow)
 						{
+							joueurAttaques.resetAttackSelected();
 							joueurMain.isAttacking = true;
 							joueurMain.animationJoueur.SetTrigger("LightningAttack");
 							StartCoroutine(Eclair());
 							joueurMain.audioSource.PlayOneShot(audioEclair);
 						}
-						else if (joueurMain.moveSelected == 4 && GameManager.singleton.getTimerJoueur() > 6)
+						else if (joueurMain.moveSelected == 4 && GameManager.singleton.getTimerJoueur() > 6 * joueurMain.puissanceSlow)
 						{
 							RaycastHit hit;
-							if (Physics.Raycast(joueurMain.camRay, out hit))
+							if (Physics.Raycast(joueurMain.camRay, out hit, 500, joueurMain.teleportLayer))
 							{
-								GameManager.singleton.StartAttack(6);
+								joueurAttaques.resetAttackSelected();
+								GameManager.singleton.StartAttack(6 * joueurMain.puissanceSlow);
 								transform.position = hit.point;
 								teleportParticles.Play();
 								teleportParticles.GetComponent<TeleportParticles>().Spin();
 								GameManager.singleton.FinishAttack();
+								
 								joueurMain.audioSource.PlayOneShot(audioZoom);
 							}
 
@@ -93,10 +98,7 @@ public class Joueur1 : MonoBehaviour
 				}
 
 			}
-			else
-			{
-				joueurAttaques.resetAttackSelected();
-			}
+			
 		}
 		
 
@@ -108,10 +110,10 @@ public class Joueur1 : MonoBehaviour
 	/// <returns></returns>
 	IEnumerator BouleDeFeu()
 	{
-		GameManager.singleton.StartAttack(2);
+		GameManager.singleton.StartAttack(2 * joueurMain.puissanceSlow);
 
 		float timerMove = 0;
-		while (joueurMain.isAttacking && timerMove < 1.5f)
+		while (joueurMain.isAttacking && timerMove < 1.5f * joueurMain.puissanceSlow)
 		{
 			timerMove += Time.deltaTime;
 			yield return null;
@@ -131,6 +133,7 @@ public class Joueur1 : MonoBehaviour
 
 		joueurMain.isAttacking = false;
 		GameManager.singleton.FinishAttack();
+	
 	}
 
 	/// <summary>
@@ -141,9 +144,9 @@ public class Joueur1 : MonoBehaviour
 	{
 
 		float timerMove = 0;
-		GameManager.singleton.StartAttack(3);
+		GameManager.singleton.StartAttack(3 * joueurMain.puissanceSlow);
 
-		while (joueurMain.isAttacking && timerMove < 1)
+		while (joueurMain.isAttacking && timerMove < 1 * joueurMain.puissanceSlow)
 		{
 			timerMove += Time.deltaTime;
 			yield return null;
@@ -160,6 +163,7 @@ public class Joueur1 : MonoBehaviour
 
 		joueurMain.isAttacking = false;
 		GameManager.singleton.FinishAttack();
+		
 	}
 
 }

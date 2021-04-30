@@ -202,7 +202,7 @@ CharacterJoint:
   m_Anchor: {x: 0, y: 0, z: 0}
   m_Axis: {x: 0, y: 1, z: 0}
   m_AutoConfigureConnectedAnchor: 1
-  m_ConnectedAnchor: {x: -0.050962035, y: 0.07821901, z: -0.0022877906}
+  m_ConnectedAnchor: {x: -0.05096204, y: 0.07821907, z: -0.002287791}
   serializedVersion: 2
   m_SwingAxis: {x: 0, y: 0, z: 1}
   m_TwistLimitSpring:
@@ -671,7 +671,7 @@ CharacterJoint:
   m_Anchor: {x: 0, y: 0, z: 0}
   m_Axis: {x: 1, y: 0, z: 0}
   m_AutoConfigureConnectedAnchor: 1
-  m_ConnectedAnchor: {x: 0.0010322636, y: 0.06293467, z: -0.005070995}
+  m_ConnectedAnchor: {x: 0.0010322636, y: 0.06293473, z: -0.0050708894}
   serializedVersion: 2
   m_SwingAxis: {x: 0, y: 0, z: 1}
   m_TwistLimitSpring:
@@ -1125,7 +1125,7 @@ CharacterJoint:
   m_Anchor: {x: 0, y: 0, z: 0}
   m_Axis: {x: 1, y: 0, z: 0}
   m_AutoConfigureConnectedAnchor: 1
-  m_ConnectedAnchor: {x: 0.00010483719, y: 0.14377701, z: 0.00035913195}
+  m_ConnectedAnchor: {x: 0.000104837134, y: 0.14377707, z: 0.00035918457}
   serializedVersion: 2
   m_SwingAxis: {x: 0, y: 0, z: 1}
   m_TwistLimitSpring:
@@ -1234,7 +1234,7 @@ CharacterJoint:
   m_Anchor: {x: 0, y: 0, z: 0}
   m_Axis: {x: 0, y: 0, z: 1}
   m_AutoConfigureConnectedAnchor: 1
-  m_ConnectedAnchor: {x: -0.074920006, y: 0.00000018709923, z: 0.00000012968665}
+  m_ConnectedAnchor: {x: -0.07492002, y: 0.0000001868664, z: 0.000000129221}
   serializedVersion: 2
   m_SwingAxis: {x: 0, y: 1, z: 0}
   m_TwistLimitSpring:
@@ -1435,7 +1435,7 @@ CharacterJoint:
   m_Anchor: {x: 0, y: 0, z: 0}
   m_Axis: {x: 1, y: 0, z: 0}
   m_AutoConfigureConnectedAnchor: 1
-  m_ConnectedAnchor: {x: 0.035529, y: -0.009118991, z: 0.0014569873}
+  m_ConnectedAnchor: {x: 0.035529, y: -0.009118991, z: 0.0014570934}
   serializedVersion: 2
   m_SwingAxis: {x: 0, y: 0, z: 1}
   m_TwistLimitSpring:
@@ -1605,7 +1605,7 @@ CharacterJoint:
   m_Anchor: {x: 0, y: 0, z: 0}
   m_Axis: {x: 0, y: 1, z: 0}
   m_AutoConfigureConnectedAnchor: 1
-  m_ConnectedAnchor: {x: 0.051497377, y: 0.07821417, z: -0.010975286}
+  m_ConnectedAnchor: {x: 0.05149738, y: 0.07821423, z: -0.010975553}
   serializedVersion: 2
   m_SwingAxis: {x: 0, y: 0, z: 1}
   m_TwistLimitSpring:
@@ -1746,7 +1746,7 @@ CharacterJoint:
   m_Anchor: {x: 0, y: 0, z: 0}
   m_Axis: {x: 1, y: 0, z: 0}
   m_AutoConfigureConnectedAnchor: 1
-  m_ConnectedAnchor: {x: 0.008675706, y: -0.14205632, z: -0.004618934}
+  m_ConnectedAnchor: {x: 0.008675708, y: -0.14205629, z: -0.0046191444}
   serializedVersion: 2
   m_SwingAxis: {x: 0, y: 0, z: 1}
   m_TwistLimitSpring:
@@ -1888,7 +1888,7 @@ CharacterJoint:
   m_Anchor: {x: 0, y: 0, z: 0}
   m_Axis: {x: 0, y: 0, z: 1}
   m_AutoConfigureConnectedAnchor: 1
-  m_ConnectedAnchor: {x: 0.07502603, y: -0.00000001082573, z: 0.00000012363307}
+  m_ConnectedAnchor: {x: 0.07502603, y: 0.00000004877134, z: -0.00000014272518}
   serializedVersion: 2
   m_SwingAxis: {x: 0, y: 1, z: 0}
   m_TwistLimitSpring:
@@ -2274,7 +2274,7 @@ CharacterJoint:
   m_Anchor: {x: 0, y: 0, z: 0}
   m_Axis: {x: 1, y: 0, z: 0}
   m_AutoConfigureConnectedAnchor: 1
-  m_ConnectedAnchor: {x: -0.033493996, y: -0.009118988, z: -0.0004149146}
+  m_ConnectedAnchor: {x: -0.033493996, y: -0.009118958, z: -0.0004151266}
   serializedVersion: 2
   m_SwingAxis: {x: 0, y: 0, z: 1}
   m_TwistLimitSpring:
@@ -2414,7 +2414,7 @@ CharacterJoint:
   m_Anchor: {x: 0, y: 0, z: 0}
   m_Axis: {x: 1, y: 0, z: 0}
   m_AutoConfigureConnectedAnchor: 1
-  m_ConnectedAnchor: {x: -0.005344306, y: -0.14523393, z: 0.008732537}
+  m_ConnectedAnchor: {x: -0.005344309, y: -0.14523391, z: 0.008732591}
   serializedVersion: 2
   m_SwingAxis: {x: 0, y: 0, z: 1}
   m_TwistLimitSpring:
@@ -2903,16 +2903,24 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   moveSelected: 0
   isPoisoned: 0
+  puissancePoison: 0
   timerPoison: 0
   vie: 30
+  teleportLayer:
+    serializedVersion: 2
+    m_Bits: 17
   isThisPlayersTurn: 0
+  isHealing: 0
   vieMax: 10
   audioSource: {fileID: 9121924985096281313}
+  healStrength: 0
   audioDamage: {fileID: 8300000, guid: 5c61290054218504a83a6e57251ad0a1, type: 3}
   isAttacking: 0
   isSlowed: 0
+  puissanceSlow: 1
   projectileStartPoint: {fileID: 9121924984864832850}
   animationJoueur: {fileID: 0}
+  healedThisTurn: 0
   joueurCollider: {fileID: 9121924985096281314}
   isDead: 0
 --- !u!114 &1586803949434690073

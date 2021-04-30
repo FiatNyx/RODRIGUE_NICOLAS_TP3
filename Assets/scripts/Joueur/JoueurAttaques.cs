@@ -12,7 +12,7 @@ public class JoueurAttaques : MonoBehaviour
     public GameObject marqueur4;
 
 	GameObject[] listeMarqueurs;
-
+	
 	// Start is called before the first frame update
 	void Start()
     {
@@ -27,16 +27,16 @@ public class JoueurAttaques : MonoBehaviour
 	/// <summary>
 	/// Ce qui gère les marqueurs d'attaques et la sélection d'attaque
 	/// </summary>
-	/// <param name="attaques">Les types des attaques 1 (0 = ligne droite, 1 = zone ciblée avec la souris)</param>
+	/// <param name="attaques">Les types des attaques 1 (0 = ligne droite, 1 = zone ciblée avec la souris, 2 = zone ciblée avec la souris sans teleport)</param>
 	public void AttaqueUpdate(int[] attaques)
-    {
+	{
 
-       
-        //Clic droit pour annuler une attaque
-        if (Input.GetMouseButtonDown(1))
-        {
-            resetAttackSelected();
-        }
+
+		//Clic droit pour annuler une attaque
+		if (Input.GetMouseButtonDown(1))
+		{
+			resetAttackSelected();
+		}
 
 
 
@@ -76,30 +76,42 @@ public class JoueurAttaques : MonoBehaviour
 		}
 
 
-		if(joueurMain.moveSelected != 0)
-        {
+		if (joueurMain.moveSelected != 0)
+		{
 			RaycastHit hit;
-			if (Physics.Raycast(joueurMain.camRay, out hit))
+			if (attaques[joueurMain.moveSelected - 1] != 2)
 			{
-				if (attaques[joueurMain.moveSelected - 1] == 0)
+				if (Physics.Raycast(joueurMain.camRay, out hit))
 				{
-					listeMarqueurs[joueurMain.moveSelected - 1].transform.position = transform.position;
-					joueurMain.projectileStartPoint.LookAt(hit.point);
-					listeMarqueurs[joueurMain.moveSelected - 1].transform.LookAt(hit.point);
+					if (attaques[joueurMain.moveSelected - 1] == 0)
+					{
+						listeMarqueurs[joueurMain.moveSelected - 1].transform.position = transform.position;
+						joueurMain.projectileStartPoint.LookAt(hit.point);
+						listeMarqueurs[joueurMain.moveSelected - 1].transform.LookAt(hit.point);
+					}
+					else if (attaques[joueurMain.moveSelected - 1] == 1)
+					{
+						listeMarqueurs[joueurMain.moveSelected - 1].transform.position = hit.point;
+					}
+
 				}
-                else if(attaques[joueurMain.moveSelected - 1] == 1)
-                {
+			}
+            else
+            {
+				if (Physics.Raycast(joueurMain.camRay, out hit, 200, joueurMain.teleportLayer))
+				{
 					listeMarqueurs[joueurMain.moveSelected - 1].transform.position = hit.point;
-                }
-			
+				}
+
 			}
 		}
+	}
 
 		
         
 
 
-    }
+
 
 
 

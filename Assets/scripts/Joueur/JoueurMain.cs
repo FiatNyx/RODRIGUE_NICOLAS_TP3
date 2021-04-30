@@ -24,6 +24,8 @@ public class JoueurMain : MonoBehaviour
     [HideInInspector]
     public int vie = 30;
 
+    public LayerMask teleportLayer;
+
     [HideInInspector]
     public bool isThisPlayersTurn = false;
 
@@ -41,7 +43,7 @@ public class JoueurMain : MonoBehaviour
 
     [HideInInspector]
     public bool isSlowed = false;
-    public float puissanceSlow = 0f;
+    public float puissanceSlow = 1f;
 
     public Transform projectileStartPoint;
 
@@ -92,7 +94,13 @@ public class JoueurMain : MonoBehaviour
     {
         if(isDead == false)
         {
+            if(isSlowed == false)
+            {
+                puissanceSlow = 1;
+            }
             camRay = mainCam.ScreenPointToRay(Input.mousePosition);
+  
+
         }
 
     }
