@@ -2518,6 +2518,8 @@ MonoBehaviour:
     type: 3}
   cercleHealPrefab: {fileID: 1866736237665445538, guid: 98067596c155c4021943de6337d21958,
     type: 3}
+  prefabCercleExplosion: {fileID: 4778383301872413408, guid: 3ecbb4b0ec4bd234e861b59f0b7b1a43,
+    type: 3}
 --- !u!1 &7044528073716557515
 GameObject:
   m_ObjectHideFlags: 0

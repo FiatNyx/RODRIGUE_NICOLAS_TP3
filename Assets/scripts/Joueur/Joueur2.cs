@@ -11,11 +11,14 @@ public class Joueur2 : MonoBehaviour
 	public GameObject cercleLentPrefab;
 	public GameObject cerclePoisonPrefab;
 	public GameObject cercleHealPrefab;
+	public GameObject prefabCercleExplosion;
 
 	int[] listeTypesAttaque;
 	GameObject cercleLent;
 	GameObject cerclePoison;
 	GameObject cercleHeal;
+
+	
 	
 	//int layerMaskTeleport = 1 << 8;
 	// Start is called before the first frame update
@@ -94,6 +97,13 @@ public class Joueur2 : MonoBehaviour
 							}
 
 
+						}
+						else if(joueurMain.moveSelected == 4 && GameManager.singleton.getTimerJoueur() > 2 * joueurMain.puissanceSlow)
+						{
+							joueurAttaques.resetAttackSelected();
+							joueurMain.isAttacking = true;
+							joueurMain.animationJoueur.SetTrigger("areaAttack");
+							StartCoroutine(ExplosionCircle());
 						}
 						/*else if (joueurMain.moveSelected == 2 && GameManager.singleton.getTimerJoueur() > 4)
 						{
@@ -210,5 +220,88 @@ public class Joueur2 : MonoBehaviour
 		joueurMain.isAttacking = false;
 		GameManager.singleton.FinishAttack();
 		
+	}
+
+	IEnumerator ExplosionCircle()
+	{
+
+
+		GameManager.singleton.StartAttack(2 * joueurMain.puissanceSlow);
+		cercleHeal.GetComponent<SphereCollider>().enabled = false;
+
+		yield return new WaitForSeconds(1.75f * joueurMain.puissanceSlow);
+
+		GameManager.singleton.changeLevelHeal(1);
+		cercleHeal.SetActive(true);
+
+		if(GameManager.singleton.levelSlow > 0)
+		{
+			GameObject explosion = Instantiate(prefabCercleExplosion, cercleLent.transform.position, cercleLent.transform.rotation);
+			explosion.GetComponent<ExplosionCircle>().isDamage = true;
+
+			switch (GameManager.singleton.levelSlow)
+			{
+				case 1:
+					explosion.GetComponent<ExplosionCircle>().damageAmount = 10;
+					break;
+				case 2:
+					explosion.GetComponent<ExplosionCircle>().damageAmount = 20;
+					break;
+				case 3:
+					explosion.GetComponent<ExplosionCircle>().damageAmount = 30;
+					break;
+				default:
+					break;
+			}
+		}
+
+		if(GameManager.singleton.levelPoison > 0)
+		{
+			GameObject explosion = Instantiate(prefabCercleExplosion, cerclePoison.transform.position, cerclePoison.transform.rotation);
+			explosion.GetComponent<ExplosionCircle>().isDamage = true;
+
+			switch (GameManager.singleton.levelPoison)
+			{
+				case 1:
+					explosion.GetComponent<ExplosionCircle>().damageAmount = 10;
+					break;
+				case 2:
+					explosion.GetComponent<ExplosionCircle>().damageAmount = 20;
+					break;
+				case 3:
+					explosion.GetComponent<ExplosionCircle>().damageAmount = 30;
+					break;
+				default:
+					break;
+			}
+		}
+
+		if(GameManager.singleton.levelHeal > 0)
+		{
+			GameObject explosion = Instantiate(prefabCercleExplosion, cercleHeal.transform.position, cercleHeal.transform.rotation);
+			explosion.GetComponent<ExplosionCircle>().isDamage = false;
+
+			switch (GameManager.singleton.levelHeal)
+			{
+				case 1:
+					explosion.GetComponent<ExplosionCircle>().healAmount = 10;
+					break;
+				case 2:
+					explosion.GetComponent<ExplosionCircle>().healAmount = 20;
+					break;
+				case 3:
+					explosion.GetComponent<ExplosionCircle>().healAmount = 30;
+					break;
+				default:
+					break;
+			}
+		}
+
+
+		yield return new WaitForSeconds(1f * joueurMain.puissanceSlow);
+
+		joueurMain.isAttacking = false;
+		GameManager.singleton.FinishAttack();
+
 	}
 }

@@ -136,8 +136,7 @@ public class ennemyBasic : MonoBehaviour
 
 			if (other.GetComponent<zoneLente>() != null)
 			{
-				print("enterß");
-				print(other.GetComponent<zoneLente>().getSlowStrength());
+				
 				navMeshAgent.speed = speed / other.GetComponent<zoneLente>().getSlowStrength(); 
 
 			}
@@ -147,6 +146,14 @@ public class ennemyBasic : MonoBehaviour
 				print(other.GetComponent<zonePoison>().getPoisonStrength());
 				puissancePoison = other.GetComponent<zonePoison>().getPoisonStrength();
 				isPoisoned += 1;
+			}
+
+			if (other.GetComponent<ExplosionCircle>() != null)
+			{
+				if (other.GetComponent<ExplosionCircle>().isDamage == true)
+				{
+					dealDamage(other.GetComponent<ExplosionCircle>().damageAmount);
+				}
 			}
 		}
 		

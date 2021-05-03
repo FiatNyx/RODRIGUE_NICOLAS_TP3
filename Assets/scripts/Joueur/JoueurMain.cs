@@ -208,6 +208,14 @@ public class JoueurMain : MonoBehaviour
                 isHealing = true;
                
             }
+
+			if(other.GetComponent<ExplosionCircle>() != null)
+			{
+				if(other.GetComponent<ExplosionCircle>().isDamage == false)
+				{
+					heal(other.GetComponent<ExplosionCircle>().healAmount);
+				}
+			}
         }
         
     }
