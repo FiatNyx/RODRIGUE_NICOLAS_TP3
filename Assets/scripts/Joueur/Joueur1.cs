@@ -38,7 +38,7 @@ public class Joueur1 : MonoBehaviour
 			if (joueurMain.isThisPlayersTurn && joueurMain.isAttacking == false)
 			{
 
-				joueurAttaques.AttaqueUpdate(listeTypesAttaque);
+				joueurAttaques.AttaqueUpdate(listeTypesAttaque, null);
 
 				//--------------------------------
 				//Section des attaques. Le getTimerJoueur() est pour s'assurer que le joueur ait assez de temps pour payer l'attaque

@@ -12,7 +12,8 @@ public class JoueurAttaques : MonoBehaviour
     public GameObject marqueur4;
 
 	GameObject[] listeMarqueurs;
-	
+
+	List<GameObject> listeMarqueursInstancies;
 	// Start is called before the first frame update
 	void Start()
     {
@@ -22,13 +23,15 @@ public class JoueurAttaques : MonoBehaviour
 		listeMarqueurs[1] = marqueur2;
 		listeMarqueurs[2] = marqueur3;
 		listeMarqueurs[3] = marqueur4;
-    }
+		listeMarqueursInstancies = new List<GameObject>();
+	}
 
 	/// <summary>
 	/// Ce qui gère les marqueurs d'attaques et la sélection d'attaque
 	/// </summary>
-	/// <param name="attaques">Les types des attaques 1 (0 = ligne droite, 1 = zone ciblée avec la souris, 2 = zone ciblée avec la souris sans teleport)</param>
-	public void AttaqueUpdate(int[] attaques)
+	/// <param name="attaques">Les types des attaques 1 (0 = ligne droite, 1 = zone ciblée avec la souris, 2 = zone ciblée avec la souris sans teleport)
+	/// 3 = zone fixe sur points spécifiques</param>
+	public void AttaqueUpdate(int[] attaques, List<GameObject> listeCiblesMarqueur)
 	{
 
 
@@ -49,7 +52,19 @@ public class JoueurAttaques : MonoBehaviour
 			marqueur1.SetActive(true);
 			joueurMain.moveSelected = 1;
 			UI_Manager.singleton.changeSelectedMove(1);
-
+			
+			if (attaques[joueurMain.moveSelected - 1] == 3)
+			{
+				for (int i = 0; i < listeCiblesMarqueur.Count; i++)
+				{
+					GameObject marqueurInstancie = Instantiate(marqueur1, listeCiblesMarqueur[i].transform.position, listeCiblesMarqueur[i].transform.rotation);
+					listeMarqueursInstancies.Add(marqueurInstancie);
+				}
+			}
+			else
+			{
+				marqueur1.SetActive(true);
+			}
 		}
 		else if (Input.GetKeyDown(KeyCode.Alpha2))
 		{
@@ -57,6 +72,18 @@ public class JoueurAttaques : MonoBehaviour
 			marqueur2.SetActive(true);
 			joueurMain.moveSelected = 2;
 			UI_Manager.singleton.changeSelectedMove(2);
+			if (attaques[joueurMain.moveSelected - 1] == 3)
+			{
+				for (int i = 0; i < listeCiblesMarqueur.Count; i++)
+				{
+					GameObject marqueurInstancie = Instantiate(marqueur2, listeCiblesMarqueur[i].transform.position, listeCiblesMarqueur[i].transform.rotation);
+					listeMarqueursInstancies.Add(marqueurInstancie);
+				}
+			}
+			else
+			{
+				marqueur2.SetActive(true);
+			}
 		}
 		else if (Input.GetKeyDown(KeyCode.Alpha3))
 		{
@@ -64,15 +91,38 @@ public class JoueurAttaques : MonoBehaviour
 			marqueur3.SetActive(true);
 			joueurMain.moveSelected = 3;
 			UI_Manager.singleton.changeSelectedMove(3);
-
+			if (attaques[joueurMain.moveSelected - 1] == 3)
+			{
+				for (int i = 0; i < listeCiblesMarqueur.Count; i++)
+				{
+					GameObject marqueurInstancie = Instantiate(marqueur3, listeCiblesMarqueur[i].transform.position, listeCiblesMarqueur[i].transform.rotation);
+					listeMarqueursInstancies.Add(marqueurInstancie);
+				}
+			}
+			else
+			{
+				marqueur3.SetActive(true);
+			}
 		}
 		else if (Input.GetKeyDown(KeyCode.Alpha4))
 		{
 			effacerMarqueurs();
-			marqueur4.SetActive(true);
+			
 			joueurMain.moveSelected = 4;
 			UI_Manager.singleton.changeSelectedMove(4);
-
+			if (attaques[joueurMain.moveSelected - 1] == 3)
+			{
+				for (int i = 0; i < listeCiblesMarqueur.Count; i++)
+				{
+					GameObject marqueurInstancie = Instantiate(marqueur4, listeCiblesMarqueur[i].transform.position, listeCiblesMarqueur[i].transform.rotation);
+					marqueurInstancie.SetActive(true);
+					listeMarqueursInstancies.Add(marqueurInstancie);
+				}
+			}
+			else
+			{
+				marqueur4.SetActive(true);
+			}
 		}
 
 
@@ -95,6 +145,8 @@ public class JoueurAttaques : MonoBehaviour
 					}
 
 				}
+
+				
 			}
             else
             {
@@ -135,6 +187,12 @@ public class JoueurAttaques : MonoBehaviour
         marqueur2.SetActive(false);
         marqueur3.SetActive(false);
         marqueur4.SetActive(false);
+
+		while (listeMarqueursInstancies.Count > 0)
+		{
+			Destroy(listeMarqueursInstancies[0]);
+			listeMarqueursInstancies.RemoveAt(0);
+		}
     }
 
 }

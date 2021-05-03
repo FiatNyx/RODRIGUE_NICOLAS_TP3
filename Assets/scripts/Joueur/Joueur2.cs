@@ -30,7 +30,7 @@ public class Joueur2 : MonoBehaviour
 		listeTypesAttaque[0] = 2;
 		listeTypesAttaque[1] = 2;
 		listeTypesAttaque[2] = 2;
-		listeTypesAttaque[3] = 0;
+		listeTypesAttaque[3] = 3;
 		cercleLent = Instantiate(cercleLentPrefab, new Vector3(0, -100, 0), transform.rotation);
 		cerclePoison = Instantiate(cerclePoisonPrefab, new Vector3(0, -100, 0), transform.rotation);
 		cercleHeal = Instantiate(cercleHealPrefab, new Vector3(0, -100, 0), transform.rotation);
@@ -47,8 +47,13 @@ public class Joueur2 : MonoBehaviour
 		{
 			if (joueurMain.isThisPlayersTurn && joueurMain.isAttacking == false)
 			{
-
-				joueurAttaques.AttaqueUpdate(listeTypesAttaque);
+				List<GameObject> liste = new List<GameObject>
+				{
+					cercleHeal,
+					cercleLent,
+					cerclePoison
+				};
+				joueurAttaques.AttaqueUpdate(listeTypesAttaque, liste);
 
 				//--------------------------------
 				//Section des attaques. Le getTimerJoueur() est pour s'assurer que le joueur ait assez de temps pour payer l'attaque
