@@ -15,8 +15,9 @@ public class Joueur1 : MonoBehaviour
 	public AudioClip audioZoom;
 	public AudioClip audioBoom;
 	public ParticleSystem teleportParticles;
-	public GameObject cercleLentPrefab;
-	
+	public GameObject explosionPrefab;
+	public GameObject coneFeuPrefab;
+	public GameObject murFeuPrefab;
 	int[] listeTypesAttaque;
 	// Start is called before the first frame update
 	void Start()
@@ -25,7 +26,7 @@ public class Joueur1 : MonoBehaviour
 		joueurAttaques = GetComponent<JoueurAttaques>();
 		listeTypesAttaque = new int[4];
 		listeTypesAttaque[0] = 0;
-		listeTypesAttaque[1] = 2;
+		listeTypesAttaque[1] = 0;
 		listeTypesAttaque[2] = 0;
 		listeTypesAttaque[3] = 2;
 	}
@@ -58,24 +59,23 @@ public class Joueur1 : MonoBehaviour
 						}
 						else if (joueurMain.moveSelected == 2 && GameManager.singleton.getTimerJoueur() > 4 * joueurMain.puissanceSlow)
 						{
-
+							
+							joueurAttaques.resetAttackSelected();
+							joueurMain.isAttacking = true;
+							joueurMain.animationJoueur.SetTrigger("LightningAttack");
+							StartCoroutine(ConeDeFeu());
+							
+						}
+						else if (joueurMain.moveSelected == 3 && GameManager.singleton.getTimerJoueur() > 3 * joueurMain.puissanceSlow)
+						{
 							RaycastHit hit;
 							if (Physics.Raycast(joueurMain.camRay, out hit, 500, joueurMain.teleportLayer))
 							{
 								joueurAttaques.resetAttackSelected();
-								GameManager.singleton.StartAttack(4 * joueurMain.puissanceSlow);
-								GameObject cercleLent = Instantiate(cercleLentPrefab, hit.point, transform.rotation);
-								
-								GameManager.singleton.FinishAttack();
+								joueurMain.isAttacking = true;
+								joueurMain.animationJoueur.SetTrigger("LightningAttack");
+								StartCoroutine(MurDeFeu(hit));
 							}
-						}
-						else if (joueurMain.moveSelected == 3 && GameManager.singleton.getTimerJoueur() > 3 * joueurMain.puissanceSlow)
-						{
-							joueurAttaques.resetAttackSelected();
-							joueurMain.isAttacking = true;
-							joueurMain.animationJoueur.SetTrigger("LightningAttack");
-							StartCoroutine(Eclair());
-							joueurMain.audioSource.PlayOneShot(audioEclair);
 						}
 						else if (joueurMain.moveSelected == 4 && GameManager.singleton.getTimerJoueur() > 6 * joueurMain.puissanceSlow)
 						{
@@ -87,6 +87,8 @@ public class Joueur1 : MonoBehaviour
 								transform.position = hit.point;
 								teleportParticles.Play();
 								teleportParticles.GetComponent<TeleportParticles>().Spin();
+								Instantiate(explosionPrefab, transform.position, transform.rotation);
+								joueurMain.Enflammer(1);
 								GameManager.singleton.FinishAttack();
 								
 								joueurMain.audioSource.PlayOneShot(audioZoom);
@@ -112,58 +114,47 @@ public class Joueur1 : MonoBehaviour
 	{
 		GameManager.singleton.StartAttack(2 * joueurMain.puissanceSlow);
 
-		float timerMove = 0;
-		while (joueurMain.isAttacking && timerMove < 1.5f * joueurMain.puissanceSlow)
-		{
-			timerMove += Time.deltaTime;
-			yield return null;
-		}
+		yield return new WaitForSeconds(1.5f * joueurMain.puissanceSlow);
 
 
 
 		GameObject bouleDeFeu = Instantiate(fireball, joueurMain.projectileStartPoint.position, joueurMain.projectileStartPoint.rotation);
 		bouleDeFeu.GetComponent<Fireball>().joueur = joueurMain;
 
-		timerMove = 0;
-		while (joueurMain.isAttacking && timerMove < 2)
-		{
-			timerMove += Time.deltaTime;
-			yield return null;
-		}
+		yield return new WaitForSeconds(2f * joueurMain.puissanceSlow);
 
 		joueurMain.isAttacking = false;
 		GameManager.singleton.FinishAttack();
 	
 	}
 
-	/// <summary>
-	/// S'occupe du lancement de l'attaque d'éclair
-	/// </summary>
-	/// <returns></returns>
-	IEnumerator Eclair()
+
+	IEnumerator ConeDeFeu()
 	{
+		GameManager.singleton.StartAttack(2 * joueurMain.puissanceSlow);
 
-		float timerMove = 0;
-		GameManager.singleton.StartAttack(3 * joueurMain.puissanceSlow);
+		yield return new WaitForSeconds(1.25f * joueurMain.puissanceSlow);
 
-		while (joueurMain.isAttacking && timerMove < 1 * joueurMain.puissanceSlow)
-		{
-			timerMove += Time.deltaTime;
-			yield return null;
-		}
-		GameObject eclairInstance = Instantiate(eclair, joueurMain.projectileStartPoint.position, joueurMain.projectileStartPoint.rotation);
-		eclairInstance.GetComponent<Eclair>().joueur = joueurMain;
+		GameObject coneFeu = Instantiate(coneFeuPrefab, joueurMain.projectileStartPoint.position, joueurMain.projectileStartPoint.rotation);
 
-		timerMove = 0;
-		while (joueurMain.isAttacking && timerMove < 2)
-		{
-			timerMove += Time.deltaTime;
-			yield return null;
-		}
+		yield return new WaitForSeconds(1f * joueurMain.puissanceSlow);
 
 		joueurMain.isAttacking = false;
 		GameManager.singleton.FinishAttack();
-		
+	}
+
+	IEnumerator MurDeFeu(RaycastHit hit)
+	{
+		GameManager.singleton.StartAttack(2 * joueurMain.puissanceSlow);
+
+		yield return new WaitForSeconds(1.25f * joueurMain.puissanceSlow);
+
+		GameObject coneFeu = Instantiate(murFeuPrefab, hit.point, joueurMain.transform.rotation);
+
+		yield return new WaitForSeconds(1f * joueurMain.puissanceSlow);
+
+		joueurMain.isAttacking = false;
+		GameManager.singleton.FinishAttack();
 	}
 
 }

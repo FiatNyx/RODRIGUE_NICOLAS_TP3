@@ -54,6 +54,7 @@ public class JoueurMain : MonoBehaviour
     public bool healedThisTurn = false;
     public Collider joueurCollider;
 
+    public int burnStatus = 0;
     public bool isDead = false;
 
     JoueurAttaques joueurAttaques;
@@ -86,6 +87,15 @@ public class JoueurMain : MonoBehaviour
         {
             heal(healStrength);
             healedThisTurn = true;
+        }
+
+        if(burnStatus > 0)
+        {
+            int previousBurn = burnStatus;
+            burnStatus = Mathf.RoundToInt(burnStatus / 2f);
+
+            damage((previousBurn - burnStatus) * 10);
+       
         }
     }
 
@@ -171,6 +181,12 @@ public class JoueurMain : MonoBehaviour
         }
     }
 
+    public void Enflammer(int burnAmount)
+    {
+        burnStatus += burnAmount;
+
+    }
+
     /// <summary>
 	/// Détecte si le personnage est dans une zone de poison/ralentissement
 	/// </summary>
@@ -216,6 +232,11 @@ public class JoueurMain : MonoBehaviour
 					heal(other.GetComponent<ExplosionCircle>().healAmount);
 				}
 			}
+
+            if (other.GetComponent<FeuStatusAttack>() != null)
+            {
+                Enflammer(other.GetComponent<FeuStatusAttack>().burnAmount);
+            }
         }
         
     }

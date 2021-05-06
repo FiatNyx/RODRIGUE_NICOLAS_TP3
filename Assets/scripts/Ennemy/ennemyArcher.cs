@@ -45,7 +45,7 @@ public class ennemyArcher : MonoBehaviour
 		//ou que le timer arrive à 0.
 
 		Transform ennemyChoisi = scriptBase.getJoueurProche();
-		Debug.Log(ennemyChoisi);
+		
 		Vector3 toPlayer = ennemyChoisi.position - transform.position;
 		Vector3 targetPosition = toPlayer.normalized * -10f;
 		//Vector3 vecteurRandom = new Vector3(Random.Range(-50, 50), 0, Random.Range(-50, 50));
@@ -83,7 +83,7 @@ public class ennemyArcher : MonoBehaviour
 			navMeshAgent.isStopped = true;
 			
 			transform.LookAt(ennemyChoisi.position);
-			fireballPosition.LookAt(ennemyChoisi.position);
+			fireballPosition.LookAt(ennemyChoisi.position + transform.up * 1.2f);
 			//Marche pas, il le fait pas en y
 			
 			animationEnnemy.SetBool("Running", false);

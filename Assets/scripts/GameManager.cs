@@ -113,7 +113,7 @@ public class GameManager : MonoBehaviour
 			}
 
 		}
-
+		
 		//Tour ennemi vers autre ennemi ou joueur
 		if (isPlayerTurn == false && timerChangeTurn <= 0)
 		{
@@ -382,6 +382,7 @@ public class GameManager : MonoBehaviour
 
 
 				listeEnnemis[indexEnnemy].GetComponent<ennemyBasic>().isThisEnnemyTurn = true;
+				listeEnnemis[indexEnnemy].GetComponent<ennemyBasic>().UpdateStatus();
 				indexEnnemy += 1;
 				FinishAttack();
 			}

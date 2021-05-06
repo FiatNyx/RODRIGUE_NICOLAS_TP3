@@ -37,6 +37,8 @@ public class ennemyBasic : MonoBehaviour
 	Collider[] ragdollColliders;
 	public bool isDead = false;
 	public int puissancePoison = 0;
+
+	public int burnStatus = 0;
 	/// <summary>
 	/// On stock les components dans des variables
 	/// </summary>
@@ -70,6 +72,23 @@ public class ennemyBasic : MonoBehaviour
     }
 
 
+	public void UpdateStatus()
+    {
+		if (burnStatus > 0)
+		{
+			int previousBurn = burnStatus;
+			burnStatus = Mathf.RoundToInt(burnStatus / 2.1f);
+
+			dealDamage((previousBurn - burnStatus) * 10);
+		}
+
+		print("Burning");
+	}
+
+	public void Enflammer(int burnAmount)
+    {
+		burnStatus += burnAmount;
+    }
 
     /// <summary>
     /// Inflige des dégats à l'ennemi et le tue s'il se retrouve à 0
@@ -155,6 +174,12 @@ public class ennemyBasic : MonoBehaviour
 					dealDamage(other.GetComponent<ExplosionCircle>().damageAmount);
 				}
 			}
+
+			if(other.GetComponent<FeuStatusAttack>() != null)
+            {
+				Enflammer(other.GetComponent<FeuStatusAttack>().burnAmount);
+				print(burnStatus);
+            }
 		}
 		
 	}

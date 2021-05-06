@@ -4834,6 +4834,7 @@ GameObject:
   - component: {fileID: 5756791693759410083}
   - component: {fileID: 6217922443573740067}
   - component: {fileID: 2710476383062313145}
+  - component: {fileID: 4228601100392466640}
   m_Layer: 0
   m_Name: Explosion
   m_TagString: attaqueJoueur
@@ -4991,3 +4992,16 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   damage: 10
+--- !u!114 &4228601100392466640
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4778383301872413408}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 67b269c40edd7423395d2e1534b7432a, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  burnAmount: 1

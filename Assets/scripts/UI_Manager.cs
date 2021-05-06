@@ -89,7 +89,6 @@ public class UI_Manager : MonoBehaviour
 	/// <param name="index">L'index de la compétence, 0 = aucune compétence</param>
 	public void changeSelectedMove(int index)
 	{
-		print("Called");
 		//Déselectionner les autres compétences dans l'UI
 		foreach (RawImage image in listeSelectedUI)
 		{
