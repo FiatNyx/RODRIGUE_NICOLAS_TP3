@@ -181,14 +181,26 @@ public class GameManager : MonoBehaviour
 	{
 		if (isPlayerTurn && isTimerStopped == false)
 		{
-			timerJoueur -= Time.deltaTime;
+			if (listeJoueurs[indexJoueur - 1].GetComponent<JoueurMovement>().isMoving == false && listeJoueurs[indexJoueur - 1].GetComponent<JoueurMain>().moveSelected == 0)
+			{
+				MusicManager.singleton.slowDownMusic();
+				timerJoueur -= Time.deltaTime / 4;
+			}
+			else
+			{
+				MusicManager.singleton.normalMusicSpeed();
+				timerJoueur -= Time.deltaTime;
+			}
+
+			
 
 			UI_Manager.singleton.UpdateTimer(timerJoueur);
 			if (timerJoueur <= 0f)
 			{
 				changeTurn();
 			}
-		} else if (isPlayerTurn == false && isTimerStopped == false)
+		}
+		else if (isPlayerTurn == false && isTimerStopped == false)
 		{
 			timerEnnemy -= Time.deltaTime;
 

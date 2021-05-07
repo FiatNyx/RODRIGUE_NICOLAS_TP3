@@ -1945,6 +1945,11 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 0}
     m_Modifications:
+    - target: {fileID: 6797960014438935673, guid: 51a9f2310f6234133bd6c75939c70f71,
+        type: 3}
+      propertyPath: m_PlayOnAwake
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 6797960014697683204, guid: 51a9f2310f6234133bd6c75939c70f71,
         type: 3}
       propertyPath: m_RootOrder
@@ -2269,6 +2274,26 @@ Transform:
   m_Father: {fileID: 0}
   m_RootOrder: 21
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!1 &1480811210 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 6797960014438935674, guid: 51a9f2310f6234133bd6c75939c70f71,
+    type: 3}
+  m_PrefabInstance: {fileID: 1272879434}
+  m_PrefabAsset: {fileID: 0}
+--- !u!114 &1480811214
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1480811210}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: ce2a30a378b448a4ca249b79c1408a91, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  listeMusique:
+  - {fileID: 8300000, guid: 7f6c76da1ba8c1a439ac829676f03c6e, type: 3}
 --- !u!1001 &1508430531
 PrefabInstance:
   m_ObjectHideFlags: 0

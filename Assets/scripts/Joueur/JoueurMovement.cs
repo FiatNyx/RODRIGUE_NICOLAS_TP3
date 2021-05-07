@@ -12,7 +12,7 @@ public class JoueurMovement : MonoBehaviour
 
 	float animationSpeed;
 	Rigidbody rb;
-
+	public bool isMoving = false;
 	// Start is called before the first frame update
 	void Start()
     {
@@ -61,7 +61,15 @@ public class JoueurMovement : MonoBehaviour
 
 					float inputHorizontal = Input.GetAxis("Horizontal");
 
+					if (Mathf.Abs(inputVertical) > 0 || Mathf.Abs(inputHorizontal) > 0) 
+					{
+						isMoving = true;
+					}
+					else
+					{
+						isMoving = false;
 
+					}
 
 					if (joueurMain.isPoisoned && (Mathf.Abs(inputHorizontal) > 0 || Mathf.Abs(inputVertical) > 0))
 					{
@@ -83,6 +91,7 @@ public class JoueurMovement : MonoBehaviour
 				else
 				{
 					moveDirection = Vector3.zero;
+					isMoving = false;
 					//joueurMain.animationJoueur.SetBool("Idle", true);
 				}
 			}
