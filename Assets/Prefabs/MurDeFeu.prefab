@@ -11,7 +11,7 @@ GameObject:
   - component: {fileID: 6615032209217321960}
   - component: {fileID: 6615032209217321963}
   - component: {fileID: 6615032209217321962}
-  m_Layer: 0
+  m_Layer: 2
   m_Name: Base
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -90,7 +90,7 @@ GameObject:
   - component: {fileID: 6615032209544347339}
   - component: {fileID: 6615032209544347341}
   - component: {fileID: 6615032209544347340}
-  m_Layer: 0
+  m_Layer: 2
   m_Name: FlammesParticleSystem
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -4847,7 +4847,7 @@ GameObject:
   - component: {fileID: 3919406355421589010}
   - component: {fileID: 655251413124771050}
   - component: {fileID: 7927010008998256394}
-  m_Layer: 0
+  m_Layer: 2
   m_Name: MurDeFeu
   m_TagString: attaqueJoueur
   m_Icon: {fileID: 0}

@@ -27,7 +27,7 @@ public class Joueur1 : MonoBehaviour
 		listeTypesAttaque = new int[4];
 		listeTypesAttaque[0] = 0;
 		listeTypesAttaque[1] = 0;
-		listeTypesAttaque[2] = 0;
+		listeTypesAttaque[2] = 2;
 		listeTypesAttaque[3] = 2;
 	}
 

@@ -319,6 +319,7 @@ public class GameManager : MonoBehaviour
 		{
 			if (isPlayerTurn)
 			{
+				MusicManager.singleton.normalMusicSpeed();
 				timerChangeTurn = vitesseLerpChangeTurn;
 				StartCoroutine(LerpChangeTurn(listeJoueurs[listeJoueurs.Count - 1], listeEnnemis[0]));
 				yield return new WaitForSeconds(vitesseLerpChangeTurn);
