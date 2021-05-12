@@ -138,12 +138,13 @@ public class JoueurMain : MonoBehaviour
 	public void damage(int damage)
     {
         vie -= damage;
-
+		GameManager.singleton.nbDegatTotal += damage;
         UI_Manager.singleton.changeVieText();
         audioSource.PlayOneShot(audioDamage);
 
         if (vie <= 0)
         {
+			GameManager.singleton.timerJoueur = 0.2f;
             
             //Afin d'éviter des bugs
             StopAllCoroutines();

@@ -8,7 +8,7 @@ public class GameManager : MonoBehaviour
 
 	public static GameManager singleton;
 
-	float timerJoueur = 0f;
+	public float timerJoueur = 0f;
 	public float tempsTourJoueur = 10f;
 
 	bool isPlayerTurn = true;
@@ -30,11 +30,18 @@ public class GameManager : MonoBehaviour
 	public int levelPoison = 0;
 	public int levelHeal = 0;
 
+	public int levelID = 1;
 	public Transform cameraPosition;
 	public Transform cameraViePosition;
 	float timerChangeTurn = 0f;
 	public float vitesseLerpChangeTurn = 2f;
 	public List<ObjectTemporaire> listeObjectsTemporaires;
+
+	int nbTours = 1;
+	float tempsFocus = 0f;
+	public int nbDegatTotal = 0;
+
+	bool isStarted = false;
 
 	/// <summary>
 	/// Initialise le singleton s'il n'y en a pas déjà un.
@@ -56,6 +63,7 @@ public class GameManager : MonoBehaviour
 	/// </summary>
 	private void Start()
 	{
+
 		timerJoueur = tempsTourJoueur;
 		foreach (Transform child in conteneurEnnemi.transform)
 		{
@@ -67,15 +75,69 @@ public class GameManager : MonoBehaviour
 			listeJoueurs.Add(child);
 			UI_Manager.singleton.listeJoueurs.Add(child);
 		}
-
-
-
-		listeJoueurs[0].GetComponent<JoueurMain>().isThisPlayersTurn = true;
-		UI_Manager.singleton.changeSelectedChar(0);
+		
 		UI_Manager.singleton.changeVieText();
+		StartCoroutine(StartCombat());
+
 	}
 
 
+	IEnumerator StartCombat()
+	{
+		Transform joueurPrecedent = null;
+		Transform premierPerso = null;
+
+		foreach (var joueur in listeJoueurs)
+		{
+			if(joueurPrecedent == null)
+			{
+				joueurPrecedent = joueur;
+				premierPerso = joueur;
+				cameraPosition.position = joueur.position;
+				yield return new WaitForSeconds(1f);
+			}
+			else
+			{
+				timerChangeTurn = vitesseLerpChangeTurn;
+				while (timerChangeTurn > 0)
+				{
+					cameraPosition.position = Vector3.Lerp(joueurPrecedent.position, joueur.position, 1 - timerChangeTurn / vitesseLerpChangeTurn);
+					timerChangeTurn -= Time.deltaTime;
+					yield return null;
+				}
+				joueurPrecedent = joueur;
+				yield return new WaitForSeconds(0.2f);
+			}
+		}
+
+		foreach (var ennemi in listeEnnemis)
+		{
+			
+			timerChangeTurn = vitesseLerpChangeTurn;
+			while (timerChangeTurn > 0)
+			{
+				cameraPosition.position = Vector3.Lerp(joueurPrecedent.position, ennemi.position, 1 - timerChangeTurn / vitesseLerpChangeTurn);
+				timerChangeTurn -= Time.deltaTime;
+				yield return null;
+			}
+			joueurPrecedent = ennemi;
+			yield return new WaitForSeconds(0.2f);
+		}
+
+
+		timerChangeTurn = vitesseLerpChangeTurn;
+		while (timerChangeTurn > 0)
+		{
+			cameraPosition.position = Vector3.Lerp(joueurPrecedent.position, premierPerso.position, 1 - timerChangeTurn / vitesseLerpChangeTurn);
+			timerChangeTurn -= Time.deltaTime;
+			yield return null;
+		}
+
+		listeJoueurs[0].GetComponent<JoueurMain>().isThisPlayersTurn = true;
+		UI_Manager.singleton.changeSelectedChar(0);
+
+		isStarted = true;
+	}
 
 	/// <summary>
 	/// Change à qui appartient le tour. S'il s'agit du tour ennemi, 
@@ -179,38 +241,43 @@ public class GameManager : MonoBehaviour
 	/// </summary>
 	public void Update()
 	{
-		if (isPlayerTurn && isTimerStopped == false)
+		if (isStarted)
 		{
-			if (listeJoueurs[indexJoueur - 1].GetComponent<JoueurMovement>().isMoving == false && listeJoueurs[indexJoueur - 1].GetComponent<JoueurMain>().moveSelected == 0)
+			if (isPlayerTurn && isTimerStopped == false)
 			{
-				MusicManager.singleton.slowDownMusic();
-				timerJoueur -= Time.deltaTime / 4;
-			}
-			else
-			{
-				MusicManager.singleton.normalMusicSpeed();
-				timerJoueur -= Time.deltaTime;
-			}
+				if (listeJoueurs[indexJoueur - 1].GetComponent<JoueurMovement>().isMoving == false && listeJoueurs[indexJoueur - 1].GetComponent<JoueurMain>().moveSelected == 0)
+				{
+					MusicManager.singleton.slowDownMusic();
+					timerJoueur -= Time.deltaTime / 4;
+					tempsFocus += Time.deltaTime;
+				}
+				else
+				{
+					MusicManager.singleton.normalMusicSpeed();
+					timerJoueur -= Time.deltaTime;
+				}
 
-			
 
-			UI_Manager.singleton.UpdateTimer(timerJoueur);
-			if (timerJoueur <= 0f)
+
+				UI_Manager.singleton.UpdateTimer(timerJoueur);
+				if (timerJoueur <= 0f)
+				{
+					changeTurn();
+				}
+			}
+			else if (isPlayerTurn == false && isTimerStopped == false)
 			{
-				changeTurn();
+				timerEnnemy -= Time.deltaTime;
+
+				UI_Manager.singleton.UpdateTimer(timerEnnemy);
+				if (timerEnnemy <= 0f)
+				{
+					changeTurn();
+				}
+
 			}
 		}
-		else if (isPlayerTurn == false && isTimerStopped == false)
-		{
-			timerEnnemy -= Time.deltaTime;
-
-			UI_Manager.singleton.UpdateTimer(timerEnnemy);
-			if (timerEnnemy <= 0f)
-			{
-				changeTurn();
-			}
-
-		}
+		
 	}
 
 	/// <summary>
@@ -243,8 +310,28 @@ public class GameManager : MonoBehaviour
 			listeEnnemis.Remove(ennemy);
 			if (listeEnnemis.Count <= 0)
 			{
-				Scene scene = SceneManager.GetActiveScene();
-				SceneManager.LoadScene(scene.name);
+				float focus = PlayerPrefs.GetFloat("focus_lvl" + levelID.ToString(), 1000f);
+				int tours = PlayerPrefs.GetInt("tours_lvl" + levelID.ToString(), 1000);
+				int degats = PlayerPrefs.GetInt("degats_lvl" + levelID.ToString(), 1000);
+
+				if(tempsFocus < focus)
+				{
+					PlayerPrefs.SetFloat("focus_lvl" + levelID.ToString(), tempsFocus);
+				}
+
+				if(nbTours < tours)
+				{
+					PlayerPrefs.SetInt("tours_lvl" + levelID.ToString(), nbTours);
+				}
+				
+				if(nbDegatTotal < degats)
+				{
+					PlayerPrefs.SetInt("degats_lvl" + levelID.ToString(), nbDegatTotal);
+				}
+
+				PlayerPrefs.Save();
+
+				SceneManager.LoadScene(0);
 			}
 		}
 		else
@@ -348,6 +435,7 @@ public class GameManager : MonoBehaviour
 					objectTemporaire.UpdateObjet();
 				}
 
+				nbTours += 1;
 				changeTurn(); 
 
 			}

@@ -236,9 +236,6 @@ public class Joueur2 : MonoBehaviour
 
 		yield return new WaitForSeconds(1.75f * joueurMain.puissanceSlow);
 
-		GameManager.singleton.changeLevelHeal(1);
-		cercleHeal.SetActive(true);
-
 		if(GameManager.singleton.levelSlow > 0)
 		{
 			GameObject explosion = Instantiate(prefabCercleExplosion, cercleLent.transform.position, cercleLent.transform.rotation);
@@ -305,6 +302,13 @@ public class Joueur2 : MonoBehaviour
 
 		yield return new WaitForSeconds(1f * joueurMain.puissanceSlow);
 
+		GameManager.singleton.levelHeal = 0;
+		GameManager.singleton.levelPoison = 0;
+		GameManager.singleton.levelSlow = 0;
+
+		cercleLent.GetComponent<ObjectTemporaire>().updateEffects = true;
+		cercleHeal.GetComponent<ObjectTemporaire>().updateEffects = true;
+		cerclePoison.GetComponent<ObjectTemporaire>().updateEffects = true;
 		joueurMain.isAttacking = false;
 		GameManager.singleton.FinishAttack();
 

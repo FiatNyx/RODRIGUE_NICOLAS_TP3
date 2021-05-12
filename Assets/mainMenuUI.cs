@@ -43,13 +43,15 @@ public class mainMenuUI : MonoBehaviour
 
 		menuPrincipal.SetActive(false);
 		menuCommentJouer.SetActive(true);
+		resetHelpPage();
+		pageIndex = 0;
 		listePagesHowToPlay[0].SetActive(true);
 	}
 
 
 	public void onPagePrecedantePressed()
 	{
-		listePagesHowToPlay[pageIndex].SetActive(false);
+		resetHelpPage();
 
 		pageIndex -= 1;
 
@@ -63,7 +65,7 @@ public class mainMenuUI : MonoBehaviour
 
 	public void onPageSuivantePressed()
 	{
-		listePagesHowToPlay[pageIndex].SetActive(false);
+		resetHelpPage();
 
 		pageIndex += 1;
 
@@ -92,5 +94,14 @@ public class mainMenuUI : MonoBehaviour
 	{
 		menuPrincipal.SetActive(true);
 		menuChoixNiveau.SetActive(false);
+	}
+
+	private void resetHelpPage()
+	{
+		foreach (GameObject page in listePagesHowToPlay)
+		{
+			page.SetActive(false);
+		}
+
 	}
 }
