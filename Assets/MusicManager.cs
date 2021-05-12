@@ -57,6 +57,18 @@ public class MusicManager : MonoBehaviour
 		
 	}
 
+
+	public void ToggleMusic()
+	{
+		if (musiqueSource.isPlaying)
+		{
+			musiqueSource.Pause();
+		}
+		else
+		{
+			musiqueSource.UnPause();
+		}
+	}
     private void Update()
     {
 		if (target == targetBas && timerLerp > targetBas)

@@ -28,7 +28,7 @@ public class JoueurMovement : MonoBehaviour
     // Update is called once per frame
     void Update()
 	{
-		if(joueurMain.isDead == false)
+		if(joueurMain.isDead == false && GameManager.singleton.isPaused == false)
         {
 			if (joueurMain.isThisPlayersTurn && joueurMain.isAttacking == false) {
 				//S'assure que la caméra suit le personnage

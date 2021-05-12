@@ -42,12 +42,14 @@ public class GameManager : MonoBehaviour
 	public int nbDegatTotal = 0;
 
 	bool isStarted = false;
+	public bool isPaused = false;
 
 	/// <summary>
 	/// Initialise le singleton s'il n'y en a pas déjà un.
 	/// </summary>
 	private void Awake()
 	{
+		Time.timeScale = 1;
 		if (singleton != null)
 		{
 			Debug.LogError("Détection de multiples instances du GameManager.");
@@ -236,12 +238,34 @@ public class GameManager : MonoBehaviour
 		isTimerStopped = false;
 	}
 
+	public void TogglePause()
+	{
+		if (isPaused == false)
+		{
+			Time.timeScale = 0;
+			MusicManager.singleton.ToggleMusic();
+			UI_Manager.singleton.ToggleMenuPause(true);
+			isPaused = true;
+		}
+		else
+		{
+			Time.timeScale = 1;
+			MusicManager.singleton.ToggleMusic();
+			UI_Manager.singleton.ToggleMenuPause(false);
+			isPaused = false;
+		}
+	}
 	/// <summary>
 	/// Met à jour le bon timer (Joueur ou ennemi) et change le tour si le timer arrive à 0
 	/// </summary>
 	public void Update()
 	{
-		if (isStarted)
+		if (Input.GetKeyDown(KeyCode.P))
+		{
+			TogglePause();
+			
+		}
+		if (isStarted && isPaused == false)
 		{
 			if (isPlayerTurn && isTimerStopped == false)
 			{
@@ -310,6 +334,10 @@ public class GameManager : MonoBehaviour
 			listeEnnemis.Remove(ennemy);
 			if (listeEnnemis.Count <= 0)
 			{
+				Time.timeScale = 0;
+				MusicManager.singleton.ToggleMusic();
+				
+				isPaused = true;
 				float focus = PlayerPrefs.GetFloat("focus_lvl" + levelID.ToString(), 1000f);
 				int tours = PlayerPrefs.GetInt("tours_lvl" + levelID.ToString(), 1000);
 				int degats = PlayerPrefs.GetInt("degats_lvl" + levelID.ToString(), 1000);
@@ -331,7 +359,8 @@ public class GameManager : MonoBehaviour
 
 				PlayerPrefs.Save();
 
-				SceneManager.LoadScene(0);
+				UI_Manager.singleton.OuvrirMenuVictoire(levelID);
+				
 			}
 		}
 		else
@@ -354,8 +383,11 @@ public class GameManager : MonoBehaviour
 			listeJoueurs.Remove(joueur);
 			if (listeJoueurs.Count <= 0)
 			{
-				Scene scene = SceneManager.GetActiveScene();
-				SceneManager.LoadScene(scene.name);
+				Time.timeScale = 0;
+				MusicManager.singleton.ToggleMusic();
+				UI_Manager.singleton.OuvrirMenuDefaite();
+				isPaused = true;
+
 			}
 		}
 		else

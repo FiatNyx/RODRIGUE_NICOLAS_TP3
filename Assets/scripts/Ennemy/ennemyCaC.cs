@@ -112,7 +112,7 @@ public class ennemyCaC : MonoBehaviour
 	/// </summary>
 	private void Update()
     {
-		if (scriptBase.isMoving == false && GameManager.singleton.getPlayerTurn() == false && scriptBase.isThisEnnemyTurn && scriptBase.isDead == false)
+		if (scriptBase.isMoving == false && GameManager.singleton.getPlayerTurn() == false && scriptBase.isThisEnnemyTurn && scriptBase.isDead == false && GameManager.singleton.isPaused == false)
 		{
 
 			StartCoroutine(Mouvement());

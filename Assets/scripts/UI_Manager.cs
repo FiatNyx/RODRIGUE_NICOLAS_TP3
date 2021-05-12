@@ -13,6 +13,14 @@ public class UI_Manager : MonoBehaviour
 	public List<Transform> listeJoueurs;
 	public GameObject listeAttaqueP1;
 	public GameObject listeAttaqueP2;
+	public GameObject menuPause;
+	public GameObject menuVictoire;
+	public GameObject menuDefaite;
+
+
+	public Text focusText;
+	public Text toursText;
+	public Text degatText;
 
 	int indexJoueur = 0;
 	List<GameObject> listeAttaques;
@@ -37,7 +45,27 @@ public class UI_Manager : MonoBehaviour
 
     }
 
+	public void ToggleMenuPause(bool active)
+	{
+		menuPause.SetActive(active);
+	}
   
+	public void OuvrirMenuVictoire(int levelID)
+	{
+		menuVictoire.SetActive(true);
+		float focus = PlayerPrefs.GetFloat("focus_lvl" + levelID.ToString().ToString(), 0f);
+		int tours = PlayerPrefs.GetInt("tours_lvl" + levelID.ToString().ToString(), 0);
+		int degats = PlayerPrefs.GetInt("degats_lvl" + levelID.ToString().ToString(), 0);
+
+		focusText.text = focus.ToString() + "s";
+		toursText.text = tours.ToString() + " tours";
+		degatText.text = degats.ToString() + " dgt";
+	}
+
+	public void OuvrirMenuDefaite()
+	{
+		menuDefaite.SetActive(true);
+	}
 
     /// <summary>
     /// Reçoit le temps restant et l'affiche dans l'UI

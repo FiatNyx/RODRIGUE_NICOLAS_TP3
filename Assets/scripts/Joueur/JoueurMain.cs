@@ -102,7 +102,7 @@ public class JoueurMain : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        if(isDead == false)
+        if(isDead == false && GameManager.singleton.isPaused == false)
         {
             if(isSlowed == false)
             {
