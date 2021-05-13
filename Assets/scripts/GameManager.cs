@@ -50,6 +50,7 @@ public class GameManager : MonoBehaviour
 	private void Awake()
 	{
 		Time.timeScale = 1;
+		isPaused = false;
 		if (singleton != null)
 		{
 			Debug.LogError("Détection de multiples instances du GameManager.");
@@ -335,8 +336,11 @@ public class GameManager : MonoBehaviour
 			if (listeEnnemis.Count <= 0)
 			{
 				Time.timeScale = 0;
+				isPaused = true;
 				MusicManager.singleton.ToggleMusic();
-				
+
+				UI_Manager.singleton.OuvrirMenuVictoire(levelID, tempsFocus, nbTours, nbDegatTotal);
+
 				isPaused = true;
 				float focus = PlayerPrefs.GetFloat("focus_lvl" + levelID.ToString(), 1000f);
 				int tours = PlayerPrefs.GetInt("tours_lvl" + levelID.ToString(), 1000);
@@ -359,7 +363,7 @@ public class GameManager : MonoBehaviour
 
 				PlayerPrefs.Save();
 
-				UI_Manager.singleton.OuvrirMenuVictoire(levelID);
+				
 				
 			}
 		}

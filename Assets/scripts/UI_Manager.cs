@@ -50,16 +50,35 @@ public class UI_Manager : MonoBehaviour
 		menuPause.SetActive(active);
 	}
   
-	public void OuvrirMenuVictoire(int levelID)
+	public void OuvrirMenuVictoire(int levelID, float focus, int tours, int degats)
 	{
 		menuVictoire.SetActive(true);
-		float focus = PlayerPrefs.GetFloat("focus_lvl" + levelID.ToString().ToString(), 0f);
-		int tours = PlayerPrefs.GetInt("tours_lvl" + levelID.ToString().ToString(), 0);
-		int degats = PlayerPrefs.GetInt("degats_lvl" + levelID.ToString().ToString(), 0);
+		float OldFocus = PlayerPrefs.GetFloat("focus_lvl" + levelID.ToString().ToString(), 10000f);
+		int OldTours = PlayerPrefs.GetInt("tours_lvl" + levelID.ToString().ToString(), 10000);
+		int OldDegats = PlayerPrefs.GetInt("degats_lvl" + levelID.ToString().ToString(), 10000);
+
+
 
 		focusText.text = focus.ToString() + "s";
+
+		if(OldFocus > focus)
+		{
+			focusText.text = focusText.text + "   (Nouveau record!)";
+		}
+
 		toursText.text = tours.ToString() + " tours";
+		if (OldTours > tours)
+		{
+			toursText.text = toursText.text + "   (Nouveau record!)";
+		}
+
+
+
 		degatText.text = degats.ToString() + " dgt";
+		if (OldDegats > degats)
+		{
+			degatText.text = degatText.text + "   (Nouveau record!)";
+		}
 	}
 
 	public void OuvrirMenuDefaite()
