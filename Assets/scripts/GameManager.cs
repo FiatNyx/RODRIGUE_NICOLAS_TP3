@@ -396,6 +396,7 @@ public class GameManager : MonoBehaviour
 		}
 		else
 		{
+			timerJoueur = 1f;
 			StartCoroutine(WaitForEnnemyTurn(joueur));
 		}
 
@@ -543,8 +544,10 @@ public class GameManager : MonoBehaviour
 		listeJoueurs.Remove(joueur);
 		if (listeJoueurs.Count <= 0)
 		{
-			Scene scene = SceneManager.GetActiveScene();
-			SceneManager.LoadScene(scene.name);
+			Time.timeScale = 0;
+			MusicManager.singleton.ToggleMusic();
+			UI_Manager.singleton.OuvrirMenuDefaite();
+			isPaused = true;
 		}
 
 	}
