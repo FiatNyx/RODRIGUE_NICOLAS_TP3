@@ -20,6 +20,9 @@ public class ennemyArcher : MonoBehaviour
 		audioSource = GetComponent<AudioSource>();
 		animationEnnemy = GetComponent<Animator>();
 		navMeshAgent = GetComponent<NavMeshAgent>();
+
+		if(GameManager.)
+		scriptBase.maxHealth = 30;
 	}
 
 	/// <summary>
