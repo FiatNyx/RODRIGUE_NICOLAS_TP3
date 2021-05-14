@@ -16,6 +16,8 @@ public class MusicManager : MonoBehaviour
 	float vitesseLerp = 0.4f;
 	public PostProcessVolume activeVolume;
 	Vignette vignette;
+
+
 	/// <summary>
 	/// Initialise le singleton s'il n'y en a pas déjà un.
 	/// </summary>
@@ -23,7 +25,7 @@ public class MusicManager : MonoBehaviour
 	{
 		if (singleton != null)
 		{
-			Debug.LogError("Détection de multiples instances du GameManager.");
+			Debug.LogError("Détection de multiples instances du MusicManager.");
 			return;
 		}
 
@@ -33,6 +35,10 @@ public class MusicManager : MonoBehaviour
 
 	private void Start()
 	{
+
+		
+
+
 		musiqueSource = GetComponent<AudioSource>();
 		musiqueSource.clip = listeMusique[0];
 		musiqueSource.Play();

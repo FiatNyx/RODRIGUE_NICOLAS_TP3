@@ -44,6 +44,7 @@ public class GameManager : MonoBehaviour
 	bool isStarted = false;
 	public bool isPaused = false;
 
+	public string difficulte = "Normal"; //Facile, Normal, Difficile
 	/// <summary>
 	/// Initialise le singleton s'il n'y en a pas déjà un.
 	/// </summary>

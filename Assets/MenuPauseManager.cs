@@ -5,6 +5,7 @@ using UnityEngine.SceneManagement;
 
 public class MenuPauseManager : MonoBehaviour
 {
+	public SoundManager soundManager;
     // Start is called before the first frame update
     void Start()
     {
@@ -19,16 +20,19 @@ public class MenuPauseManager : MonoBehaviour
 
 	public void FermerMenu()
 	{
+		soundManager.sauvegarderSon();
 		GameManager.singleton.TogglePause();
 	}
 
 	public void Quitter()
 	{
+		soundManager.sauvegarderSon();
 		SceneManager.LoadScene(0);
 	}
 
 	public void Recommencer()
 	{
+		soundManager.sauvegarderSon();
 		SceneManager.LoadScene(0);
 	}
 
