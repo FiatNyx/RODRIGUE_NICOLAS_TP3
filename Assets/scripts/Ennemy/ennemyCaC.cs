@@ -19,6 +19,25 @@ public class ennemyCaC : MonoBehaviour
 		audioSource = GetComponent<AudioSource>();
 		animationEnnemy = GetComponent<Animator>();
 		navMeshAgent = GetComponent<NavMeshAgent>();
+
+		/*
+		switch (DataManager.singleton.difficulte)
+		{
+			case "Facile":
+				scriptBase.maxHealth = 20;
+				break;
+			case "Normal":
+				scriptBase.maxHealth = 30;
+				break;
+			case "Difficile":
+				scriptBase.maxHealth = 40;
+				break;
+			default:
+				break;
+		}
+
+		scriptBase.health = scriptBase.maxHealth;
+		*/
 	}
 
 	/// <summary>

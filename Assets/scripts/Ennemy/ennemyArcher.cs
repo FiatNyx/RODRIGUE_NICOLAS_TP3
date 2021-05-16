@@ -21,8 +21,24 @@ public class ennemyArcher : MonoBehaviour
 		animationEnnemy = GetComponent<Animator>();
 		navMeshAgent = GetComponent<NavMeshAgent>();
 
-		if(GameManager.)
-		scriptBase.maxHealth = 30;
+		/*
+		switch (DataManager.singleton.difficulte)
+		{
+			case "Facile":
+				scriptBase.maxHealth = 10;
+				break;
+			case "Normal":
+				scriptBase.maxHealth = 20;
+				break;
+			case "Difficile":
+				scriptBase.maxHealth = 30;
+				break;
+			default:
+				break;
+		}
+
+		scriptBase.health = scriptBase.maxHealth;
+		*/
 	}
 
 	/// <summary>
@@ -53,9 +69,9 @@ public class ennemyArcher : MonoBehaviour
 		Vector3 targetPosition = toPlayer.normalized * -10f;
 		//Vector3 vecteurRandom = new Vector3(Random.Range(-50, 50), 0, Random.Range(-50, 50));
 		navMeshAgent.SetDestination(transform.position + targetPosition);
-		
 
-		while ((navMeshAgent.pathPending || Vector3.Distance(ennemyChoisi.position, transform.position) < 15f) && GameManager.singleton.getTimerEnnemy() > 0.2f)
+
+		while ((navMeshAgent.pathPending || (Vector3.Distance(ennemyChoisi.position, transform.position) < 15f && navMeshAgent.remainingDistance > 1f)) && GameManager.singleton.getTimerEnnemy() > 0.2f)
 		{
 			
 

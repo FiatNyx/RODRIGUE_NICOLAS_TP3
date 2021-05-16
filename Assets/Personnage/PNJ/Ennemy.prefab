@@ -3072,6 +3072,7 @@ MonoBehaviour:
   isMoving: 0
   player: {fileID: 0}
   maxHealth: 50
+  health: 50
   sliderVie: {fileID: 6934349149881833584}
   isPoisoned: 0
   timerPoison: 0
@@ -3079,6 +3080,9 @@ MonoBehaviour:
   audioOuch: {fileID: 8300000, guid: 8b6a2c982deaf8840b7f7521a9f12bdb, type: 3}
   audioMortEnnemy: {fileID: 8300000, guid: b8b13d4af49ea794d8cd0786960e51f5, type: 3}
   ennemyCollider: {fileID: 7230312774056797517}
+  isDead: 0
+  puissancePoison: 0
+  burnStatus: 0
 --- !u!1 &7561193081921376070
 GameObject:
   m_ObjectHideFlags: 0

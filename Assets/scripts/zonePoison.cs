@@ -21,6 +21,7 @@ public class zonePoison : MonoBehaviour
 
             if (GameManager.singleton.levelPoison == 0)
             {
+				GameManager.singleton.ResetPoison();
                 transform.position = new Vector3(0f, -120f, 0f);
                 gameObject.SetActive(false);
             }

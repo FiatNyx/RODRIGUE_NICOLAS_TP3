@@ -11,7 +11,7 @@ public class ennemyHealer : MonoBehaviour
 	ennemyBasic scriptBase;
 	AudioSource audioSource;
 	public AudioClip audioAttack;
-
+	public GameObject particleHealPrefab;
 
 	// Start is called before the first frame update
 	void Start()
@@ -20,6 +20,25 @@ public class ennemyHealer : MonoBehaviour
 		audioSource = GetComponent<AudioSource>();
 		animationEnnemy = GetComponent<Animator>();
 		navMeshAgent = GetComponent<NavMeshAgent>();
+
+		/*
+		switch (DataManager.singleton.difficulte)
+		{
+			case "Facile":
+				scriptBase.maxHealth = 20;
+				break;
+			case "Normal":
+				scriptBase.maxHealth = 25;
+				break;
+			case "Difficile":
+				scriptBase.maxHealth = 30;
+				break;
+			default:
+				break;
+		}
+
+		scriptBase.health = scriptBase.maxHealth;
+		*/
 	}
 
 	/// <summary>
@@ -34,7 +53,7 @@ public class ennemyHealer : MonoBehaviour
 		int vieEnnemyFaible = 1000;
         foreach (var ennemy in listeEnnemy)
         {
-			if(ennemy.GetComponent<ennemyBasic>().getVie() < vieEnnemyFaible)
+			if(ennemy.GetComponent<ennemyBasic>().getVie() < vieEnnemyFaible && ennemy.GetComponent<ennemyBasic>().isDead == false)
             {
 				vieEnnemyFaible = ennemy.GetComponent<ennemyBasic>().getVie();
 				ennemyFaible = ennemy;
@@ -54,7 +73,7 @@ public class ennemyHealer : MonoBehaviour
 
 		//Déplace le personnage et lui inflige des dégats s'il est empoisonés. Ne s'arrête pas tant qu'il n'est pas à destination 
 		//ou que le timer arrive à 0.
-		while (navMeshAgent.pathPending || (navMeshAgent.remainingDistance > 3f && GameManager.singleton.getTimerEnnemy() > 0.2f))
+		while (navMeshAgent.pathPending || (navMeshAgent.remainingDistance > 10f && GameManager.singleton.getTimerEnnemy() > 0.2f))
 		{
 			if (scriptBase.isPoisoned > 0)
 			{
@@ -77,7 +96,7 @@ public class ennemyHealer : MonoBehaviour
 
 		//S'il est assez proche, il va attaquer le joueur
 		float timerAttack = 0f;
-		if (Vector3.Distance(ennemyFaible.position, transform.position) <= 3)
+		if (Vector3.Distance(ennemyFaible.position, transform.position) <= 15)
 		{
 			navMeshAgent.isStopped = true;
 			navMeshAgent.ResetPath();
@@ -92,7 +111,7 @@ public class ennemyHealer : MonoBehaviour
 			}
 
 			audioSource.PlayOneShot(audioAttack);
-			animationEnnemy.SetTrigger("Attack");
+			animationEnnemy.SetTrigger("Heal");
 			
 			while (timerAttack < 3f)
 			{
@@ -100,8 +119,12 @@ public class ennemyHealer : MonoBehaviour
 				timerAttack += Time.deltaTime;
 				yield return null;
 			}
+
+			GameObject particleHeal = Instantiate(particleHealPrefab, ennemyFaible.transform.position, ennemyFaible.transform.rotation);
 			ennemyFaible.GetComponent<ennemyBasic>().heal(10);
 
+			yield return new WaitForSeconds(1.3f);
+			Destroy(particleHeal);
 			GameManager.singleton.FinishAttack();
 
 		}

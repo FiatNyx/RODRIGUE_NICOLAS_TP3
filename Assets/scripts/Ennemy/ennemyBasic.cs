@@ -6,7 +6,7 @@ using UnityEngine.UI;
 
 public class ennemyBasic : MonoBehaviour
 {
-	NavMeshAgent navMeshAgent;
+	public NavMeshAgent navMeshAgent;
 
 	public bool isMoving = false;
 	public GameObject player;
@@ -21,7 +21,7 @@ public class ennemyBasic : MonoBehaviour
 
 	public int isPoisoned;
 	public float timerPoison = 0f;
-	float speed = 0f;
+	public float speed = 0f;
 	public bool isThisEnnemyTurn;
 	
 
@@ -58,6 +58,7 @@ public class ennemyBasic : MonoBehaviour
 	
 		animationEnnemy = GetComponent<Animator>();
 		speed = navMeshAgent.speed;
+
 		health = maxHealth;
 	}
 
@@ -150,18 +151,20 @@ public class ennemyBasic : MonoBehaviour
 			//Inflige les dégats
 			if (other.tag == "attaqueJoueur")
 			{
+				print("Dégat from attaque joueur");
 				dealDamage(other.GetComponent<Attaque>().damage);
 			}
 
 			if (other.GetComponent<zoneLente>() != null)
 			{
-				
+				print("Slow from slow");
 				navMeshAgent.speed = speed / other.GetComponent<zoneLente>().getSlowStrength(); 
 
 			}
 
 			if (other.GetComponent<zonePoison>() != null)
 			{
+				print("Poison from zone poison");
 				print(other.GetComponent<zonePoison>().getPoisonStrength());
 				puissancePoison = other.GetComponent<zonePoison>().getPoisonStrength();
 				isPoisoned += 1;
@@ -169,12 +172,14 @@ public class ennemyBasic : MonoBehaviour
 
 			if (other.GetComponent<ExplosionCircle>() != null)
 			{
+				print("Damage from explosion");
 				if (other.GetComponent<ExplosionCircle>().isDamage == true)
 				{
 					dealDamage(other.GetComponent<ExplosionCircle>().damageAmount);
 				}
 			}
 
+			
 			if(other.GetComponent<FeuStatusAttack>() != null)
             {
 				Enflammer(other.GetComponent<FeuStatusAttack>().burnAmount);

@@ -44,7 +44,7 @@ public class GameManager : MonoBehaviour
 	bool isStarted = false;
 	public bool isPaused = false;
 
-	public string difficulte = "Normal"; //Facile, Normal, Difficile
+	
 	/// <summary>
 	/// Initialise le singleton s'il n'y en a pas déjà un.
 	/// </summary>
@@ -67,7 +67,15 @@ public class GameManager : MonoBehaviour
 	/// </summary>
 	private void Start()
 	{
-
+		if(DataManager.singleton.difficulte == "Facile")
+		{
+			tempsTourJoueur = 20;
+		}else if(DataManager.singleton.difficulte == "Normal"){
+			tempsTourJoueur = 15;
+		}else if(DataManager.singleton.difficulte == "Difficile")
+		{
+			tempsTourJoueur = 10;
+		}
 		timerJoueur = tempsTourJoueur;
 		foreach (Transform child in conteneurEnnemi.transform)
 		{
@@ -85,6 +93,31 @@ public class GameManager : MonoBehaviour
 
 	}
 
+	public void ResetPoison()
+	{
+		foreach (Transform joueur in listeJoueurs)
+		{
+			joueur.GetComponent<JoueurMain>().isPoisoned = false;
+		}
+
+		foreach (Transform ennemy in listeEnnemis)
+		{
+			ennemy.GetComponent<ennemyBasic>().isPoisoned = 0;
+		}
+	}
+
+	public void ResetSlow()
+	{
+		foreach (Transform joueur in listeJoueurs)
+		{
+			joueur.GetComponent<JoueurMain>().isSlowed = false;
+		}
+
+		foreach (Transform ennemy in listeEnnemis)
+		{
+			ennemy.GetComponent<ennemyBasic>().navMeshAgent.speed = ennemy.GetComponent<ennemyBasic>().speed;
+		}
+	}
 
 	IEnumerator StartCombat()
 	{

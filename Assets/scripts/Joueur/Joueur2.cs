@@ -37,6 +37,22 @@ public class Joueur2 : MonoBehaviour
 		GameManager.singleton.listeObjectsTemporaires.Add(cercleLent.GetComponent<ObjectTemporaire>());
 		GameManager.singleton.listeObjectsTemporaires.Add(cerclePoison.GetComponent<ObjectTemporaire>());
 		GameManager.singleton.listeObjectsTemporaires.Add(cercleHeal.GetComponent<ObjectTemporaire>());
+
+		switch (DataManager.singleton.difficulte)
+		{
+			case "Facile":
+				joueurMain.vieMax = 40;
+				break;
+			case "Normal":
+				joueurMain.vieMax = 30;
+				break;
+			case "Difficile":
+				joueurMain.vieMax = 20;
+				break;
+			default:
+				break;
+		}
+		joueurMain.vie = joueurMain.vieMax;
 		//layerMaskTeleport = ~layerMaskTeleport;
 	}
 
@@ -164,7 +180,7 @@ public class Joueur2 : MonoBehaviour
 		
 		GameManager.singleton.StartAttack(2 * joueurMain.puissanceSlow);
 		cercleLent.GetComponent<SphereCollider>().enabled = false;
-
+		GameManager.singleton.ResetSlow();
 		yield return new WaitForSeconds(1.75f * joueurMain.puissanceSlow);
 
 		GameManager.singleton.changeLevelSlow(1);
@@ -187,7 +203,7 @@ public class Joueur2 : MonoBehaviour
 
 		GameManager.singleton.StartAttack(2 * joueurMain.puissanceSlow);
 		cerclePoison.GetComponent<SphereCollider>().enabled = false;
-
+		GameManager.singleton.ResetPoison();
 		yield return new WaitForSeconds(1.75f * joueurMain.puissanceSlow);
 
 		GameManager.singleton.changeLevelPoison(1);
@@ -302,6 +318,8 @@ public class Joueur2 : MonoBehaviour
 
 		yield return new WaitForSeconds(1f * joueurMain.puissanceSlow);
 
+		GameManager.singleton.ResetPoison();
+		GameManager.singleton.ResetSlow();
 		GameManager.singleton.levelHeal = 0;
 		GameManager.singleton.levelPoison = 0;
 		GameManager.singleton.levelSlow = 0;

@@ -27,7 +27,8 @@ Transform:
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: 177.73322, y: -83.70371, z: -94.878746}
   m_LocalScale: {x: 1, y: 1, z: 1}
-  m_Children: []
+  m_Children:
+  - {fileID: 6578439449892117736}
   m_Father: {fileID: 0}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
@@ -43,5 +44,64 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: eedef5a32b2d4ec45b6e0c187e4fda2a, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  timerJoueur: 0
   tempsTourJoueur: 20
+  listeEnnemis: []
+  listeJoueurs: []
   conteneurEnnemi: {fileID: 0}
+  conteneurJoueurs: {fileID: 0}
+  levelSlow: 0
+  levelPoison: 0
+  levelHeal: 0
+  levelID: 1
+  cameraPosition: {fileID: 0}
+  cameraViePosition: {fileID: 0}
+  vitesseLerpChangeTurn: 2
+  listeObjectsTemporaires: []
+  nbDegatTotal: 0
+  isPaused: 0
+  difficulte: Normal
+--- !u!1 &8935488246221354445
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 6578439449892117736}
+  - component: {fileID: 386138382191192467}
+  m_Layer: 0
+  m_Name: DataManager
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &6578439449892117736
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8935488246221354445}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_Children: []
+  m_Father: {fileID: 5370954757782319308}
+  m_RootOrder: 0
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &386138382191192467
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8935488246221354445}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: d3516ca2900cd434280ace595f5f56de, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  difficulte: Normal

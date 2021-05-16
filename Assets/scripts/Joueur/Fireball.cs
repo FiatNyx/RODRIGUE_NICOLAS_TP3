@@ -20,6 +20,14 @@ public class Fireball : MonoBehaviour
 		
     }
 
+	private void Explode()
+	{
+		GameObject explosionInstance = Instantiate(explosion, transform.position, transform.rotation);
+		explosionInstance.GetComponent<Explosion>().joueur = joueur;
+
+		Destroy(gameObject);
+	}
+
 	/// <summary>
 	/// Déplace la boule de feu et la détruit après un certain temps et avertit le joueur que l'attaque est finie.
 	/// Instancie une explosion quand la boule de feu est détruite.
@@ -30,10 +38,7 @@ public class Fireball : MonoBehaviour
 		timerDestruction += Time.deltaTime;
 		if(timerDestruction > 2)
 		{
-			GameObject explosionInstance = Instantiate(explosion, transform.position, transform.rotation);
-			explosionInstance.GetComponent<Explosion>().joueur = joueur;
-			
-			Destroy(gameObject);
+			Explode();
 		}
 	}
 
@@ -51,9 +56,14 @@ public class Fireball : MonoBehaviour
 			
 		}
 
-		GameObject explosionInstance = Instantiate(explosion, transform.position, transform.rotation);
-		
-		explosionInstance.GetComponent<Explosion>().joueur = joueur;
-		Destroy(gameObject);
+		Explode();
+	}
+
+	private void OnTriggerEnter(Collider other)
+	{
+		if (other.GetComponent<MurDeFeu>() != null)
+		{
+			Explode();
+		}
 	}
 }

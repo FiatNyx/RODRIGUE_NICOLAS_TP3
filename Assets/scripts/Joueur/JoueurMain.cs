@@ -139,12 +139,14 @@ public class JoueurMain : MonoBehaviour
     {
         vie -= damage;
 		GameManager.singleton.nbDegatTotal += damage;
-        UI_Manager.singleton.changeVieText();
+        
         audioSource.PlayOneShot(audioDamage);
 
         if (vie <= 0)
         {
-			GameManager.singleton.timerJoueur = 0.2f;
+			
+			vie = 0;
+			GameManager.singleton.timerJoueur = 0.1f;
             
             //Afin d'éviter des bugs
             StopAllCoroutines();
@@ -180,7 +182,8 @@ public class JoueurMain : MonoBehaviour
             //Continue à désactiver
             isDead = true;
         }
-    }
+		UI_Manager.singleton.changeVieText();
+	}
 
     public void Enflammer(int burnAmount)
     {

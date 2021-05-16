@@ -21,6 +21,7 @@ public class zoneLente : MonoBehaviour
 
             if(GameManager.singleton.levelSlow == 0)
             {
+				GameManager.singleton.ResetSlow();
                 transform.position = new Vector3(0f, -120f, 0f);
                 gameObject.SetActive(false);
             }

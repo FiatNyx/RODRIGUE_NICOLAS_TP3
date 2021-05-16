@@ -11,16 +11,34 @@ public class buttonNouveauNiveau : MonoBehaviour
 	public Text toursText;
 	public Text degatText;
 
+	public Dropdown difficulte;
+
+
 	private void Awake()
 	{
+		
 		GetComponent<Button>().onClick.AddListener(btnJouer_OnClick);
 	}
 
 	void btnJouer_OnClick()
 	{
-		
+
 
 		//Changer de scène
+		switch (difficulte.value)
+		{
+			case 0:
+				DataManager.singleton.difficulte = "Facile";
+				break;
+			case 1:
+				DataManager.singleton.difficulte = "Normal";
+				break;
+			case 2:
+				DataManager.singleton.difficulte = "Difficile";
+				break;
+			default:
+				break;
+		}
 		SceneManager.LoadScene(lvlID);
 	}
 
@@ -34,6 +52,6 @@ public class buttonNouveauNiveau : MonoBehaviour
 		focusText.text = focus.ToString() + "s";
 		toursText.text = tours.ToString() + " tours";
 		degatText.text = degats.ToString() + " dgt";
-		
+		GetComponent<Button>().interactable = true;
 	}
 }

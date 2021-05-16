@@ -29,6 +29,22 @@ public class Joueur1 : MonoBehaviour
 		listeTypesAttaque[1] = 0;
 		listeTypesAttaque[2] = 2;
 		listeTypesAttaque[3] = 2;
+
+		switch (DataManager.singleton.difficulte)
+		{
+			case "Facile":
+				joueurMain.vieMax = 40;
+				break;
+			case "Normal":
+				joueurMain.vieMax = 30;
+				break;
+			case "Difficile":
+				joueurMain.vieMax = 20;
+				break;
+			default:
+				break;
+		}
+		joueurMain.vie = joueurMain.vieMax;
 	}
 
     // Update is called once per frame

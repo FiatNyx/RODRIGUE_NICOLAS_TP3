@@ -3056,16 +3056,21 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 34269eefc9421f74497d82854be89f43, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  navMeshAgent: {fileID: 0}
   isMoving: 0
   player: {fileID: 0}
   maxHealth: 50
   sliderVie: {fileID: 6934349149881833584}
   isPoisoned: 0
   timerPoison: 0
+  speed: 0
   isThisEnnemyTurn: 0
   audioOuch: {fileID: 8300000, guid: 8b6a2c982deaf8840b7f7521a9f12bdb, type: 3}
   audioMortEnnemy: {fileID: 8300000, guid: b8b13d4af49ea794d8cd0786960e51f5, type: 3}
   ennemyCollider: {fileID: 7230312774056797517}
+  isDead: 0
+  puissancePoison: 0
+  burnStatus: 0
 --- !u!114 &9079897155725248894
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -3079,6 +3084,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   audioAttack: {fileID: 8300000, guid: 6413d4d689a561942aa4b0739174c85a, type: 3}
+  particleHealPrefab: {fileID: 2262453292521461185, guid: 5836516a9ff8b074fa23e1cf9d34a75f,
+    type: 3}
 --- !u!1 &7561193081921376070
 GameObject:
   m_ObjectHideFlags: 0
