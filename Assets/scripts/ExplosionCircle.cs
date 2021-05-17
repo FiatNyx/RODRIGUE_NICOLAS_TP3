@@ -20,6 +20,7 @@ public class ExplosionCircle : MonoBehaviour
 			particlesDamage.SetActive(false);
 			particlesHeal.SetActive(true);
 		}
+		/*
 		else
 		{
 			Collider[] colliders = Physics.OverlapSphere(transform.position, 10);
@@ -33,7 +34,7 @@ public class ExplosionCircle : MonoBehaviour
 					rb.AddExplosionForce(10, transform.position, 10, 1, ForceMode.Impulse);
 				}
 			}
-		}
+		}*/
 		
 	}
 

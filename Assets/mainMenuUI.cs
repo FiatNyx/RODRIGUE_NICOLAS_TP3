@@ -1,6 +1,7 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.UI;
 
 public class mainMenuUI : MonoBehaviour
 {
@@ -12,10 +13,12 @@ public class mainMenuUI : MonoBehaviour
 	public GameObject[] listePagesHowToPlay;
 
 	int pageIndex = 0;
+
+	public Dropdown dropDownQualite;
     // Start is called before the first frame update
     void Start()
     {
-        
+		dropDownQualite.value = QualitySettings.GetQualityLevel() - 1;
     }
 
     // Update is called once per frame
@@ -88,6 +91,11 @@ public class mainMenuUI : MonoBehaviour
 	{
 		menuPrincipal.SetActive(true);
 		menuOptions.SetActive(false);
+
+		
+		QualitySettings.SetQualityLevel(dropDownQualite.value + 1);
+			
+		
 	}
 
 	public void onRetourFromJouerPressed()

@@ -79,7 +79,7 @@ public class ennemyBasic : MonoBehaviour
 		if (burnStatus > 0)
 		{
 			int previousBurn = burnStatus;
-			burnStatus = Mathf.RoundToInt((burnStatus / 2f) - 1);
+			burnStatus =  (int)Mathf.Floor(burnStatus / 2f);
 
 			dealDamage((previousBurn - burnStatus) * 10);
 			if (burnStatus <= 0)

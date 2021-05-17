@@ -95,7 +95,7 @@ public class JoueurMain : MonoBehaviour
         if(burnStatus > 0)
         {
             int previousBurn = burnStatus;
-            burnStatus = Mathf.RoundToInt((burnStatus / 2f) - 1f);
+            burnStatus = (int)Mathf.Floor(burnStatus / 2f);
 
             damage((previousBurn - burnStatus) * 10);
 			if(burnStatus <= 0)

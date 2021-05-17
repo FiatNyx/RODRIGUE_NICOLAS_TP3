@@ -59,8 +59,11 @@ public class JoueurMovement : MonoBehaviour
 				{
 					float inputVertical = Input.GetAxis("Vertical");
 
+					print(inputVertical);
+					
 					float inputHorizontal = Input.GetAxis("Horizontal");
 
+					print(inputHorizontal);
 					if (Mathf.Abs(inputVertical) > 0 || Mathf.Abs(inputHorizontal) > 0) 
 					{
 						isMoving = true;

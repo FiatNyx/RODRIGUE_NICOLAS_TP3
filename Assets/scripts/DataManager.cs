@@ -26,6 +26,7 @@ public class DataManager : MonoBehaviour
 			Destroy(gameObject);
 			return;
 		}
+		
 
 		// Assignation du singleton
 		singleton = this;

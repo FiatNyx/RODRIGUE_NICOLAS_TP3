@@ -12,6 +12,7 @@ public class Explosion : MonoBehaviour
 	/// </summary>
 	void Start()
 	{
+		/*
 		Collider[] colliders = Physics.OverlapSphere(transform.position, 10);
 		foreach (Collider item in colliders)
 		{
@@ -23,6 +24,7 @@ public class Explosion : MonoBehaviour
 				rb.AddExplosionForce(10, transform.position, 10, 1, ForceMode.Impulse);
 			}
 		}
+		*/
 	}
    
 	/// <summary>

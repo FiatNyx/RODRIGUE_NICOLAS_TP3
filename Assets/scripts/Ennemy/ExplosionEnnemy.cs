@@ -11,6 +11,7 @@ public class ExplosionEnnemy : MonoBehaviour
 	/// </summary>
 	void Start()
 	{
+		/*
 		Collider[] colliders = Physics.OverlapSphere(transform.position, 10);
 		foreach (Collider item in colliders)
 		{
@@ -19,9 +20,10 @@ public class ExplosionEnnemy : MonoBehaviour
 			if (rb != null && item.tag != "Player")
 			{
 				//Appliquer une vélocité
-				rb.AddExplosionForce(10, transform.position, 10, 1, ForceMode.Impulse);
+				rb.AddExplosionForce(5, transform.position, 5, 1, ForceMode.Impulse);
 			}
 		}
+		*/
 	}
 
 	/// <summary>
