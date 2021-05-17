@@ -6,7 +6,7 @@ using UnityEngine.UI;
 
 public class buttonNouveauNiveau : MonoBehaviour
 {
-	public int lvlID;
+	public int lvlID = -1;
 	public Text focusText;
 	public Text toursText;
 	public Text degatText;
@@ -25,6 +25,25 @@ public class buttonNouveauNiveau : MonoBehaviour
 
 
 		//Changer de scène
+		
+		SceneManager.LoadScene(lvlID);
+	}
+
+	public void changerLevelSelectionne(int id)
+	{
+		lvlID = id;
+		float focus = PlayerPrefs.GetFloat("focus_lvl" + id.ToString() + DataManager.singleton.difficulte, 0f);
+		int tours = PlayerPrefs.GetInt("tours_lvl" + id.ToString() + DataManager.singleton.difficulte, 0);
+		int degats = PlayerPrefs.GetInt("degats_lvl" + id.ToString() + DataManager.singleton.difficulte, 0);
+
+		focusText.text = focus.ToString() + "s";
+		toursText.text = tours.ToString() + " tours";
+		degatText.text = degats.ToString() + " dgt";
+		GetComponent<Button>().interactable = true;
+	}
+
+	public void UpdateDifficulte()
+	{
 		switch (difficulte.value)
 		{
 			case 0:
@@ -39,19 +58,17 @@ public class buttonNouveauNiveau : MonoBehaviour
 			default:
 				break;
 		}
-		SceneManager.LoadScene(lvlID);
-	}
 
-	public void changerLevelSelectionne(int id)
-	{
-		lvlID = id;
-		float focus = PlayerPrefs.GetFloat("focus_lvl" + id.ToString(), 0f);
-		int tours = PlayerPrefs.GetInt("tours_lvl" + id.ToString(), 0);
-		int degats = PlayerPrefs.GetInt("degats_lvl" + id.ToString(), 0);
+		if (lvlID != -1)
+		{
+			float focus = PlayerPrefs.GetFloat("focus_lvl" + lvlID.ToString() + DataManager.singleton.difficulte, 0f);
+			int tours = PlayerPrefs.GetInt("tours_lvl" + lvlID.ToString() + DataManager.singleton.difficulte, 0);
+			int degats = PlayerPrefs.GetInt("degats_lvl" + lvlID.ToString() + DataManager.singleton.difficulte, 0);
 
-		focusText.text = focus.ToString() + "s";
-		toursText.text = tours.ToString() + " tours";
-		degatText.text = degats.ToString() + " dgt";
-		GetComponent<Button>().interactable = true;
+			focusText.text = focus.ToString() + "s";
+			toursText.text = tours.ToString() + " tours";
+			degatText.text = degats.ToString() + " dgt";
+		}
+		
 	}
 }

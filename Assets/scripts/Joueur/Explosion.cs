@@ -33,10 +33,7 @@ public class Explosion : MonoBehaviour
 		timerDestruction += Time.deltaTime;
 		if (timerDestruction > 0.5)
 		{
-			if(joueur != null)
-            {
-				joueur.isAttacking = false;
-			}
+			
 			
 			Destroy(gameObject);
 		}

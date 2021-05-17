@@ -93,17 +93,18 @@ public class Joueur1 : MonoBehaviour
 								StartCoroutine(MurDeFeu(hit));
 							}
 						}
-						else if (joueurMain.moveSelected == 4 && GameManager.singleton.getTimerJoueur() > 6 * joueurMain.puissanceSlow)
+						else if (joueurMain.moveSelected == 4 && GameManager.singleton.getTimerJoueur() > 1 * joueurMain.puissanceSlow)
 						{
 							RaycastHit hit;
 							if (Physics.Raycast(joueurMain.camRay, out hit, 500, joueurMain.teleportLayer))
 							{
 								joueurAttaques.resetAttackSelected();
-								GameManager.singleton.StartAttack(6 * joueurMain.puissanceSlow);
+								int puissance = Mathf.RoundToInt(GameManager.singleton.getTimerJoueur() * 3);
+								GameManager.singleton.StartAttack(GameManager.singleton.getTimerJoueur() - 0.2f);
 								transform.position = hit.point;
-								teleportParticles.Play();
-								teleportParticles.GetComponent<TeleportParticles>().Spin();
-								Instantiate(explosionPrefab, transform.position, transform.rotation);
+								
+								GameObject explosion = Instantiate(explosionPrefab, transform.position, transform.rotation);
+								explosion.GetComponent<Attaque>().damage = puissance;
 								joueurMain.Enflammer(1);
 								GameManager.singleton.FinishAttack();
 								
@@ -153,7 +154,7 @@ public class Joueur1 : MonoBehaviour
 
 		GameObject coneFeu = Instantiate(coneFeuPrefab, joueurMain.projectileStartPoint.position, joueurMain.projectileStartPoint.rotation);
 
-		yield return new WaitForSeconds(1f * joueurMain.puissanceSlow);
+		yield return new WaitForSeconds(1.5f * joueurMain.puissanceSlow);
 
 		joueurMain.isAttacking = false;
 		GameManager.singleton.FinishAttack();

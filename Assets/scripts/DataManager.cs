@@ -17,10 +17,12 @@ public class DataManager : MonoBehaviour
     }
 	private void Awake()
 	{
-	
+		#if !UNITY_EDITOR && UNITY_WEBGL
+				WebGLInput.captureAllKeyboardInput = true;
+		#endif
 		if (singleton != null)
 		{
-			Debug.Log("Détection de multiples instances du GameManager.");
+			Debug.Log("Détection de multiples instances du DataManager.");
 			Destroy(gameObject);
 			return;
 		}

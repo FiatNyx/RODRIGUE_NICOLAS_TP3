@@ -185,7 +185,8 @@ public class Joueur2 : MonoBehaviour
 
 		GameManager.singleton.changeLevelSlow(1);
 		cercleLent.SetActive(true);
-		
+		cercleLent.GetComponent<zoneLente>().UpdateParticules();
+
 		cercleLent.transform.position = hit.point;
 		cercleLent.transform.rotation = transform.rotation;
 		cercleLent.GetComponent<SphereCollider>().enabled = true;
@@ -207,6 +208,7 @@ public class Joueur2 : MonoBehaviour
 		yield return new WaitForSeconds(1.75f * joueurMain.puissanceSlow);
 
 		GameManager.singleton.changeLevelPoison(1);
+		cerclePoison.GetComponent<zonePoison>().UpdateParticules();
 		cerclePoison.SetActive(true);
 
 		cerclePoison.transform.position = hit.point;
@@ -230,6 +232,7 @@ public class Joueur2 : MonoBehaviour
 		yield return new WaitForSeconds(1.75f * joueurMain.puissanceSlow);
 
 		GameManager.singleton.changeLevelHeal(1);
+		cercleHeal.GetComponent<zoneHeal>().UpdateParticules();
 		cercleHeal.SetActive(true);
 
 		cercleHeal.transform.position = hit.point;

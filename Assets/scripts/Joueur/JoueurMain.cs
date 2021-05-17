@@ -56,8 +56,10 @@ public class JoueurMain : MonoBehaviour
 
     public int burnStatus = 0;
     public bool isDead = false;
-
+	public GameObject particulesBrulure;
+	public GameObject HealParticules;
     JoueurAttaques joueurAttaques;
+	Rigidbody playerRigidbody;
     /// <summary>
 	/// Initialisation de la variable de caméra et changement du texte de vie dans l'UI pour la vie du personnage
 	/// </summary>
@@ -68,6 +70,7 @@ public class JoueurMain : MonoBehaviour
         ragdollRBs = GetComponentsInChildren<Rigidbody>();
         ragdollColliders = GetComponentsInChildren<Collider>();
         joueurAttaques = GetComponent<JoueurAttaques>();
+		playerRigidbody = GetComponent<Rigidbody>();
     }
 
     /// <summary>
@@ -92,10 +95,14 @@ public class JoueurMain : MonoBehaviour
         if(burnStatus > 0)
         {
             int previousBurn = burnStatus;
-            burnStatus = Mathf.RoundToInt(burnStatus / 2f);
+            burnStatus = Mathf.RoundToInt((burnStatus / 2f) - 1f);
 
             damage((previousBurn - burnStatus) * 10);
-       
+			if(burnStatus <= 0)
+			{
+				particulesBrulure.SetActive(false);
+				burnStatus = 0;
+			}
         }
     }
 
@@ -119,7 +126,9 @@ public class JoueurMain : MonoBehaviour
     {
         if (isDead == false)
         {
+			HealParticules.SetActive(true);
             vie += healAmount;
+			StartCoroutine(DeleteParticulesHeal());
             if (vie > vieMax)
             {
                 vie = vieMax;
@@ -130,6 +139,13 @@ public class JoueurMain : MonoBehaviour
         }
 
     }
+
+	IEnumerator DeleteParticulesHeal()
+	{
+		yield return new WaitForSeconds(2f);
+
+		HealParticules.SetActive(false);
+	}
 
     /// <summary>
 	/// Endommage le personnage et reload la scène s'il est tué
@@ -165,7 +181,7 @@ public class JoueurMain : MonoBehaviour
             //Désactive tout
             animationJoueur.enabled = false;
             
-            joueurCollider.enabled = false;
+            
             GameManager.singleton.killJoueur(transform);
 
             //Active le ragdoll
@@ -179,14 +195,17 @@ public class JoueurMain : MonoBehaviour
                 rb.isKinematic = false;
             }
 
-            //Continue à désactiver
-            isDead = true;
+			joueurCollider.enabled = false;
+			playerRigidbody.isKinematic = true;
+			//Continue à désactiver
+			isDead = true;
         }
 		UI_Manager.singleton.changeVieText();
 	}
 
     public void Enflammer(int burnAmount)
     {
+		particulesBrulure.SetActive(true);
         burnStatus += burnAmount;
 
     }

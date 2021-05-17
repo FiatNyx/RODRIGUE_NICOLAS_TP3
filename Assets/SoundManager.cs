@@ -51,7 +51,7 @@ public class SoundManager : MonoBehaviour
     {
         mainMixer.SetFloat(paramName, Mathf.Log(value) * 20f);
 
-        if(Application.platform == RuntimePlatform.WebGLPlayer || true)
+        if(Application.platform == RuntimePlatform.WebGLPlayer)
         {
             if (paramName == "volMain")
             {

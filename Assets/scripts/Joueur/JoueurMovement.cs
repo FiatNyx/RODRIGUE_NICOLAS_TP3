@@ -146,7 +146,7 @@ public class JoueurMovement : MonoBehaviour
 		Vector3 rotCamera = GameManager.singleton.cameraPosition.rotation.eulerAngles;
 
 
-		rotCamera.y += Input.GetAxis("Mouse X") * 10;
+		rotCamera.y += Input.GetAxis("Mouse X") * 5;
 
 
         GameManager.singleton.cameraPosition.rotation = Quaternion.Euler(rotCamera);

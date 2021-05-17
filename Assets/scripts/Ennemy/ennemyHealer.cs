@@ -120,7 +120,7 @@ public class ennemyHealer : MonoBehaviour
 				yield return null;
 			}
 
-			GameObject particleHeal = Instantiate(particleHealPrefab, ennemyFaible.transform.position, ennemyFaible.transform.rotation);
+			GameObject particleHeal = Instantiate(particleHealPrefab, ennemyFaible.transform.position, Quaternion.Euler(-90, 0, -180));
 			ennemyFaible.GetComponent<ennemyBasic>().heal(10);
 
 			yield return new WaitForSeconds(1.3f);

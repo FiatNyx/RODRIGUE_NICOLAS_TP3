@@ -4,8 +4,8 @@ using UnityEngine;
 
 public class zoneLente : MonoBehaviour
 {
- 
-    ObjectTemporaire mainObject;
+	public ParticleSystem particules;
+	ObjectTemporaire mainObject;
     // Start is called before the first frame update
     void Start()
     {
@@ -18,8 +18,9 @@ public class zoneLente : MonoBehaviour
         if(mainObject.updateEffects == true)
         {
             GameManager.singleton.changeLevelSlow(-1);
+			UpdateParticules();
 
-            if(GameManager.singleton.levelSlow == 0)
+			if (GameManager.singleton.levelSlow == 0)
             {
 				GameManager.singleton.ResetSlow();
                 transform.position = new Vector3(0f, -120f, 0f);
@@ -29,8 +30,27 @@ public class zoneLente : MonoBehaviour
         }
     }
 
+	public void UpdateParticules()
+	{
 
-    public float getSlowStrength()
+		var emission = particules.emission;
+		switch (GameManager.singleton.levelSlow)
+		{
+
+			case 1:
+				emission.rateOverTime = 1;
+				break;
+			case 2:
+
+				emission.rateOverTime = 5;
+				break;
+
+			case 3:
+				emission.rateOverTime = 10;
+				break;
+		}
+	}
+	public float getSlowStrength()
     {
         switch (GameManager.singleton.levelSlow)
         {

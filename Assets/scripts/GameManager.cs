@@ -376,23 +376,23 @@ public class GameManager : MonoBehaviour
 				UI_Manager.singleton.OuvrirMenuVictoire(levelID, tempsFocus, nbTours, nbDegatTotal);
 
 				isPaused = true;
-				float focus = PlayerPrefs.GetFloat("focus_lvl" + levelID.ToString(), 1000f);
-				int tours = PlayerPrefs.GetInt("tours_lvl" + levelID.ToString(), 1000);
-				int degats = PlayerPrefs.GetInt("degats_lvl" + levelID.ToString(), 1000);
+				float focus = PlayerPrefs.GetFloat("focus_lvl" + levelID.ToString() + DataManager.singleton.difficulte, 1000f);
+				int tours = PlayerPrefs.GetInt("tours_lvl" + levelID.ToString() + DataManager.singleton.difficulte, 1000);
+				int degats = PlayerPrefs.GetInt("degats_lvl" + levelID.ToString() + DataManager.singleton.difficulte, 1000);
 
 				if(tempsFocus < focus)
 				{
-					PlayerPrefs.SetFloat("focus_lvl" + levelID.ToString(), tempsFocus);
+					PlayerPrefs.SetFloat("focus_lvl" + levelID.ToString() + DataManager.singleton.difficulte, tempsFocus);
 				}
 
 				if(nbTours < tours)
 				{
-					PlayerPrefs.SetInt("tours_lvl" + levelID.ToString(), nbTours);
+					PlayerPrefs.SetInt("tours_lvl" + levelID.ToString() + DataManager.singleton.difficulte, nbTours);
 				}
 				
 				if(nbDegatTotal < degats)
 				{
-					PlayerPrefs.SetInt("degats_lvl" + levelID.ToString(), nbDegatTotal);
+					PlayerPrefs.SetInt("degats_lvl" + levelID.ToString() + DataManager.singleton.difficulte, nbDegatTotal);
 				}
 
 				PlayerPrefs.Save();
@@ -430,7 +430,7 @@ public class GameManager : MonoBehaviour
 		}
 		else
 		{
-			timerJoueur = 1f;
+			timerJoueur = 0.1f;
 			StartCoroutine(WaitForEnnemyTurn(joueur));
 		}
 
@@ -451,8 +451,34 @@ public class GameManager : MonoBehaviour
 		listeEnnemis.Remove(ennemy);
 		if (listeEnnemis.Count <= 0)
 		{
-			Scene scene = SceneManager.GetActiveScene();
-			SceneManager.LoadScene(scene.name);
+			Time.timeScale = 0;
+			isPaused = true;
+			MusicManager.singleton.ToggleMusic();
+
+			UI_Manager.singleton.OuvrirMenuVictoire(levelID, tempsFocus, nbTours, nbDegatTotal);
+
+			isPaused = true;
+			float focus = PlayerPrefs.GetFloat("focus_lvl" + levelID.ToString() + DataManager.singleton.difficulte, 1000f);
+			int tours = PlayerPrefs.GetInt("tours_lvl" + levelID.ToString() + DataManager.singleton.difficulte, 1000);
+			int degats = PlayerPrefs.GetInt("degats_lvl" + levelID.ToString() + DataManager.singleton.difficulte, 1000);
+
+			if (tempsFocus < focus)
+			{
+				PlayerPrefs.SetFloat("focus_lvl" + levelID.ToString() + DataManager.singleton.difficulte, tempsFocus);
+			}
+
+			if (nbTours < tours)
+			{
+				PlayerPrefs.SetInt("tours_lvl" + levelID.ToString() + DataManager.singleton.difficulte, nbTours);
+			}
+
+			if (nbDegatTotal < degats)
+			{
+				PlayerPrefs.SetInt("degats_lvl" + levelID.ToString() + DataManager.singleton.difficulte, nbDegatTotal);
+			}
+
+			PlayerPrefs.Save();
+
 		}
 
 	}

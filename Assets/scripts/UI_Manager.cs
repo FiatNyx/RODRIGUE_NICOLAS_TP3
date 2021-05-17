@@ -53,9 +53,9 @@ public class UI_Manager : MonoBehaviour
 	public void OuvrirMenuVictoire(int levelID, float focus, int tours, int degats)
 	{
 		menuVictoire.SetActive(true);
-		float OldFocus = PlayerPrefs.GetFloat("focus_lvl" + levelID.ToString().ToString(), 10000f);
-		int OldTours = PlayerPrefs.GetInt("tours_lvl" + levelID.ToString().ToString(), 10000);
-		int OldDegats = PlayerPrefs.GetInt("degats_lvl" + levelID.ToString().ToString(), 10000);
+		float OldFocus = PlayerPrefs.GetFloat("focus_lvl" + levelID.ToString().ToString() + DataManager.singleton.difficulte, 10000f);
+		int OldTours = PlayerPrefs.GetInt("tours_lvl" + levelID.ToString().ToString() + DataManager.singleton.difficulte, 10000);
+		int OldDegats = PlayerPrefs.GetInt("degats_lvl" + levelID.ToString().ToString() + DataManager.singleton.difficulte, 10000);
 
 
 

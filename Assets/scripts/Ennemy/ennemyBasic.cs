@@ -39,6 +39,7 @@ public class ennemyBasic : MonoBehaviour
 	public int puissancePoison = 0;
 
 	public int burnStatus = 0;
+	public GameObject brulureParticules;
 	/// <summary>
 	/// On stock les components dans des variables
 	/// </summary>
@@ -78,9 +79,14 @@ public class ennemyBasic : MonoBehaviour
 		if (burnStatus > 0)
 		{
 			int previousBurn = burnStatus;
-			burnStatus = Mathf.RoundToInt(burnStatus / 2.1f);
+			burnStatus = Mathf.RoundToInt((burnStatus / 2f) - 1);
 
 			dealDamage((previousBurn - burnStatus) * 10);
+			if (burnStatus <= 0)
+			{
+				brulureParticules.SetActive(false);
+				burnStatus = 0;
+			}
 		}
 
 		print("Burning");
@@ -88,6 +94,7 @@ public class ennemyBasic : MonoBehaviour
 
 	public void Enflammer(int burnAmount)
     {
+		brulureParticules.SetActive(true);
 		burnStatus += burnAmount;
     }
 
@@ -195,7 +202,6 @@ public class ennemyBasic : MonoBehaviour
 	/// <param name="other">Le trigger</param>
 	private void OnTriggerExit(Collider other)
 	{
-		print("exit");
 		if(isDead == false)
         {
 			
@@ -244,7 +250,7 @@ public class ennemyBasic : MonoBehaviour
 
         for (int i = 0; i < GameManager.singleton.listeJoueurs.Count; i++)
         {
-			if (Mathf.Abs(Vector3.Distance(transform.position, GameManager.singleton.listeJoueurs[i].position)) < distance)
+			if (Mathf.Abs(Vector3.Distance(transform.position, GameManager.singleton.listeJoueurs[i].position)) < distance && GameManager.singleton.listeJoueurs[i].GetComponent<JoueurMain>().isDead == false)
             {
 				joueurChoisi = GameManager.singleton.listeJoueurs[i];
 				distance = Mathf.Abs(Vector3.Distance(transform.position, joueurChoisi.position));
