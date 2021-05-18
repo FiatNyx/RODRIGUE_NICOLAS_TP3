@@ -60,6 +60,7 @@ public class JoueurMain : MonoBehaviour
 	public GameObject HealParticules;
     JoueurAttaques joueurAttaques;
 	Rigidbody playerRigidbody;
+
     /// <summary>
 	/// Initialisation de la variable de caméra et changement du texte de vie dans l'UI pour la vie du personnage
 	/// </summary>
@@ -84,6 +85,9 @@ public class JoueurMain : MonoBehaviour
 
     }
 
+	/// <summary>
+	/// Applique les effets de status au début du tour
+	/// </summary>
     public void updateEffets()
     {
         if (isHealing)
@@ -122,6 +126,10 @@ public class JoueurMain : MonoBehaviour
 
     }
 
+	/// <summary>
+	/// Soigne le personnage
+	/// </summary>
+	/// <param name="healAmount">Le montant à soigner</param>
     public void heal(int healAmount)
     {
         if (isDead == false)
@@ -140,6 +148,10 @@ public class JoueurMain : MonoBehaviour
 
     }
 
+	/// <summary>
+	/// Un timer qui désactive les particules qui sont activées par un soin.
+	/// </summary>
+	/// <returns></returns>
 	IEnumerator DeleteParticulesHeal()
 	{
 		yield return new WaitForSeconds(2f);
@@ -148,7 +160,7 @@ public class JoueurMain : MonoBehaviour
 	}
 
     /// <summary>
-	/// Endommage le personnage et reload la scène s'il est tué
+	/// Endommage le personnage et s'occupe de tuer le personnage
 	/// </summary>
 	/// <param name="damage"></param>
 	public void damage(int damage)
@@ -158,30 +170,24 @@ public class JoueurMain : MonoBehaviour
         
         audioSource.PlayOneShot(audioDamage);
 
+		//S'il est mort
         if (vie <= 0)
         {
-			
 			vie = 0;
 			GameManager.singleton.timerJoueur = 0.1f;
             
             //Afin d'éviter des bugs
             StopAllCoroutines();
 
-
-
-            // Scene scene = SceneManager.GetActiveScene();
-            // SceneManager.LoadScene(scene.name);
-
             joueurAttaques.resetAttackSelected();
 
-            //Audio de la mort
+            //Audio désactiver l'audio source
             audioSource.Stop();
-            // audioSource.PlayOneShot(audioMortEnnemy);
 
             //Désactive tout
             animationJoueur.enabled = false;
             
-            
+            //L'enlève de la liste
             GameManager.singleton.killJoueur(transform);
 
             //Active le ragdoll
@@ -200,9 +206,15 @@ public class JoueurMain : MonoBehaviour
 			//Continue à désactiver
 			isDead = true;
         }
+
+		//Update l'UI
 		UI_Manager.singleton.changeVieText();
 	}
 
+	/// <summary>
+	/// Inflige une brulure au personnage
+	/// </summary>
+	/// <param name="burnAmount">Le nombre de brulures à infliger</param>
     public void Enflammer(int burnAmount)
     {
 		particulesBrulure.SetActive(true);
@@ -218,22 +230,28 @@ public class JoueurMain : MonoBehaviour
     {
         if(isDead == false)
         {
+			//Zone de ralentissement
             if(other.GetComponent<zoneLente>() != null)
             {
                 isSlowed = true;
                 puissanceSlow = other.GetComponent<zoneLente>().getSlowStrength();
             }
 
+			//Zone de poison
             if(other.GetComponent<zonePoison>() != null)
             {
                 isPoisoned = true;
                 puissancePoison = other.GetComponent<zonePoison>().getPoisonStrength();
             }
+
+			//Attaque ennemie
             if (other.tag == "attaqueEnnemy")
             {
                 damage(other.GetComponent<Attaque>().damage);
                 animationJoueur.SetTrigger("Hurt");
             }
+
+			//Zone de soin
             if(other.GetComponent<zoneHeal>() != null)
             {
                 healStrength = other.GetComponent<zoneHeal>().getHealStrength();
@@ -245,9 +263,9 @@ public class JoueurMain : MonoBehaviour
                 }
                
                 isHealing = true;
-               
             }
 
+			//Explosion
 			if(other.GetComponent<ExplosionCircle>() != null)
 			{
 				if(other.GetComponent<ExplosionCircle>().isDamage == false)
@@ -256,6 +274,7 @@ public class JoueurMain : MonoBehaviour
 				}
 			}
 
+			//Attaque qui enflamme
             if (other.GetComponent<FeuStatusAttack>() != null)
             {
                 Enflammer(other.GetComponent<FeuStatusAttack>().burnAmount);
@@ -272,21 +291,23 @@ public class JoueurMain : MonoBehaviour
     {
         if(isDead == false)
         {
+			//Zone de ralentissement
             if (other.GetComponent<zoneLente>() != null)
             {
                 isSlowed = false;
                 puissanceSlow = other.GetComponent<zoneLente>().getSlowStrength();
             }
 
+			//Zone de poison
             if (other.GetComponent<zonePoison>() != null)
             {
                 isPoisoned = false;
                 puissancePoison = other.GetComponent<zonePoison>().getPoisonStrength();
             }
 
+			//Zone de heal
             if (other.GetComponent<zoneHeal>() != null)
             {
-               
                 isHealing = false;
             }
         }

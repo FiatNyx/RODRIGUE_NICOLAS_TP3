@@ -20,6 +20,7 @@ public class ennemyCaC : MonoBehaviour
 		animationEnnemy = GetComponent<Animator>();
 		navMeshAgent = GetComponent<NavMeshAgent>();
 
+		//Enlever les commentaires pour faire en sorte que la difficulté affecte la vie de l'ennemi
 		/*
 		switch (DataManager.singleton.difficulte)
 		{
@@ -50,10 +51,9 @@ public class ennemyCaC : MonoBehaviour
 		animationEnnemy.SetBool("Running", true);
 
 
-		//Me déplacer vers la destination
+		//Me déplacer vers le personnage le plus proche
 		scriptBase.isMoving = true;
 		navMeshAgent.isStopped = false;
-
 		Transform ennemyChoisi = scriptBase.getJoueurProche();
 		navMeshAgent.SetDestination(ennemyChoisi.position);
 
@@ -62,9 +62,6 @@ public class ennemyCaC : MonoBehaviour
 		//ou que le timer arrive à 0.
 		while (navMeshAgent.pathPending || (navMeshAgent.remainingDistance > 3f && GameManager.singleton.getTimerEnnemy() > 0.2f))
 		{
-			
-
-
 			if (scriptBase.isPoisoned > 0)
 			{
 				scriptBase.timerPoison += Time.deltaTime;
@@ -85,8 +82,6 @@ public class ennemyCaC : MonoBehaviour
 
 
 		//S'il est assez proche, il va attaquer le joueur
-		
-
 		float timerAttack = 0f;
 		if (Vector3.Distance(ennemyChoisi.position, transform.position) <= 3)
 		{
@@ -102,6 +97,7 @@ public class ennemyCaC : MonoBehaviour
 				yield return null;
 			}
 
+			//Animation
 			audioSource.PlayOneShot(audioAttack);
 			animationEnnemy.SetTrigger("Attack");
 			ennemyChoisi.GetComponent<Animator>().SetTrigger("Hurt");
@@ -117,11 +113,12 @@ public class ennemyCaC : MonoBehaviour
 
 		}
 
+		//Arrête le navmesh, même s'il n'a pas attaqué
 		navMeshAgent.isStopped = true;
 		navMeshAgent.ResetPath();
 		animationEnnemy.SetBool("Running", false);
 
-
+		//Changer le tour
 		GameManager.singleton.changeTurn();
 		scriptBase.isMoving = false;
 	}

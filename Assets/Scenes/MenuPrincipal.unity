@@ -680,7 +680,7 @@ MonoBehaviour:
     m_LineSpacing: 1
   m_Text: "Les orcs, vos ennemis, utilisent une magie puissante qui change leur couleur
     selon leur type de magie utilis\xE9. Il est ainsi facile d'anticiper leurs attaques.
-    \n\nOrc gris : Un orc r\xE9sistant qui attaque au corps \xE0 corps. Cet orc est
+    \n\nOrc gris : Un orc r\xE9sistant qui attaque au corps-\xE0-corps. Cet orc est
     stupide et va attaquer le personnage le plus proche, m\xEAme si le chemin est
     parsem\xE9 de pi\xE8ges.\n\nOrc rouge : Un orc qui attaque \xE0 distance avec
     de puissantes boules de feu. Cet orc est trouillard et va essayer de fuir le
@@ -1724,7 +1724,7 @@ MonoBehaviour:
     m_HorizontalOverflow: 0
     m_VerticalOverflow: 0
     m_LineSpacing: 1
-  m_Text: Volume Ambient
+  m_Text: Volume ambient
 --- !u!222 &388605836
 CanvasRenderer:
   m_ObjectHideFlags: 0
@@ -2995,15 +2995,15 @@ MonoBehaviour:
     m_VerticalOverflow: 0
     m_LineSpacing: 1
   m_Text: "Lance une boule de feu qui explose, infligeant 2x10 d\xE9g\xE2ts\x03\x03.
-    Co\xFBte 2 secondes.\n\nLance un cone de feu qui inflige 20 d\xE9g\xE2ts. Co\xFBte
-    2 secondes.\x03\x03\n\nInvoque un mur de feu qui disparait au d\xE9but du prochain
-    tour. Le mur bloque les projectiles et inflige 10 d\xE9g\xE2ts aux ennemis qui
-    entrent en contact. Co\xFBte 4 secondes. \n\nT\xE9l\xE9porte le personnage et
-    invoque une explosion \xE0 l'endroit ou il se t\xE9l\xE9porte, infligeant 20
-    d\xE9g\xE2ts aux ennemis. Brule le personnage et co\xFBte 10 secondes.\n\nLes
-    attaques du mage de feu inflige br\xFBlure aux personnages touch\xE9s, y compris
-    les alli\xE9s. Les brulures infligent des d\xE9g\xE2ts au d\xE9but du tour du
-    personnage touch\xE9."
+    Co\xFBte 2 secondes.\n\nLance un c\xF4ne de feu qui inflige 20 d\xE9g\xE2ts.
+    Co\xFBte 2 secondes.\x03\x03\n\nInvoque un mur de feu qui dispara\xEEt au d\xE9but
+    du prochain tour. Le mur bloque les projectiles et inflige 10 d\xE9g\xE2ts aux
+    ennemis qui entrent en contact. Co\xFBte 4 secondes. \n\nT\xE9l\xE9porte le personnage
+    et invoque une explosion \xE0 l'endroit ou il se t\xE9l\xE9porte, infligeant
+    20 d\xE9g\xE2ts aux ennemis. Brule le personnage et co\xFBte 10 secondes.\n\nLes
+    attaques du mage de feu infligent une br\xFBlure aux personnages touch\xE9s,
+    y compris les alli\xE9s. Les brulures infligent des d\xE9g\xE2ts au d\xE9but
+    du tour du personnage touch\xE9."
 --- !u!222 &610384981
 CanvasRenderer:
   m_ObjectHideFlags: 0
@@ -3081,7 +3081,7 @@ RectTransform:
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 0}
-  m_AnchorMax: {x: 0, y: 0}
+  m_AnchorMax: {x: 0, y: 1}
   m_AnchoredPosition: {x: 0, y: 0}
   m_SizeDelta: {x: 10, y: 0}
   m_Pivot: {x: 0.5, y: 0.5}
@@ -3241,7 +3241,7 @@ RectTransform:
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 0}
-  m_AnchorMax: {x: 0, y: 0}
+  m_AnchorMax: {x: 0, y: 1}
   m_AnchoredPosition: {x: 8.63, y: 0.0000076294}
   m_SizeDelta: {x: 53.912292, y: 25.390308}
   m_Pivot: {x: 0.5, y: 0.5}
@@ -3551,7 +3551,7 @@ RectTransform:
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 0}
-  m_AnchorMax: {x: 0, y: 0}
+  m_AnchorMax: {x: 0, y: 1}
   m_AnchoredPosition: {x: 8.63, y: 0.0000076294}
   m_SizeDelta: {x: 53.912292, y: 25.390308}
   m_Pivot: {x: 0.5, y: 0.5}
@@ -4186,7 +4186,7 @@ RectTransform:
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 0}
-  m_AnchorMax: {x: 0, y: 0}
+  m_AnchorMax: {x: 0, y: 1}
   m_AnchoredPosition: {x: 0, y: 0}
   m_SizeDelta: {x: 10, y: 0}
   m_Pivot: {x: 0.5, y: 0.5}
@@ -5357,7 +5357,7 @@ MonoBehaviour:
     m_HorizontalOverflow: 0
     m_VerticalOverflow: 0
     m_LineSpacing: 1
-  m_Text: Volume Effets
+  m_Text: Volume effets
 --- !u!222 &1258356912
 CanvasRenderer:
   m_ObjectHideFlags: 0
@@ -5570,7 +5570,7 @@ RectTransform:
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 0}
-  m_AnchorMax: {x: 0, y: 0}
+  m_AnchorMax: {x: 0, y: 1}
   m_AnchoredPosition: {x: 8.63, y: 0.0000076294}
   m_SizeDelta: {x: 53.912292, y: 25.390308}
   m_Pivot: {x: 0.5, y: 0.5}
@@ -6949,7 +6949,7 @@ RectTransform:
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 0}
-  m_AnchorMax: {x: 0, y: 0}
+  m_AnchorMax: {x: 0, y: 1}
   m_AnchoredPosition: {x: 0, y: 0}
   m_SizeDelta: {x: 10, y: 0}
   m_Pivot: {x: 0.5, y: 0.5}
@@ -7745,7 +7745,7 @@ RectTransform:
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 0}
-  m_AnchorMax: {x: 0, y: 0}
+  m_AnchorMax: {x: 0, y: 1}
   m_AnchoredPosition: {x: 0, y: 0}
   m_SizeDelta: {x: 10, y: 0}
   m_Pivot: {x: 0.5, y: 0.5}
@@ -8914,7 +8914,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!224 &2008292804
 RectTransform:
   m_ObjectHideFlags: 0
@@ -9324,7 +9324,7 @@ RectTransform:
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 0}
-  m_AnchorMax: {x: 0, y: 0}
+  m_AnchorMax: {x: 0, y: 1}
   m_AnchoredPosition: {x: 8.63, y: 0.0000076294}
   m_SizeDelta: {x: 53.912292, y: 25.390308}
   m_Pivot: {x: 0.5, y: 0.5}
@@ -9937,7 +9937,7 @@ MonoBehaviour:
     m_HorizontalOverflow: 0
     m_VerticalOverflow: 0
     m_LineSpacing: 1
-  m_Text: Volume Musique
+  m_Text: Volume musique
 --- !u!222 &2137366231
 CanvasRenderer:
   m_ObjectHideFlags: 0

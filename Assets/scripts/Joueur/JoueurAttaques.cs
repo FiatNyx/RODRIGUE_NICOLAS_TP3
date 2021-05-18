@@ -14,10 +14,13 @@ public class JoueurAttaques : MonoBehaviour
 	GameObject[] listeMarqueurs;
 
 	List<GameObject> listeMarqueursInstancies;
+
 	// Start is called before the first frame update
 	void Start()
     {
         joueurMain = GetComponent<JoueurMain>();
+
+		//La liste des marqueurs
 		listeMarqueurs = new GameObject[4];
 		listeMarqueurs[0] = marqueur1;
 		listeMarqueurs[1] = marqueur2;
@@ -44,7 +47,7 @@ public class JoueurAttaques : MonoBehaviour
 
 
 		//--------------------
-		//Sélection des attaques     \\\\\\!@\!@\@\   À CHANGER POUR S'ADAPTER AU TYPE DE MARQUEUR
+		//Sélection des attaques. Instancie un marqueur si le type de marqueur le demande
 		//-------------------
 		if (Input.GetKeyDown(KeyCode.Alpha1))
 		{
@@ -126,6 +129,7 @@ public class JoueurAttaques : MonoBehaviour
 		}
 
 
+		//Update la position des marqueurs si une attaque est sélectionnée
 		if (joueurMain.moveSelected != 0)
 		{
 			RaycastHit hit;
@@ -145,11 +149,10 @@ public class JoueurAttaques : MonoBehaviour
 					}
 
 				}
-
-				
 			}
             else
             {
+				//Le marqueur suit la souris
 				if (Physics.Raycast(joueurMain.camRay, out hit, 200, joueurMain.teleportLayer))
 				{
 					listeMarqueurs[joueurMain.moveSelected - 1].transform.position = hit.point;

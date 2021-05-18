@@ -4,15 +4,13 @@ using UnityEngine;
 
 public class JoueurMovement : MonoBehaviour
 {
-
-
-
     JoueurMain joueurMain;
 	Vector3 moveDirection;
 
 	float animationSpeed;
 	Rigidbody rb;
 	public bool isMoving = false;
+
 	// Start is called before the first frame update
 	void Start()
     {
@@ -31,9 +29,11 @@ public class JoueurMovement : MonoBehaviour
 		if(joueurMain.isDead == false && GameManager.singleton.isPaused == false)
         {
 			if (joueurMain.isThisPlayersTurn && joueurMain.isAttacking == false) {
+
 				//S'assure que la caméra suit le personnage
 				GameManager.singleton.cameraPosition.position = transform.position;
 
+				//Détecte où la souris pointe
 				RaycastHit hit;
 				if (Physics.Raycast(joueurMain.camRay, out hit))
 				{
@@ -58,12 +58,9 @@ public class JoueurMovement : MonoBehaviour
 				if (joueurMain.moveSelected == 0)
 				{
 					float inputVertical = Input.GetAxis("Vertical");
-
-					print(inputVertical);
-					
 					float inputHorizontal = Input.GetAxis("Horizontal");
 
-					print(inputHorizontal);
+					
 					if (Mathf.Abs(inputVertical) > 0 || Mathf.Abs(inputHorizontal) > 0) 
 					{
 						isMoving = true;
@@ -74,6 +71,7 @@ public class JoueurMovement : MonoBehaviour
 
 					}
 
+					//Si le joueur est enpoisonné, inflige des dégâts
 					if (joueurMain.isPoisoned && (Mathf.Abs(inputHorizontal) > 0 || Mathf.Abs(inputVertical) > 0))
 					{
 						joueurMain.timerPoison += Time.deltaTime;
@@ -86,22 +84,17 @@ public class JoueurMovement : MonoBehaviour
 						}
 					}
 
-
 					moveDirection = GameManager.singleton.cameraPosition.forward * inputVertical + GameManager.singleton.cameraPosition.right * inputHorizontal;
-
-
 				}
 				else
 				{
 					moveDirection = Vector3.zero;
 					isMoving = false;
-					//joueurMain.animationJoueur.SetBool("Idle", true);
 				}
 			}
 			else
 			{
 				moveDirection = Vector3.zero;
-				//joueurMain.animationJoueur.SetBool("Idle", true);
 
 				if (Input.GetMouseButton(2))
 				{
@@ -149,7 +142,7 @@ public class JoueurMovement : MonoBehaviour
 		Vector3 rotCamera = GameManager.singleton.cameraPosition.rotation.eulerAngles;
 
 
-		rotCamera.y += Input.GetAxis("Mouse X") * 5;
+		rotCamera.y += Input.GetAxis("Mouse X") * 250 * Time.deltaTime;
 
 
         GameManager.singleton.cameraPosition.rotation = Quaternion.Euler(rotCamera);

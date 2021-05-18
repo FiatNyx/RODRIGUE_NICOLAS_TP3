@@ -8,38 +8,36 @@ public class ennemyBasic : MonoBehaviour
 {
 	public NavMeshAgent navMeshAgent;
 
-	public bool isMoving = false;
 	public GameObject player;
 
 	public int maxHealth = 50;
 	int health = 50;
 	public GameObject sliderVie;
 
-
 	private Animator animationEnnemy;
-
+	public bool isMoving = false;
 
 	public int isPoisoned;
 	public float timerPoison = 0f;
+	public int puissancePoison = 0;
+	public int burnStatus = 0;
 	public float speed = 0f;
+
 	public bool isThisEnnemyTurn;
-	
+	public bool isDead = false;
 
 	AudioSource audioSource;
 	public AudioClip audioOuch;
-	
 	public AudioClip audioMortEnnemy;
 
-	
 	public Collider ennemyCollider;
-	
 	Rigidbody[] ragdollRBs;
 	Collider[] ragdollColliders;
-	public bool isDead = false;
-	public int puissancePoison = 0;
-
-	public int burnStatus = 0;
+	
 	public GameObject brulureParticules;
+
+
+
 	/// <summary>
 	/// On stock les components dans des variables
 	/// </summary>
@@ -73,9 +71,12 @@ public class ennemyBasic : MonoBehaviour
 		}
     }
 
-
+	/// <summary>
+	/// Au début du tour, inflige les effets de status
+	/// </summary>
 	public void UpdateStatus()
     {
+		//Inflige les dégâts de brulure
 		if (burnStatus > 0)
 		{
 			int previousBurn = burnStatus;
@@ -88,10 +89,13 @@ public class ennemyBasic : MonoBehaviour
 				burnStatus = 0;
 			}
 		}
-
-		print("Burning");
+		
 	}
 
+	/// <summary>
+	/// Inflige une brulure à l'ennemi
+	/// </summary>
+	/// <param name="burnAmount">Le nombre de brulures à infliger</param>
 	public void Enflammer(int burnAmount)
     {
 		brulureParticules.SetActive(true);
@@ -114,6 +118,7 @@ public class ennemyBasic : MonoBehaviour
 		if (health <= 0)
 		{
 			isDead = true;
+
 			//Afin d'éviter des bugs
 			StopAllCoroutines();
 
@@ -162,13 +167,14 @@ public class ennemyBasic : MonoBehaviour
 				dealDamage(other.GetComponent<Attaque>().damage);
 			}
 
+			//Ralentit
 			if (other.GetComponent<zoneLente>() != null)
 			{
 				print("Slow from slow");
 				navMeshAgent.speed = speed / other.GetComponent<zoneLente>().getSlowStrength(); 
-
 			}
 
+			//Inflige du poison
 			if (other.GetComponent<zonePoison>() != null)
 			{
 				print("Poison from zone poison");
@@ -177,20 +183,19 @@ public class ennemyBasic : MonoBehaviour
 				isPoisoned += 1;
 			}
 
+			//Inflige des dégâts par l'attaque de l'explosion
 			if (other.GetComponent<ExplosionCircle>() != null)
 			{
-				print("Damage from explosion");
 				if (other.GetComponent<ExplosionCircle>().isDamage == true)
 				{
 					dealDamage(other.GetComponent<ExplosionCircle>().damageAmount);
 				}
 			}
 
-			
+			//Inflige des brulures par les attaques qui en inflige.
 			if(other.GetComponent<FeuStatusAttack>() != null)
             {
 				Enflammer(other.GetComponent<FeuStatusAttack>().burnAmount);
-				print(burnStatus);
             }
 		}
 		
@@ -205,13 +210,14 @@ public class ennemyBasic : MonoBehaviour
 		if(isDead == false)
         {
 			
-
+			//Enlève le ralentissement
 			if (other.GetComponent<zoneLente>() != null)
 			{
 				navMeshAgent.speed = speed;
 
 			}
 
+			//Enlève le poison
 			if (other.GetComponent<zonePoison>() != null)
 			{
 				isPoisoned = 0;
@@ -222,11 +228,20 @@ public class ennemyBasic : MonoBehaviour
 		
 	}
 
+	/// <summary>
+	/// Retourne la vie
+	/// </summary>
+	/// <returns>La vie de cet ennemi</returns>
 	public int getVie()
     {
 		return health;
     }
 
+
+	/// <summary>
+	/// Soigne l'ennemi d'un certain montant
+	/// </summary>
+	/// <param name="healAmount">Le montant de vie à soigner</param>
 	public void heal(int healAmount)
     {
 		if(isDead == false)
@@ -239,12 +254,14 @@ public class ennemyBasic : MonoBehaviour
 
 			sliderVie.GetComponent<Slider>().value = (float)health / (float)maxHealth * 100f;
 		}
-		
 	}
 
+	/// <summary>
+	/// La fonction qui permet de trouver le joueur le plus proche
+	/// </summary>
+	/// <returns>Le joueur le plus proche</returns>
 	public Transform getJoueurProche()
     {
-
 		Transform joueurChoisi = GameManager.singleton.listeJoueurs[0];
 		float distance = Mathf.Abs(Vector3.Distance(transform.position, joueurChoisi.position));
 

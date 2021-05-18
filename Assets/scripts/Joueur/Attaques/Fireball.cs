@@ -2,10 +2,10 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public class FireballEnnemy : MonoBehaviour
+public class Fireball : MonoBehaviour
 {
 	Rigidbody rb;
-
+	public JoueurMain joueur;
 
 	public GameObject explosion;
 	float timerDestruction = 0;
@@ -13,19 +13,20 @@ public class FireballEnnemy : MonoBehaviour
 	/// <summary>
 	/// Initialisation de certaines variables
 	/// </summary>
-	void Start()
-	{
+    void Start()
+    {
 		rb = GetComponent<Rigidbody>();
 		timerDestruction = 0;
-
-	}
+		
+    }
 
 	/// <summary>
 	/// Créer une explosion
 	/// </summary>
 	private void Explode()
 	{
-		Instantiate(explosion, transform.position, transform.rotation);
+		GameObject explosionInstance = Instantiate(explosion, transform.position, transform.rotation);
+		explosionInstance.GetComponent<Explosion>().joueur = joueur;
 
 		Destroy(gameObject);
 	}
@@ -38,7 +39,7 @@ public class FireballEnnemy : MonoBehaviour
 	{
 		rb.MovePosition(transform.position + transform.forward * Time.deltaTime * 10);
 		timerDestruction += Time.deltaTime;
-		if (timerDestruction > 2)
+		if(timerDestruction > 2)
 		{
 			Explode();
 		}
@@ -52,15 +53,15 @@ public class FireballEnnemy : MonoBehaviour
 	/// <param name="collision">La collision, ce qui permet d'accéder à l'autre objet de la collision</param>
 	private void OnCollisionEnter(Collision collision)
 	{
-		if (collision.collider.GetComponent<JoueurMain>() != null)
+		if(collision.collider.GetComponent<ennemyBasic>() != null)
 		{
-			collision.collider.GetComponent<JoueurMain>().damage(10);
-
+			collision.collider.GetComponent<ennemyBasic>().dealDamage(10);
+			
 		}
 
 		Explode();
-		
 	}
+
 
 	/// <summary>
 	/// Créer une explosion quand la boule de feu touche quelque chose
@@ -68,7 +69,7 @@ public class FireballEnnemy : MonoBehaviour
 	/// <param name="other"></param>
 	private void OnTriggerEnter(Collider other)
 	{
-		if(other.GetComponent<MurDeFeu>() != null)
+		if (other.GetComponent<MurDeFeu>() != null)
 		{
 			Explode();
 		}

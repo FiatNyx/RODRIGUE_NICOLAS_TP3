@@ -2,9 +2,10 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public class ExplosionEnnemy : MonoBehaviour
+public class Explosion : MonoBehaviour
 {
 	float timerDestruction = 0;
+	public JoueurMain joueur;
 
 	/// <summary>
 	/// Applique une explosion initiale qui affecte les rigidbodys
@@ -18,24 +19,25 @@ public class ExplosionEnnemy : MonoBehaviour
 		{
 			Rigidbody rb = item.GetComponent<Rigidbody>();
 
-			if (rb != null && item.tag != "Player")
+			if (rb != null)
 			{
 				//Appliquer une vélocité
-				rb.AddExplosionForce(5, transform.position, 5, 1, ForceMode.Impulse);
+				rb.AddExplosionForce(10, transform.position, 10, 1, ForceMode.Impulse);
 			}
 		}
 		*/
 	}
 
 	/// <summary>
-	/// Détruit l'explosion après un certain temps et avertit le joueur que l'attaque est finie.
+	/// Détruit l'explosion après un certain temps.
 	/// </summary>
 	void Update()
-	{
+    {
 		timerDestruction += Time.deltaTime;
 		if (timerDestruction > 0.5)
 		{
-
+			
+			
 			Destroy(gameObject);
 		}
 	}

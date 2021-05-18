@@ -13,7 +13,11 @@ public class ennemyArcher : MonoBehaviour
 	public AudioClip audioAttack;
 	public GameObject fireball;
 	public Transform fireballPosition;
-	// Start is called before the first frame update
+	
+
+	/// <summary>
+	/// Va chercher les component requis.
+	/// </summary>
 	void Start()
 	{
 		scriptBase = GetComponent<ennemyBasic>();
@@ -21,6 +25,8 @@ public class ennemyArcher : MonoBehaviour
 		animationEnnemy = GetComponent<Animator>();
 		navMeshAgent = GetComponent<NavMeshAgent>();
 
+
+		//Enlever les commentaires pour faire en sorte que la difficulté affecte la vie de l'ennemi
 		/*
 		switch (DataManager.singleton.difficulte)
 		{
@@ -45,37 +51,30 @@ public class ennemyArcher : MonoBehaviour
 	/// S'occupe des mouvements et de l'attaque de l'ennemi
 	/// </summary>
 	/// <returns></returns>
-	IEnumerator Mouvement() //Changer mouvement pour les autres types d'ennemis, genre le mettre dans un autre component
+	IEnumerator Mouvement() 
 	{
 		//Animation
 		animationEnnemy.SetBool("Running", true);
 
 
-		//Me déplacer vers la destination
+		//Se déplacer vers la destination
 		scriptBase.isMoving = true;
 		navMeshAgent.isStopped = false;
 
 
-
-
-
-
-		//Déplace le personnage et lui inflige des dégats s'il est empoisonés. Ne s'arrête pas tant qu'il n'est pas à destination 
-		//ou que le timer arrive à 0.
-
+		
+		//Détermine le joueur le plus proche et calcule une trajectoire pour fuir.
 		Transform ennemyChoisi = scriptBase.getJoueurProche();
 		
 		Vector3 toPlayer = ennemyChoisi.position - transform.position;
 		Vector3 targetPosition = toPlayer.normalized * -10f;
-		//Vector3 vecteurRandom = new Vector3(Random.Range(-50, 50), 0, Random.Range(-50, 50));
+		
 		navMeshAgent.SetDestination(transform.position + targetPosition);
 
-
+		//Déplace le personnage et lui inflige des dégats s'il est empoisonés. Ne s'arrête pas tant qu'il n'est pas à destination 
+		//ou que le timer arrive à 0.
 		while ((navMeshAgent.pathPending || (Vector3.Distance(ennemyChoisi.position, transform.position) < 15f && navMeshAgent.remainingDistance > 1f)) && GameManager.singleton.getTimerEnnemy() > 0.2f)
 		{
-			
-
-
 			if (scriptBase.isPoisoned > 0)
 			{
 				scriptBase.timerPoison += Time.deltaTime;
@@ -98,13 +97,15 @@ public class ennemyArcher : MonoBehaviour
 		float timerAttack = 0f;
 		if (Vector3.Distance(ennemyChoisi.position, transform.position) < 20f)
 		{
+			//Réinitialise le navMeshAgent
 			navMeshAgent.SetDestination(transform.position);
 			navMeshAgent.isStopped = true;
 			
+			//Regarde vers la cible
 			transform.LookAt(ennemyChoisi.position);
 			fireballPosition.LookAt(ennemyChoisi.position + transform.up * 1.2f);
-			//Marche pas, il le fait pas en y
 			
+			//Animation
 			animationEnnemy.SetBool("Running", false);
 			GameManager.singleton.StartAttack(0); //Il s'agit d'un ennemi, il ne consomme pas de temps. Ne fait que s'assurer que le timer ne cause pas
 												  //de bug
@@ -114,10 +115,13 @@ public class ennemyArcher : MonoBehaviour
 				yield return null;
 			}
 
+			//Son de l'attaque
 			audioSource.PlayOneShot(audioAttack);
-			//animationEnnemy.SetTrigger("Attack");
-			//scriptBase.player.GetComponent<Animator>().SetTrigger("Hurt");
+			
+			//Lance la boule de feu.
 			Instantiate(fireball, fireballPosition.position, fireballPosition.rotation);
+
+			//Attend que la boule de feu finisse
 			while (timerAttack < 5f)
 			{
 
@@ -126,15 +130,17 @@ public class ennemyArcher : MonoBehaviour
 			}
 			
 
+			//Dépause le timer
 			GameManager.singleton.FinishAttack();
 
 		}
 
+		//Arrête le navmesh, même s'il n'a pas attaqué
 		navMeshAgent.isStopped = true;
 		navMeshAgent.ResetPath();
 		animationEnnemy.SetBool("Running", false);
 
-
+		//Change le tour
 		GameManager.singleton.changeTurn();
 		scriptBase.isMoving = false;
 	}
@@ -144,6 +150,7 @@ public class ennemyArcher : MonoBehaviour
 	/// </summary>
 	private void Update()
 	{
+		//S'il peut faire son attaque
 		if (scriptBase.isMoving == false && GameManager.singleton.getPlayerTurn() == false && scriptBase.isThisEnnemyTurn && scriptBase.isDead == false && GameManager.singleton.isPaused == false)
 		{
 

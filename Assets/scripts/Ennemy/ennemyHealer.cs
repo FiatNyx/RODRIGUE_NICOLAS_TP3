@@ -21,6 +21,7 @@ public class ennemyHealer : MonoBehaviour
 		animationEnnemy = GetComponent<Animator>();
 		navMeshAgent = GetComponent<NavMeshAgent>();
 
+		//Enlever les commentaires pour faire en sorte que la difficulté affecte la vie de l'ennemi
 		/*
 		switch (DataManager.singleton.difficulte)
 		{
@@ -47,6 +48,8 @@ public class ennemyHealer : MonoBehaviour
 	/// <returns></returns>
 	IEnumerator Mouvement() //Changer mouvement pour les autres types d'ennemis, genre le mettre dans un autre component
 	{
+
+		//Choisis l'ennemi à soigner (Le plus faible)
 		List<Transform> listeEnnemy = GameManager.singleton.listeEnnemis;
 
 		Transform ennemyFaible = transform;
@@ -94,7 +97,7 @@ public class ennemyHealer : MonoBehaviour
 
 
 
-		//S'il est assez proche, il va attaquer le joueur
+		//S'il est assez proche, il va soigner l'ennemi
 		float timerAttack = 0f;
 		if (Vector3.Distance(ennemyFaible.position, transform.position) <= 15)
 		{
@@ -110,6 +113,7 @@ public class ennemyHealer : MonoBehaviour
 				yield return null;
 			}
 
+			//Animation
 			audioSource.PlayOneShot(audioAttack);
 			animationEnnemy.SetTrigger("Heal");
 			
@@ -120,20 +124,23 @@ public class ennemyHealer : MonoBehaviour
 				yield return null;
 			}
 
+			//Particules de heal
 			GameObject particleHeal = Instantiate(particleHealPrefab, ennemyFaible.transform.position, Quaternion.Euler(-90, 0, -180));
 			ennemyFaible.GetComponent<ennemyBasic>().heal(10);
 
 			yield return new WaitForSeconds(1.3f);
 			Destroy(particleHeal);
+
 			GameManager.singleton.FinishAttack();
 
 		}
 
+		//Arrête le navmesh, même s'il n'a pas attaqué
 		navMeshAgent.isStopped = true;
 		navMeshAgent.ResetPath();
 		animationEnnemy.SetBool("Running", false);
 
-
+		//Changer le tour
 		GameManager.singleton.changeTurn();
 		scriptBase.isMoving = false;
 	}

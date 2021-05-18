@@ -19,17 +19,22 @@ public class Joueur1 : MonoBehaviour
 	public GameObject coneFeuPrefab;
 	public GameObject murFeuPrefab;
 	int[] listeTypesAttaque;
+
+
 	// Start is called before the first frame update
 	void Start()
     {
 		joueurMain = GetComponent<JoueurMain>();
 		joueurAttaques = GetComponent<JoueurAttaques>();
+
+		//Pour les types de marqueurs
 		listeTypesAttaque = new int[4];
 		listeTypesAttaque[0] = 0;
 		listeTypesAttaque[1] = 0;
 		listeTypesAttaque[2] = 2;
 		listeTypesAttaque[3] = 2;
 
+		//Change la vie du joueur selon la difficulté
 		switch (DataManager.singleton.difficulte)
 		{
 			case "Facile":
@@ -50,11 +55,12 @@ public class Joueur1 : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
+		//Vérifie pour éviter les bugs
 		if(joueurMain.isDead == false && GameManager.singleton.isPaused == false)
         {
 			if (joueurMain.isThisPlayersTurn && joueurMain.isAttacking == false)
 			{
-
+				//Call "L'update" de "JoueurAttaque"
 				joueurAttaques.AttaqueUpdate(listeTypesAttaque, null);
 
 				//--------------------------------
@@ -78,7 +84,7 @@ public class Joueur1 : MonoBehaviour
 							
 							joueurAttaques.resetAttackSelected();
 							joueurMain.isAttacking = true;
-							joueurMain.animationJoueur.SetTrigger("LightningAttack");
+							joueurMain.animationJoueur.SetTrigger("GroundAttack");
 							StartCoroutine(ConeDeFeu());
 							
 						}
@@ -89,11 +95,11 @@ public class Joueur1 : MonoBehaviour
 							{
 								joueurAttaques.resetAttackSelected();
 								joueurMain.isAttacking = true;
-								joueurMain.animationJoueur.SetTrigger("LightningAttack");
+								joueurMain.animationJoueur.SetTrigger("GroundAttack");
 								StartCoroutine(MurDeFeu(hit));
 							}
 						}
-						else if (joueurMain.moveSelected == 4 && GameManager.singleton.getTimerJoueur() > 1 * joueurMain.puissanceSlow)
+						else if (joueurMain.moveSelected == 4 && GameManager.singleton.getTimerJoueur() > 0.2 * joueurMain.puissanceSlow)
 						{
 							RaycastHit hit;
 							if (Physics.Raycast(joueurMain.camRay, out hit, 500, joueurMain.teleportLayer))
@@ -145,7 +151,10 @@ public class Joueur1 : MonoBehaviour
 	
 	}
 
-
+	/// <summary>
+	/// S'occupe du lancement de l'attaque de cone de feu
+	/// </summary>
+	/// <returns></returns>
 	IEnumerator ConeDeFeu()
 	{
 		GameManager.singleton.StartAttack(2 * joueurMain.puissanceSlow);
@@ -160,14 +169,18 @@ public class Joueur1 : MonoBehaviour
 		GameManager.singleton.FinishAttack();
 	}
 
+	/// <summary>
+	/// S'occupe du lancement de l'attaque du mur de feu
+	/// </summary>
+	/// <returns></returns>
 	IEnumerator MurDeFeu(RaycastHit hit)
 	{
 		GameManager.singleton.StartAttack(2 * joueurMain.puissanceSlow);
 
 		yield return new WaitForSeconds(1.25f * joueurMain.puissanceSlow);
 
-		GameObject coneFeu = Instantiate(murFeuPrefab, hit.point, joueurMain.transform.rotation);
-
+		GameObject murDeFeu = Instantiate(murFeuPrefab, hit.point, joueurMain.transform.rotation);
+		GameManager.singleton.listeObjectsTemporaires.Add(murDeFeu.GetComponent<ObjectTemporaire>());
 		yield return new WaitForSeconds(1f * joueurMain.puissanceSlow);
 
 		joueurMain.isAttacking = false;
